@@ -4,7 +4,7 @@ import toastr from "toastr";
 
 export function useTransaction() {
     const transactions = ref([]);
-    const newTransaction = ref({ name: "", status: 1 });
+    const newTransaction = ref({ amount: "", status: 1 });
     const editedTransaction = ref(null);
     const isLoading = ref(false);
 
@@ -14,26 +14,26 @@ export function useTransaction() {
             const response = await transactionService.getAll();
             transactions.value = response.data.data;
         } catch (error) {
-            toastr.error("Error fetching categories!");
-            console.error("Error fetching categories:", error);
+            toastr.error("Error fetching transactions!");
+            console.error("Error fetching transactions:", error);
         } finally {
             isLoading.value = false;
         }
     };
 
     const addTransaction = async () => {
-        // if (!newTransaction.value.name.trim()) {
-        //     toastr.error("Category name cannot be empty!");
-        //     return;
-        // }
+        if (!newTransaction.value.amount.trim()) {
+            toastr.error("Transaction amount cannot be empty!");
+            return;
+        }
         try {
             await transactionService.create(newTransaction.value);
-            newTransaction.value = { name: "", status: 1 };
+            newTransaction.value = { amount: "", status: 1 };
             await fetchTransactions();
-            toastr.success("Category added successfully!");
+            toastr.success("Transaction added successfully!");
         } catch (error) {
-            toastr.error("Error adding category!");
-            console.error("Error adding category:", error);
+            toastr.error("Error adding transaction!");
+            console.error("Error adding transaction:", error);
         }
     };
 
@@ -41,26 +41,26 @@ export function useTransaction() {
         try {
             await transactionService.delete(id);
             await fetchTransactions();
-            toastr.warning("Category has been deleted!");
+            toastr.warning("Transaction has been deleted!");
         } catch (error) {
-            toastr.error("Error deleting category!");
-            console.error("Error deleting category:", error);
+            toastr.error("Error deleting transaction!");
+            console.error("Error deleting transaction:", error);
         }
     };
 
     const updateTransaction = async () => {
-        // if (!editedTransaction.value.name.trim()) {
-        //     toastr.error("Category name cannot be empty!");
-        //     return;
-        // }
+        if (!editedTransaction.value.amount.trim()) {
+            toastr.error("Transaction amount cannot be empty!");
+            return;
+        }
         try {
             await transactionService.update(editedTransaction.value.id, editedTransaction.value);
             await fetchTransactions();
             editedTransaction.value = null;
-            toastr.success("Category updated successfully!");
+            toastr.success("Transaction updated successfully!");
         } catch (error) {
-            toastr.error("Error updating category!");
-            console.error("Error updating category:", error);
+            toastr.error("Error updating transaction!");
+            console.error("Error updating transaction:", error);
         }
     };
 
