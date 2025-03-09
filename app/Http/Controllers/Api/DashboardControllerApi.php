@@ -120,4 +120,26 @@ class DashboardControllerApi extends Controller {
             'data' => $transactions
         ]);
     }
+
+    public function getExpensesByMonths(Request $request)
+    {
+        $userId = auth()->id();
+
+        $months = $request->input('months', 3);
+
+        $data = DB::table('transactions')
+            ->selectRaw('DATE_FORMAT(transaction_date, "%Y-%m") as month,
+                     SUM(CASE WHEN is_income = 0 THEN amount ELSE 0 END) as total_expense,
+                     SUM(CASE WHEN is_income = 1 THEN amount ELSE 0 END) as total_income')
+//            ->where('user_id', $userId)
+            ->where('transaction_date', '>=', Carbon::now()->subMonths($months - 1)->startOfMonth()) // Lấy N tháng gần nhất
+            ->groupBy('month')
+            ->orderBy('month', 'asc')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $data
+        ]);
+    }
 }

@@ -1,12 +1,20 @@
 <template>
     <div class="top-categories">
         <h3>Top Spending Categories</h3>
-        <ul>
-            <li v-for="(category, index) in categories" :key="index">
-                <span>{{ category.name }}</span>
-                <strong>{{ category.total_spent.toLocaleString("en-US") }} đ</strong>
-            </li>
-        </ul>
+        <table>
+            <thead>
+            <tr>
+                <th>Danh mục</th>
+                <th>Tổng chi tiêu</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(category, index) in categories" :key="index">
+                <td>{{ category.name }}</td>
+                <td><strong>{{ category.total_spent.toLocaleString("en-US") }} đ</strong></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </template>
 
@@ -31,6 +39,7 @@ onMounted(fetchCategories);
 <style scoped>
 .top-categories {
     margin-top: 20px;
+    width: 40%;
 }
 
 ul {

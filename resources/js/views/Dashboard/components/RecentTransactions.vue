@@ -1,17 +1,27 @@
 <template>
     <div class="recent-transactions">
         <h3>Recent Transactions</h3>
-        <ul>
-            <li v-for="(transaction, index) in transactions" :key="index">
-                <span class="wallet">{{ transaction.wallet_name }}</span>
-                <span class="category">{{ transaction.category_name || 'Unknown' }}</span>
-                <span :class="transaction.is_income ? 'income' : 'expense'">
+        <table>
+            <thead>
+            <tr>
+                <th>Ví</th>
+                <th>Danh mục</th>
+                <th>Số tiền</th>
+                <th>Ngày</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(transaction, index) in transactions" :key="index">
+                <td>{{ transaction.wallet_name }}</td>
+                <td>{{ transaction.category_name || 'Unknown' }}</td>
+                <td :class="transaction.is_income ? 'income' : 'expense'">
                     {{ transaction.is_income ? '+' : '-' }}
                     {{ transaction.amount.toLocaleString("en-US") }} đ
-                </span>
-                <span class="date">{{ transaction.transaction_date }}</span>
-            </li>
-        </ul>
+                </td>
+                <td>{{ transaction.transaction_date }}</td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </template>
 
@@ -36,6 +46,7 @@ onMounted(fetchTransactions);
 <style scoped>
 .recent-transactions {
     margin-top: 20px;
+    width: 60%;
 }
 
 ul {

@@ -12,6 +12,9 @@ const dashboardService = {
     },
     getRecentTransactions() {
         return apiClient.get("/dashboard/recent-transactions");
+    },
+    getExpensesByMonths(months = 3) {
+        return apiClient.get("/dashboard/expenses-by-months", {params: { months }});
     }
 };
 

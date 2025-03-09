@@ -2,8 +2,11 @@
 	<MainLayout>
         <CardTop/>
         <MonthlyExpenseChart />
-        <TopCategories/>
-        <RecentTransactions/>
+<!--        <CompareMonthsChart/>-->
+        <div class="dashboard-box">
+            <TopCategories/>
+            <RecentTransactions/>
+        </div>
 	</MainLayout>
 </template>
 
@@ -13,5 +16,13 @@ import CardTop from "@/views/Dashboard/components/CardTop.vue";
 import MonthlyExpenseChart from "@/views/Dashboard/components/MonthlyExpenseChart.vue";
 import TopCategories from "@/views/Dashboard/components/TopCategories.vue";
 import RecentTransactions from "@/views/Dashboard/components/RecentTransactions.vue";
+import CompareMonthsChart from "@/views/Dashboard/components/CompareMonthsChart.vue";
 
 </script>
+<style scoped>
+.dashboard-box {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+</style>

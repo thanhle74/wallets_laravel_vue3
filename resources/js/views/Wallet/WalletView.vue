@@ -18,6 +18,7 @@
                         <th>ID</th>
                         <th>Name</th>
                         <th>Balance</th>
+                        <th>Type</th>
                         <th>Status</th>
                         <th v-if="checkAdmin">User</th>
                         <th>Actions</th>
@@ -28,6 +29,7 @@
                         <td>{{ wallet.id }}</td>
                         <td>{{ wallet.name }}</td>
                         <td>{{ wallet.balance }}</td>
+                        <td>{{ getTypeText(wallet.type)}}</td>
                         <td>
                             <span :class="getStatusClass(wallet.status)">
                               <i :class="getStatusIcon(wallet.status)"></i>
@@ -145,4 +147,16 @@ const getStatusIcon = (status) => {
 const getStatusText = (status) => {
     return status === 1 ? "Active" : "Disabled";
 };
+
+const getTypeText = (type) => {
+    if(type === 1) {
+        return "Bank";
+    }
+    if(type === 2) {
+        return "Cash";
+    }
+    if(type === 3) {
+        return "Crypto";
+    }
+}
 </script>

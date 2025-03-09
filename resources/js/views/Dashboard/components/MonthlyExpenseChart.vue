@@ -93,7 +93,7 @@ watch([expensesData, incomeData, daysOfMonth], renderChart);
 
 <style scoped>
 .chart-container {
-    width: 100%;
+    width: 50%;
     height: 400px;
     position: relative;
     margin-top: 4rem;

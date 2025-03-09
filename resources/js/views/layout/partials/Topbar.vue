@@ -9,6 +9,7 @@
 
             <!-- Dropdown -->
             <ul v-if="dropdownOpen" class="dropdown">
+                <li><i class="fas fa-cog"></i> Settings</li>
                 <li><i class="fas fa-user"></i> Profile</li>
                 <li @click="handleLogout"><i class="fas fa-sign-out-alt"></i> Logout</li>
             </ul>
@@ -83,7 +84,6 @@ h5 {
     margin-bottom: 2rem;
     box-shadow: 0 .125rem .5rem #1311202e;
     border-radius: .375rem;
-    overflow: hidden;
 }
 
 .user-menu {
