@@ -1,0 +1,148 @@
+<template>
+    <MainLayout title="Transaction Management">
+        <LoadingSpinner v-if="isLoading" message="Loading transactions..." />
+
+        <div v-else>
+            <TransactionForm
+                :transaction="newTransaction"
+                @create="handleAddTransaction"
+            />
+
+            <div class="table-responsive">
+                <table id="tableTransaction" class="table-striped">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Category</th>
+                        <th>Wallet</th>
+                        <th>Amount</th>
+                        <th>Day</th>
+                        <th v-if="checkAdmin">User</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(transaction, index) in transactions" :key="index">
+                        <td>
+                            {{ transaction.id }}
+                        </td>
+                        <td>{{ transaction.category.name }}</td>
+                        <td>{{ transaction.wallet.name }}</td>
+                        <td>
+                            <span class="status-active">
+                                {{ transaction.amount }}
+                            </span>
+                        </td>
+                        <td>{{ transaction.transaction_date }}</td>
+                        <td v-if="checkAdmin">{{ transaction.user.name }}</td>
+                        <td class="table-box-action">
+                            <button class="btn-edit" @click="showTransactionDetail(transaction)">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                            <button class="btn-cancel" @click="confirmDelete(transaction.id)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <ConfirmDeleteModal
+            :show="deleteConfirmId !== null"
+            message="Are you sure you want to delete this transaction?"
+            @confirm="handleDeleteTransaction"
+            @cancel="deleteConfirmId = null"
+        />
+
+        <TransactionDetailModal
+            v-if="selectedTransaction"
+            :transaction="selectedTransaction"
+            @close="selectedTransaction = null"
+        />
+    </MainLayout>
+</template>
+
+<script setup>
+import MainLayout from '@/views/layout/MainLayout.vue';
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
+import ConfirmDeleteModal from "@/components/ConfirmDeleteModal.vue";
+import TransactionDetailModal from "@/views/Transaction/components/TransactionDetailModal.vue";
+import { useTransaction } from "@/composables/useTransaction";
+import { isAdminHelper } from "@/composables/helper/isAdminHelper";
+import TransactionForm from "@/views/Transaction/components/TransactionForm.vue";
+import { ref, onMounted, watch, nextTick } from "vue";
+import $ from 'jquery';
+import 'datatables.net';
+
+const {
+    transactions,
+    newTransaction,
+    editedTransaction,
+    isLoading,
+    fetchTransactions,
+    addTransaction,
+    deleteTransaction,
+    updateTransaction,
+} = useTransaction();
+
+const { fetchIsAdmin } = isAdminHelper();
+
+const checkAdmin = async () => {
+    return await fetchIsAdmin();
+};
+
+const deleteConfirmId = ref(null);
+const selectedTransaction = ref(null);
+
+const showTransactionDetail = (transaction) => {
+    selectedTransaction.value = transaction;
+};
+
+const handleAddTransaction = async () => {
+    await addTransaction();
+};
+
+const handleUpdateTransaction = async () => {
+    await updateTransaction();
+};
+
+const handleDeleteTransaction = async () => {
+    if (!deleteConfirmId.value) return;
+
+    await deleteTransaction(deleteConfirmId.value);
+    deleteConfirmId.value = null;
+};
+
+const handleCancelUpdate = () => {
+    editedTransaction.value = false;
+};
+
+const confirmDelete = (id) => {
+    deleteConfirmId.value = id;
+};
+
+const editTransaction = (transaction) => {
+    editedTransaction.value = { ...transaction };
+};
+
+const initDataTable = () => {
+    nextTick(() => {
+        let table = $("#tableTransaction");
+        table.DataTable().destroy();
+        table.DataTable();
+    });
+};
+
+watch(transactions, (newValue) => {
+    if (newValue.length) {
+        initDataTable();
+    }
+});
+
+onMounted(async () => {
+    await fetchTransactions();
+    initDataTable();
+});
+</script>

@@ -1,0 +1,249 @@
+@import "base/reset";
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+html {
+    font-size: 10px;
+}
+
+body {
+    color: #b2b9bf;
+    background: #212529;
+    font-family: "Poppins", sans-serif;
+    font-size: 1.4rem;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-weight: 300;
+}
+
+a {
+    color: #b2b9bf;
+    text-decoration: none;
+}
+
+aside {
+    width: 20%;
+    background: #333d54;
+    min-height: 100vh;
+}
+
+main {
+    width: 80%;
+    background-color: #2d3548;
+}
+
+input {
+    outline: none;
+    border: 1px solid #343f5b;
+    padding: 10px;
+    width: 200px;
+    background-color: #2d3548;
+    color: #b2b9bf;
+}
+
+select {
+    outline: none;
+    border: 1px solid #343f5b;
+    padding: 10px;
+    background-color: #2d3548;
+    color: #b2b9bf;
+}
+
+.status-active {
+    background-color: #2e4b4f;
+    color: #28c76f;
+    padding: 5px 10px;
+    border-radius: 0.25rem;
+    font-size: .8667em;
+}
+
+.status-disabled {
+    background-color: #50374a;
+    color: #ff4c51;
+    padding: 5px 10px;
+    border-radius: 0.25rem;
+    font-size: .8667em;
+}
+
+.main-wapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    box-shadow: 1px 0 80px rgba(0, 0, 0, .2);
+    display: flex;
+    justify-content: space-between;
+}
+
+.page-wapper {
+    background-color: #2d3548;
+    padding: 15px;
+}
+
+.sidebar {
+    padding: 15px;
+    li {
+        margin-bottom: 1rem;
+        a {
+            display: block;
+            padding: 12px 15px;
+            transition: all .3s ease;
+            border-radius: 5px;
+            &:hover {
+                background-color: #e1def514;
+                color: #fff;
+                border-radius: 5px;
+            }
+            &.router-link-active {
+                background-color: #685dd8;
+                color: #fff;
+            }
+        }
+    }
+
+    i {
+        margin-right: 1rem;
+        font-size: 1rem;
+    }
+}
+
+.topbar {
+    height: 50px;
+    background: #333d54;
+    border-left: 1px solid #2d3548;
+}
+
+.table-striped {
+    td, thead, tbody, th {
+        border: 1px solid #343f5b;
+        padding: 10px;
+    }
+    th{
+        text-align: left;
+    }
+
+    .table-box-action {
+        text-align: center;
+        .btn-edit {
+            margin-right: 5px;
+        }
+    }
+}
+
+.dt-layout-row {
+    &:not(.dt-layout-table) {
+        display: flex;
+        padding: 20px 0;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .dt-search label {
+        margin-right: 10px;
+    }
+}
+
+/* Form thêm & sửa danh mục */
+.form-container {
+	display: flex;
+	gap: 10px;
+	margin-bottom: 20px;
+}
+
+button {
+	border: none;
+	cursor: pointer;
+    padding: 5px 12px;
+    font-size: 1.4rem;
+    line-height: 1.5;
+    border-radius: 2px;
+    transition: all .3s ease;
+    transform: scale(1.001);
+}
+
+.btn-edit {
+    background-color: #273e5a;
+    color: #0077b5;
+    &:hover{
+        background: #244363;
+        color: #0077b5;
+    }
+}
+
+.btn-cancel {
+    background-color: #3c4054;
+    color: #808390;
+    &:hover{
+        background: #55586e;
+        color: #cfcde4;
+    }
+}
+
+.btn-info {
+    background-color: #685dd8;
+    color: #fff;
+    &:hover{
+        background: #3f3f71;
+        color: #7367f0;
+    }
+}
+
+.btn-delete {
+    background-color: #ff4c51;
+    color: #fff;
+    &:hover{
+        background: #c82333;
+        color: #fff;
+    }
+}
+
+/* Modal xác nhận xóa */
+.delete-modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.delete-content {
+    background-color: #2d3548;
+	padding: 20px;
+	border-radius: 5px;
+	text-align: center;
+    .modal-bnt{
+        margin-top: 2rem;
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+    }
+    p{
+        border-color: #50374a;
+        color: #ff4c51;
+        padding: 10px 15px;
+    }
+}
+
+.dt-paging button {
+    border: none;
+    cursor: pointer;
+    padding: 5px 12px;
+    font-size: 1.4rem;
+    line-height: 1.5;
+    border-radius: 2px;
+    transition: all .3s ease;
+    transform: scale(1.001);
+    background-color: #42465a;
+    color: #808390;
+    margin: 0 2px;
+    &.current{
+        background-color: #685dd8;
+        color: #fff;
+        &:hover{
+            background: #3f3f71;
+            color: #7367f0;
+        }
+    }
+}
