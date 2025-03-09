@@ -43,8 +43,8 @@ class WalletApi extends Controller
                 'string',
                 Rule::unique('wallets', 'name')->where(fn($query) => $query->where('user_id', auth()->id()))
             ],
-            'balance' => 'nullable|numeric|min:0',
-            'type' => ['required', Rule::in([Type::CASH->value, Type::BANK->value])],
+            'balance' => 'sometimes|nullable|numeric|min:0',
+            'type' => ['required', Rule::in([Type::CASH->value, Type::BANK->value, Type::CRYPTO->value])],
             'status' => ['integer', Rule::in([Status::ACTIVE->value, Status::DISABLED->value])],
         ]);
 

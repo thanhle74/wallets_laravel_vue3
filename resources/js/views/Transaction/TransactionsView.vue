@@ -7,6 +7,7 @@
                 :transaction="newTransaction"
                 @create="handleAddTransaction"
             />
+<!--            <TransactionFilter/>-->
 
             <div class="table-responsive">
                 <table id="tableTransaction" class="table-striped">
@@ -29,11 +30,12 @@
                         <td>{{ transaction.category.name }}</td>
                         <td>{{ transaction.wallet.name }}</td>
                         <td>
-                            <span class="status-active">
-                                {{ transaction.amount }}
+                            <span :class="transaction.is_income ? 'status-active' : 'status-disabled'">
+                                {{ Number(transaction.amount).toLocaleString("en-US") }}
                             </span>
                         </td>
-                        <td>{{ transaction.transaction_date }}</td>
+
+                        <td>{{ new Date(transaction.transaction_date).toLocaleDateString("vi-VN") }}</td>
                         <td v-if="checkAdmin">{{ transaction.user.name }}</td>
                         <td class="table-box-action">
                             <button class="btn-edit" @click="showTransactionDetail(transaction)">
@@ -71,6 +73,7 @@ import ConfirmDeleteModal from "@/components/ConfirmDeleteModal.vue";
 import TransactionDetailModal from "@/views/Transaction/components/TransactionDetailModal.vue";
 import { useTransaction } from "@/composables/useTransaction";
 import { isAdminHelper } from "@/composables/helper/isAdminHelper";
+import TransactionFilter from "@/views/Transaction/components/TransactionFilter.vue";
 import TransactionForm from "@/views/Transaction/components/TransactionForm.vue";
 import { ref, onMounted, watch, nextTick } from "vue";
 import $ from 'jquery';

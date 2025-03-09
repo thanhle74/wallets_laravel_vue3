@@ -7,7 +7,7 @@ html {
 
 body {
     color: #b2b9bf;
-    background: #212529;
+    background: #25293c;
     font-family: "Poppins", sans-serif;
     font-size: 1.4rem;
     margin: 0;
@@ -23,21 +23,20 @@ a {
 
 aside {
     width: 20%;
-    background: #333d54;
+    background: #2f3349;
     min-height: 100vh;
+    box-shadow: 0 .125rem .5rem #1311202e;
 }
 
 main {
-    width: 80%;
-    background-color: #2d3548;
+    width: 78%;
 }
 
-input {
+input,textarea {
     outline: none;
     border: 1px solid #343f5b;
     padding: 10px;
-    width: 200px;
-    background-color: #2d3548;
+    background-color: #2f3349;
     color: #b2b9bf;
 }
 
@@ -45,7 +44,7 @@ select {
     outline: none;
     border: 1px solid #343f5b;
     padding: 10px;
-    background-color: #2d3548;
+    background-color: #2f3349;
     color: #b2b9bf;
 }
 
@@ -69,47 +68,16 @@ select {
     max-width: 1200px;
     margin: 0 auto;
     position: relative;
-    box-shadow: 1px 0 80px rgba(0, 0, 0, .2);
     display: flex;
     justify-content: space-between;
 }
 
 .page-wapper {
-    background-color: #2d3548;
+    background-color: #2f3349;
     padding: 15px;
-}
-
-.sidebar {
-    padding: 15px;
-    li {
-        margin-bottom: 1rem;
-        a {
-            display: block;
-            padding: 12px 15px;
-            transition: all .3s ease;
-            border-radius: 5px;
-            &:hover {
-                background-color: #e1def514;
-                color: #fff;
-                border-radius: 5px;
-            }
-            &.router-link-active {
-                background-color: #685dd8;
-                color: #fff;
-            }
-        }
-    }
-
-    i {
-        margin-right: 1rem;
-        font-size: 1rem;
-    }
-}
-
-.topbar {
-    height: 50px;
-    background: #333d54;
-    border-left: 1px solid #2d3548;
+    box-shadow: 0 .125rem .5rem #1311202e;
+    border-radius: .375rem;
+    overflow: hidden;
 }
 
 .table-striped {
@@ -209,7 +177,7 @@ button {
 	justify-content: center;
 }
 .delete-content {
-    background-color: #2d3548;
+    background-color: #2f3349;
 	padding: 20px;
 	border-radius: 5px;
 	text-align: center;
@@ -246,4 +214,8 @@ button {
             color: #7367f0;
         }
     }
+}
+
+.form-container input {
+    width: 200px;
 }

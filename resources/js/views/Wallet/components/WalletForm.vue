@@ -1,10 +1,18 @@
 <template>
     <div v-if="!isEditing" class="form-container">
         <input v-model="wallet.name" placeholder="Enter name" />
+
+        <select v-model="wallet.type">
+            <option :value="1">Bank</option>
+            <option :value="2">Cash</option>
+            <option :value="2">Crypto</option>
+        </select>
+
         <select v-model="wallet.status">
             <option :value="1">Active</option>
             <option :value="2">Disabled</option>
         </select>
+
         <button class="btn-info" @click="$emit('create')">
             <i class="fas fa-plus"></i> Add Wallet
         </button>

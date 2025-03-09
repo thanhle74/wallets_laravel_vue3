@@ -10,8 +10,9 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use App\Enums\UserRole;
+use Carbon\Carbon;
+use App\Models\Wallet;
 
 class TransactionApi extends Controller
 {
@@ -41,6 +42,7 @@ class TransactionApi extends Controller
             'amount' => 'required|numeric|min:0.01',
             'description' => 'nullable|string',
             'transaction_date' => 'required|date',
+            'is_income' => 'boolean',
         ]);
 
         if ($validator->fails()) {
@@ -53,11 +55,38 @@ class TransactionApi extends Controller
 
         $validated = $validator->validated();
         $validated['user_id'] = auth()->id();
+        $validated['transaction_date'] = Carbon::parse($validated['transaction_date'])->toDateString();
+
+        $isIncome = $validated['is_income'] ?? false;
+
+        $wallet = Wallet::find($validated['wallet_id']);
+        if (!$wallet) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Wallet not found',
+                'data' => []
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        if (!$isIncome) {
+            if ($wallet->balance < $validated['amount']) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Insufficient balance in wallet',
+                    'data' => []
+                ], Response::HTTP_BAD_REQUEST);
+            }
+            $wallet->balance -= $validated['amount'];
+        } else {
+            $wallet->balance += $validated['amount'];
+        }
+
+        $wallet->save();
         $transaction = Transaction::create($validated);
 
         return response()->json([
             'success' => true,
-            'message' => 'Transaction created successfully',
+            'message' => 'Transaction created successfully and balance updated',
             'data' => $transaction
         ], Response::HTTP_CREATED);
     }
@@ -119,6 +148,18 @@ class TransactionApi extends Controller
                 'success' => false,
                 'message' => 'Unauthorized: You do not have permission to delete this transaction.'
             ], Response::HTTP_FORBIDDEN);
+        }
+
+        $wallet = Wallet::find($transaction->wallet_id);
+
+        if ($wallet) {
+            if ($transaction->is_income) {
+                $wallet->balance -= $transaction->amount;
+            } else {
+                $wallet->balance += $transaction->amount;
+            }
+
+            $wallet->save();
         }
 
         $transaction->delete();

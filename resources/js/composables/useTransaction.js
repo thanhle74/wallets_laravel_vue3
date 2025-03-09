@@ -26,16 +26,22 @@ export function useTransaction() {
             toastr.error("Transaction amount cannot be empty!");
             return;
         }
+
         try {
             await transactionService.create(newTransaction.value);
             newTransaction.value = { amount: "", status: 1 };
             await fetchTransactions();
             toastr.success("Transaction added successfully!");
         } catch (error) {
-            toastr.error("Error adding transaction!");
+            if (error.response && error.response.data && error.response.data.message) {
+                toastr.error(error.response.data.message);
+            } else {
+                toastr.error("Error adding transaction!");
+            }
             console.error("Error adding transaction:", error);
         }
     };
+
 
     const deleteTransaction = async (id) => {
         try {

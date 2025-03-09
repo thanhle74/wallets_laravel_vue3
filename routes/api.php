@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\AuthManagementApi;
 use App\Http\Controllers\Api\WalletApi;
 use App\Http\Controllers\Api\TransactionApi;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\DashboardControllerApi;
 
 Route::prefix('v1')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
@@ -20,6 +21,7 @@ Route::prefix('v1')->group(function () {
 
         Route::post('logout', [AuthController::class, 'logout']);
         Route::get('is-admin', [AuthManagementApi::class, 'isAdmin']);
+        Route::get('dashboard', [DashboardControllerApi::class, 'getDashboardStats']);
         Route::get('auth/check', function (Request $request) {
             return response()->json(['authenticated' => true]);
         });

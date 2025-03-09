@@ -18,6 +18,7 @@ class Transaction extends Model
         'amount',
         'description',
         'transaction_date',
+        'is_income',
     ];
 
     public function user(): BelongsTo

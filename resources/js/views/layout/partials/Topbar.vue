@@ -67,11 +67,23 @@ onUnmounted(() => {
 
 
 <style scoped>
+h5 {
+    color: #7367f0;
+    font-size: 1.875rem;
+    padding: 1rem;
+}
+
 .topbar {
+    height: 50px;
+    background: #2f3349;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 5px 20px;
+    margin-bottom: 2rem;
+    box-shadow: 0 .125rem .5rem #1311202e;
+    border-radius: .375rem;
+    overflow: hidden;
 }
 
 .user-menu {
@@ -94,10 +106,11 @@ onUnmounted(() => {
     right: 0;
     list-style: none;
     padding: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 .125rem .5rem #1311202e;
     border-radius: 5px;
     width: 150px;
-    background: #333d54;
+    background: #2f3349;
+    z-index: 999;
 }
 
 .dropdown li {
