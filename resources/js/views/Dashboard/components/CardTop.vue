@@ -12,7 +12,7 @@
         <div class="card-content">
             <div class="card">
                 <div class="card-icon income year">
-                    <i class="fas fa-chart-line"></i>
+                    <i class="ti-stats-up"></i>
                 </div>
                 <div class="card-item">
                     <p>{{ formatCurrency(stats.yearly) }}</p>
@@ -22,7 +22,7 @@
 
             <div class="card">
                 <div class="card-icon income month">
-                    <i class="fas fa-calendar-alt"></i>
+                    <i class="ti-calendar"></i>
                 </div>
                 <div class="card-item">
                     <p>{{ formatCurrency(stats.monthly) }}</p>
@@ -31,7 +31,7 @@
             </div>
             <div class="card">
                 <div class="card-icon income week">
-                    <i class="fas fa-calendar-week"></i>
+                    <i class="ti-calendar"></i> <!-- hoặc ti-agenda -->
                 </div>
                 <div class="card-item">
                     <p>{{ formatCurrency(stats.weekly) }}</p>
@@ -40,7 +40,7 @@
             </div>
             <div class="card">
                 <div class="card-icon income day">
-                    <i class="fas fa-calendar-day"></i>
+                    <i class="ti-timer"></i> <!-- hoặc ti-time -->
                 </div>
                 <div class="card-item">
                     <p>{{ formatCurrency(stats.daily) }}</p>
@@ -50,6 +50,7 @@
         </div>
     </div>
 </template>
+
 <script setup>
 import { ref, onMounted } from "vue";
 import dashboardService from "@/services/dashboardService.js";
@@ -118,12 +119,12 @@ onMounted(fetchStats);
     .card {
         display: flex;
         align-items: center;
-        gap: 15px;
+        gap: 10px;
         i{
             font-size: 2rem;
         }
         p {
-            font-size: 2rem;
+            font-size: 1.6rem;
             color: #fff;
         }
         span{

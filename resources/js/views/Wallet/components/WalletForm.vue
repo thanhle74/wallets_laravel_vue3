@@ -5,7 +5,7 @@
         <select v-model="wallet.type">
             <option :value="1">Bank</option>
             <option :value="2">Cash</option>
-            <option :value="2">Crypto</option>
+            <option :value="3">Crypto</option>
         </select>
 
         <select v-model="wallet.status">
@@ -14,7 +14,8 @@
         </select>
 
         <button class="btn-info" @click="$emit('create')">
-            <i class="fas fa-plus"></i> Add Wallet
+            <i class="ti-plus"></i>
+            Add Wallet
         </button>
     </div>
 
@@ -25,10 +26,12 @@
             <option :value="2">Disabled</option>
         </select>
         <button class="btn-info" @click="$emit('update')">
-            <i class="fas fa-save"></i> Save
+            <i class="ti-save"></i>
+            Save
         </button>
         <button class="btn-cancel" @click="$emit('cancel')">
-            <i class="fas fa-times"></i> Cancel
+            <i class="ti-close"></i>
+            Cancel
         </button>
     </div>
 </template>

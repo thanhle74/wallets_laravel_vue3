@@ -2,20 +2,23 @@
     <div class="main-wrapper">
         <div class="login-container">
             <div class="login-box">
+                <div class="logo">
+                    <img :src="imageUrl" alt="Sample Image">
+                </div>
                 <form class="login-form" @submit.prevent="handleLogin">
-                    <!-- Username -->
                     <div class="input-group">
-                        <i class="fas fa-user"></i>
+                        <i class="ti-user"></i>
                         <input type="email" v-model="loginForm.email" autocomplete="username" placeholder="Email" required />
                     </div>
 
-                    <!-- Password -->
                     <div class="input-group">
-                        <i class="fas fa-lock"></i>
+                        <i class="ti-lock"></i>
                         <input type="password" v-model="loginForm.password" autocomplete="current-password" placeholder="Password" required />
                     </div>
 
-                    <button type="submit" class="btn-login">Login</button>
+                    <button type="submit" class="btn-login">
+                        <i class="ti-unlock"></i> Login
+                    </button>
                 </form>
             </div>
         </div>
@@ -27,6 +30,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import apiClient from '@/services/apiClient';
 import toastr from 'toastr';
+import imageUrl from '@/assets/images/logo.jpg';
 
 const loginForm = ref({
     email: '',
@@ -57,7 +61,15 @@ const handleLogin = async () => {
 };
 </script>
 <style scoped lang="scss">
-/* Căn giữa màn hình */
+.logo {
+    width: 20%;
+    position: relative;
+    border-radius: 50%;
+    overflow: hidden;
+    text-align: center;
+    margin: auto auto 2rem;
+}
+
 .main-wrapper {
     display: flex;
     justify-content: center;
@@ -73,7 +85,7 @@ const handleLogin = async () => {
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    background: #2d3548;
+    background: #2f3349;
 }
 
 /* Tiêu đề */
@@ -87,7 +99,6 @@ const handleLogin = async () => {
 .input-group {
     display: flex;
     align-items: center;
-    background: #2d3548;
     border-radius: 5px;
     padding: 10px;
     margin-bottom: 15px;

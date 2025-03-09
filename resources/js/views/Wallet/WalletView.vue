@@ -20,7 +20,7 @@
                         <th>Balance</th>
                         <th>Type</th>
                         <th>Status</th>
-                        <th v-if="checkAdmin">User</th>
+                        <th v-if="isAdmin">User</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -28,7 +28,7 @@
                     <tr v-for="(wallet, index) in wallets" :key="index">
                         <td>{{ wallet.id }}</td>
                         <td>{{ wallet.name }}</td>
-                        <td>{{ wallet.balance }}</td>
+                        <td>{{ Number(wallet.balance).toLocaleString("vi-VN") }} đ</td>
                         <td>{{ getTypeText(wallet.type)}}</td>
                         <td>
                             <span :class="getStatusClass(wallet.status)">
@@ -36,13 +36,13 @@
                               {{ getStatusText(wallet.status) }}
                             </span>
                         </td>
-                        <td v-if="checkAdmin">{{ wallet.user.name }}</td>
+                        <td v-if="isAdmin">{{ wallet.user.name }}</td>
                         <td class="table-box-action">
                             <button class="btn-edit" @click="editWallet(wallet)">
-                                <i class="fas fa-edit"></i>
+                                <i class="ti-pencil"></i>
                             </button>
                             <button class="btn-cancel" @click="confirmDelete(wallet.id)">
-                                <i class="fas fa-trash"></i>
+                                <i class="ti-trash"></i>
                             </button>
                         </td>
                     </tr>
@@ -84,10 +84,7 @@ const {
 
 const { fetchIsAdmin } = isAdminHelper();
 
-const checkAdmin = async () => {
-    return await fetchIsAdmin();
-};
-
+const isAdmin = ref(false);
 const deleteConfirmId = ref(null);
 
 const handleAddWallet = async () => {
@@ -133,6 +130,7 @@ watch(wallets, (newValue) => {
 
 onMounted(async () => {
     await fetchWallets();
+    isAdmin.value = await fetchIsAdmin();
     initDataTable();
 });
 
@@ -141,7 +139,7 @@ const getStatusClass = (status) => {
 };
 
 const getStatusIcon = (status) => {
-    return status === 1 ? "fas fa-check-circle" : "fas fa-times-circle";
+    return status === 1 ? "ti-check" : "ti-close";
 };
 
 const getStatusText = (status) => {

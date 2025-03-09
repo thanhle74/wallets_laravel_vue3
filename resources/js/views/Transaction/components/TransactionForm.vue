@@ -1,7 +1,8 @@
 <template>
     <div class="transaction-create">
         <button class="btn-info" @click="isOpen = true">
-            <i class="fas fa-plus"></i> Add Transaction
+            <i class="ti-plus"></i>
+            Add Transaction
         </button>
     </div>
 
@@ -10,7 +11,9 @@
     <div class="offcanvas-container" :class="{ 'open': isOpen }">
         <div class="offcanvas-header">
             <h3>Add Transaction</h3>
-            <button class="btn-close" @click="closeOffcanvas">&times;</button>
+            <button class="btn-close" @click="closeOffcanvas">
+                <i class="ti-close"></i>
+            </button>
         </div>
 
         <div class="offcanvas-body">
@@ -53,7 +56,7 @@
                         :key="index"
                         :value="wallet.id"
                     >
-                        {{ wallet.name }} - {{ wallet.balance }}
+                        {{ wallet.name }} ---- {{ Number(wallet.balance).toLocaleString("vi-VN") }} đ
                     </option>
                 </select>
             </div>
@@ -70,7 +73,8 @@
             </div>
 
             <button class="btn-info" @click="submitTransaction">
-                <i class="fas fa-plus"></i> Add Transaction
+                <i class="ti-plus"></i>
+                Add Transaction
             </button>
         </div>
     </div>

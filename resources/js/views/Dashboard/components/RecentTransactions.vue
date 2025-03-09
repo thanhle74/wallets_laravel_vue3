@@ -16,9 +16,9 @@
                 <td>{{ transaction.category_name || 'Unknown' }}</td>
                 <td :class="transaction.is_income ? 'income' : 'expense'">
                     {{ transaction.is_income ? '+' : '-' }}
-                    {{ transaction.amount.toLocaleString("en-US") }} đ
+                    {{ Number(transaction.amount).toLocaleString("vi-VN") }} đ
                 </td>
-                <td>{{ transaction.transaction_date }}</td>
+                <td>{{ new Date(transaction.transaction_date).toLocaleDateString("vi-VN") }}</td>
             </tr>
             </tbody>
         </table>
@@ -64,10 +64,12 @@ li {
 }
 
 .income {
-    color: green;
+    color: #29c770;
+    font-weight: 400;
 }
 
 .expense {
-    color: red;
+    color: #ff4b51;
+    font-weight: 400;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
     <MainLayout title="Category Management">
-        <LoadingSpinner v-if="isLoading" message="Loading categories..." />
+        <LoadingSpinner v-if="isLoading" message="Loading categories..."/>
 
         <div v-else>
             <CategoryForm
@@ -18,7 +18,7 @@
                         <th>ID</th>
                         <th>Name</th>
                         <th>Status</th>
-                        <th v-if="checkAdmin">User</th>
+                        <th v-if="isAdmin">User</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -27,18 +27,18 @@
                         <td>{{ category.id }}</td>
                         <td>{{ category.name }}</td>
                         <td>
-                                <span :class="getStatusClass(category.status)">
-                                    <i :class="getStatusIcon(category.status)"></i>
-                                    {{ getStatusText(category.status) }}
-                                </span>
+                            <span :class="getStatusClass(category.status)">
+                                <i :class="getStatusIcon(category.status)"></i>
+                                {{ getStatusText(category.status) }}
+                            </span>
                         </td>
-                        <td v-if="checkAdmin">{{ category.user.name }}</td>
+                        <td v-if="isAdmin">{{ category.user.name }}</td>
                         <td class="table-box-action">
                             <button class="btn-edit" @click="editCategory(category)">
-                                <i class="fas fa-edit"></i>
+                                <i class="ti-pencil"></i>
                             </button>
                             <button class="btn-cancel" @click="confirmDelete(category.id)">
-                                <i class="fas fa-trash"></i>
+                                <i class="ti-trash"></i>
                             </button>
                         </td>
                     </tr>
@@ -61,9 +61,9 @@ import MainLayout from '@/views/layout/MainLayout.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import ConfirmDeleteModal from "@/components/ConfirmDeleteModal.vue";
 import CategoryForm from "@/views/Category/components/CategoryForm.vue";
-import { useCategory } from "@/composables/useCategory";
-import { isAdminHelper } from "@/composables/helper/isAdminHelper";
-import { ref, onMounted, watch, nextTick } from "vue";
+import {useCategory} from "@/composables/useCategory";
+import {isAdminHelper} from "@/composables/helper/isAdminHelper";
+import {ref, onMounted, watch, nextTick} from "vue";
 import $ from 'jquery';
 import 'datatables.net';
 
@@ -78,12 +78,9 @@ const {
     deleteCategory
 } = useCategory();
 
-const { fetchIsAdmin } = isAdminHelper();
+const {fetchIsAdmin} = isAdminHelper();
 
-const checkAdmin = async () => {
-    return await fetchIsAdmin();
-};
-
+const isAdmin = ref(false);
 const deleteConfirmId = ref(null);
 
 const handleAddCategory = async () => {
@@ -110,7 +107,7 @@ const confirmDelete = (id) => {
 };
 
 const editCategory = (category) => {
-    editedCategory.value = { ...category };
+    editedCategory.value = {...category};
 };
 
 const initDataTable = () => {
@@ -129,6 +126,7 @@ watch(categories, (newValue) => {
 
 onMounted(async () => {
     await fetchCategories();
+    isAdmin.value = await fetchIsAdmin();
     initDataTable();
 });
 
@@ -137,7 +135,7 @@ const getStatusClass = (status) => {
 };
 
 const getStatusIcon = (status) => {
-    return status === 1 ? "fas fa-check-circle" : "fas fa-times-circle";
+    return status === 1 ? "ti-check" : "ti-close";
 };
 
 const getStatusText = (status) => {

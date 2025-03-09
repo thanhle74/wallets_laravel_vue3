@@ -18,7 +18,7 @@
                         <th>Wallet</th>
                         <th>Amount</th>
                         <th>Day</th>
-                        <th v-if="checkAdmin">User</th>
+                        <th v-if="isAdmin">User</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -31,18 +31,18 @@
                         <td>{{ transaction.wallet.name }}</td>
                         <td>
                             <span :class="transaction.is_income ? 'status-active' : 'status-disabled'">
-                                {{ Number(transaction.amount).toLocaleString("en-US") }}
+                                {{ Number(transaction.amount).toLocaleString("vi-VN") }} đ
                             </span>
                         </td>
 
                         <td>{{ new Date(transaction.transaction_date).toLocaleDateString("vi-VN") }}</td>
-                        <td v-if="checkAdmin">{{ transaction.user.name }}</td>
+                        <td v-if="isAdmin">{{ transaction.user.name }}</td>
                         <td class="table-box-action">
                             <button class="btn-edit" @click="showTransactionDetail(transaction)">
-                                <i class="fa-solid fa-eye"></i>
+                                <i class="ti-eye"></i>
                             </button>
                             <button class="btn-cancel" @click="confirmDelete(transaction.id)">
-                                <i class="fas fa-trash"></i>
+                                <i class="ti-trash"></i>
                             </button>
                         </td>
                     </tr>
@@ -92,10 +92,7 @@ const {
 
 const { fetchIsAdmin } = isAdminHelper();
 
-const checkAdmin = async () => {
-    return await fetchIsAdmin();
-};
-
+const isAdmin = ref(false);
 const deleteConfirmId = ref(null);
 const selectedTransaction = ref(null);
 
@@ -146,6 +143,7 @@ watch(transactions, (newValue) => {
 
 onMounted(async () => {
     await fetchTransactions();
+    isAdmin.value = await fetchIsAdmin();
     initDataTable();
 });
 </script>

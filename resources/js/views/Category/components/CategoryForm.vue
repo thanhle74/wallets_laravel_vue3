@@ -6,7 +6,8 @@
             <option :value="2">Disabled</option>
         </select>
         <button class="btn-info" @click="$emit('create')">
-            <i class="fas fa-plus"></i> Add Category
+            <i class="ti-plus"></i>
+            Add Category
         </button>
     </div>
 
@@ -17,10 +18,12 @@
             <option :value="2">Disabled</option>
         </select>
         <button class="btn-info" @click="$emit('update')">
-            <i class="fas fa-save"></i> Save
+            <i class="ti-save"></i>
+            Save
         </button>
         <button class="btn-cancel" @click="$emit('cancel')">
-            <i class="fas fa-times"></i> Cancel
+            <i class="ti-close"></i>
+            Cancel
         </button>
     </div>
 </template>

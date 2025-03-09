@@ -12,7 +12,7 @@ import { defineProps } from 'vue';
 defineProps({
     message: {
         type: String,
-        default: 'Đang tải dữ liệu...',
+        default: 'Loading...',
     },
 });
 </script>

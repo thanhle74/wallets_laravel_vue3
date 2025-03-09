@@ -5,13 +5,13 @@
         <div ref="menuRef" class="user-menu" @click="toggleDropdown">
             <img class="avatar" src="https://i.pravatar.cc/40" alt="User Avatar">
             <span>{{ user.name }}</span>
-            <i :class="dropdownOpen ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"></i>
+            <i :class="dropdownOpen ? 'ti-angle-up' : 'ti-angle-down'"></i>
 
             <!-- Dropdown -->
             <ul v-if="dropdownOpen" class="dropdown">
-                <li><i class="fas fa-cog"></i> Settings</li>
-                <li><i class="fas fa-user"></i> Profile</li>
-                <li @click="handleLogout"><i class="fas fa-sign-out-alt"></i> Logout</li>
+                <li><i class="ti-settings"></i> Settings</li>
+                <li><i class="ti-user"></i> Profile</li>
+                <li @click="handleLogout"><i class="ti-power-off"></i> Logout</li>
             </ul>
         </div>
     </nav>
@@ -69,7 +69,6 @@ onUnmounted(() => {
 
 <style scoped>
 h5 {
-    color: #7367f0;
     font-size: 1.875rem;
     padding: 1rem;
 }

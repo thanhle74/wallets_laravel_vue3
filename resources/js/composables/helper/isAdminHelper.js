@@ -1,4 +1,4 @@
-import apiClient from "../../services/apiClient.js";
+import apiClient from "@/services/apiClient";
 
 export function isAdminHelper() {
     const fetchIsAdmin = async () => {
@@ -10,5 +10,5 @@ export function isAdminHelper() {
         }
     };
 
-    return fetchIsAdmin;
+    return {fetchIsAdmin};
 }

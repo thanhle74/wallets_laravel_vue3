@@ -6,7 +6,7 @@
             <div class="page-wapper">
                 <slot></slot>
             </div>
-            <!-- <Footer/> -->
+             <Footer/>
         </main>
     </div>
 </template>

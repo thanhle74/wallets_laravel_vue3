@@ -3,14 +3,11 @@
         <div class="modal-overlay" @click.self="$emit('close')">
             <transition name="scale">
                 <div class="modal-content">
-                    <h3>Transaction Details</h3>
-                    <p><strong>ID:</strong> {{ transaction.id }}</p>
-                    <p><strong>Category:</strong> {{ transaction.category.name }}</p>
-                    <p><strong>Wallet:</strong> {{ transaction.wallet.name }}</p>
-                    <p><strong>Amount:</strong> {{ transaction.amount }}</p>
-                    <p><strong>Date:</strong> {{ transaction.transaction_date }}</p>
+                    <h3>Transaction Details: {{ transaction.id }}</h3>
                     <p><strong>Description:</strong> {{ transaction.description || 'No description available' }}</p>
-                    <button class="btn-close" @click="$emit('close')">Close</button>
+                    <div class="box-btn">
+                        <button class="btn-info" @click="$emit('close')">Close</button>
+                    </div>
                 </div>
             </transition>
         </div>
@@ -63,7 +60,7 @@ defineProps({
 }
 
 .modal-content {
-    background: #fff;
+    background: #25293c;
     padding: 20px;
     border-radius: 8px;
     width: 400px;
@@ -74,19 +71,12 @@ defineProps({
 
 h3 {
     margin-top: 0;
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
 }
 
-.btn-close {
-    margin-top: 10px;
-    padding: 8px 12px;
-    background: #007bff;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
-.btn-close:hover {
-    background: #0056b3;
+.box-btn {
+    text-align: right;
+    margin-top: 2rem;
 }
 </style>
