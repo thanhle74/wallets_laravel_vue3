@@ -21,7 +21,12 @@ Route::prefix('v1')->group(function () {
 
         Route::post('logout', [AuthController::class, 'logout']);
         Route::get('is-admin', [AuthManagementApi::class, 'isAdmin']);
+
         Route::get('dashboard', [DashboardControllerApi::class, 'getDashboardStats']);
+        Route::get('dashboard/monthly-expenses', [DashboardControllerApi::class, 'getMonthlyStats']);
+        Route::get('dashboard/top-categories', [DashboardControllerApi::class, 'getTopCategories']);
+        Route::get('dashboard/recent-transactions', [DashboardControllerApi::class, 'getRecentTransactions']);
+
         Route::get('auth/check', function (Request $request) {
             return response()->json(['authenticated' => true]);
         });

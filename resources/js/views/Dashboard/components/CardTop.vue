@@ -3,9 +3,10 @@
         <div class="card-header">
             <h3>Statistics</h3>
             <div class="transaction-create">
-                <button class="btn-info">
-                    <i class="fas fa-plus"></i> Add Transaction
-                </button>
+                <TransactionForm
+                    :transaction="newTransaction"
+                    @create="handleAddTransaction"
+                />
             </div>
         </div>
         <div class="card-content">
@@ -53,6 +54,13 @@
 import { ref, onMounted } from "vue";
 import dashboardService from "@/services/dashboardService.js";
 import toastr from "toastr";
+import TransactionForm from "@/views/Transaction/components/TransactionForm.vue";
+import { useTransaction } from "@/composables/useTransaction";
+
+const {
+    newTransaction,
+    addTransaction,
+} = useTransaction();
 
 const stats = ref({
     daily: 0,
@@ -60,6 +68,10 @@ const stats = ref({
     monthly: 0,
     yearly: 0
 });
+
+const handleAddTransaction = async () => {
+    await addTransaction();
+};
 
 // Hàm định dạng tiền tệ với dấu ',' mỗi 3 chữ số
 const formatCurrency = (value) => {

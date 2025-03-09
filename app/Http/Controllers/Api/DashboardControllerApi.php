@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Response;
+use Illuminate\Http\Request;
 
 class DashboardControllerApi extends Controller {
     public function getDashboardStats()
@@ -49,5 +50,74 @@ class DashboardControllerApi extends Controller {
                 'yearly' => $yearlyExpense
             ]
         ], Response::HTTP_CREATED);
+    }
+
+    public function getMonthlyStats()
+    {
+        $userId = auth()->id();
+        $startOfMonth = Carbon::now()->startOfMonth();
+        $endOfMonth = Carbon::now()->endOfMonth();
+
+        // Lấy dữ liệu chi phí & thu nhập theo ngày
+        $transactions = DB::table('transactions')
+            ->select(
+                DB::raw('DATE(transaction_date) as date'),
+                DB::raw('SUM(CASE WHEN is_income = 1 THEN amount ELSE 0 END) as income'),
+                DB::raw('SUM(CASE WHEN is_income = 0 THEN amount ELSE 0 END) as expenses')
+            )
+            ->where('user_id', $userId)
+            ->whereBetween('transaction_date', [$startOfMonth, $endOfMonth])
+            ->groupBy('date')
+            ->orderBy('date', 'asc')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $transactions
+        ]);
+    }
+
+    public function getTopCategories()
+    {
+        $userId = auth()->id();
+        $startOfMonth = Carbon::now()->startOfMonth();
+        $endOfMonth = Carbon::now()->endOfMonth();
+
+        // Lấy top category có tổng chi phí cao nhất trong tháng
+        $categories = DB::table('transactions')
+            ->select('categories.name', DB::raw('SUM(transactions.amount) as total_spent'))
+            ->join('categories', 'transactions.category_id', '=', 'categories.id')
+            ->where('transactions.user_id', $userId)
+            ->where('transactions.is_income', 0) // Chỉ lấy chi phí
+            ->whereBetween('transactions.transaction_date', [$startOfMonth, $endOfMonth])
+            ->groupBy('categories.name')
+            ->orderByDesc('total_spent')
+            ->limit(5) // Giới hạn 5 category có chi tiêu cao nhất
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $categories
+        ]);
+    }
+
+
+    public function getRecentTransactions()
+    {
+        $userId = auth()->id();
+
+        $transactions = DB::table('transactions')
+            ->select('transactions.*', 'wallets.name as wallet_name', 'categories.name as category_name')
+            ->leftJoin('wallets', 'transactions.wallet_id', '=', 'wallets.id')
+            ->leftJoin('categories', 'transactions.category_id', '=', 'categories.id')
+            ->where('transactions.user_id', $userId)
+            ->orderByDesc('transactions.transaction_date')
+            ->limit(5)
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $transactions
+        ]);
     }
 }
