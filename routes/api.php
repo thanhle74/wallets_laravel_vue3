@@ -11,9 +11,6 @@ Route::prefix('v1')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
 
     Route::middleware(['auth:sanctum'])->group(function () {
-        Route::apiResource('categories', CategoryApi::class);
-        Route::apiResource('transactions', TransactionApi::class);
-
         Route::post('logout', [AuthController::class, 'logout']);
         Route::get('auth/check', function (Request $request) {
             return response()->json(['authenticated' => true]);

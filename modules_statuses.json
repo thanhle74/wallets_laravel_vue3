@@ -2,5 +2,9 @@
     "Posts": false,
     "Blog": false,
     "Wallet": true,
-    "AccountManagement": true
+    "AccountManagement": true,
+    "Support": true,
+    "Dashboard": true,
+    "Transaction": true,
+    "Category": true
 }

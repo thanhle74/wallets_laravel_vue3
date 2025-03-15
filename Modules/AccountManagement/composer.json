@@ -21,10 +21,5 @@
             "Modules\\AccountManagement\\Database\\Factories\\": "database/factories/",
             "Modules\\AccountManagement\\Database\\Seeders\\": "database/seeders/"
         }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Modules\\AccountManagement\\Tests\\": "tests/"
-        }
     }
 }

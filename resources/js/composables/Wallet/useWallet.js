@@ -2,18 +2,15 @@ import { ref } from "vue";
 import walletService from "@/services/walletService.js";
 import toastr from "toastr";
 
-// Hàm lấy message từ API response
 const getApiMessage = (response, defaultMessage = "Operation successful!") => {
     return response?.data?.message || defaultMessage;
 };
 
-// Hàm xử lý response thành công
 const handleApiResponse = (response) => {
     const message = getApiMessage(response, "Success!");
     toastr.success(message);
 };
 
-// Hàm xử lý lỗi từ API
 const handleApiError = (error, defaultMessage = "Something went wrong!") => {
     const message = error.response?.data?.message || defaultMessage;
     toastr.error(message);
