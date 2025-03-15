@@ -40,7 +40,7 @@
                             Wallet
                         </RouterLink>
                     </li>
-                    <li>
+                    <li v-if="isAdmin">
                         <RouterLink to="/users">
                             <i class="ti-wallet"></i>
                             Users
@@ -56,9 +56,14 @@
 import imageUrl from '@/assets/images/logo.jpg';
 import toastr from "toastr";
 import apiClient from "@/services/apiClient";
+import { useUserAccount } from "@/composables/Account/useUserAccount";
 import { useRouter } from "vue-router";
+import {onMounted, ref} from "vue";
 
 const router = useRouter();
+const { fetchIsAdmin } = useUserAccount();
+const isAdmin = ref(false);
+
 const handleLogout = async () => {
     try {
         const response = await apiClient.post('/logout');
@@ -70,6 +75,12 @@ const handleLogout = async () => {
         console.error("Logout error:", error);
     }
 };
+
+
+onMounted(async () => {
+    const result = await fetchIsAdmin();
+    isAdmin.value = result ?? false;
+});
 </script>
 
 <style scoped>

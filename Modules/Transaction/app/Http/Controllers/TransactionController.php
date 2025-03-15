@@ -7,12 +7,12 @@ use Modules\Support\Http\Controllers\BaseControllerApi;
 use Modules\Transaction\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Modules\Support\Enums\UserRole;
 use Carbon\Carbon;
 use Modules\Wallet\Models\Wallet;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class TransactionController extends BaseControllerApi
 {
@@ -27,11 +27,7 @@ class TransactionController extends BaseControllerApi
             $transactions = Transaction::with(['category', 'wallet'])->where('user_id', $user->id)->get();
         }
 
-        return response()->json([
-            'success' => true,
-            'message' => $user->role,
-            'data' => $transactions
-        ], Response::HTTP_OK);
+        return $this->successResponse($transactions->toArray(), 'Successfully', ResponseAlias::HTTP_CREATED);
     }
 
     public function store(Request $request): JsonResponse
@@ -46,11 +42,7 @@ class TransactionController extends BaseControllerApi
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => $validator->errors(),
-                'data' => []
-            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            return $this->errorResponse($validator->errors()->first(), ResponseAlias::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $validated = $validator->validated();
@@ -61,20 +53,12 @@ class TransactionController extends BaseControllerApi
 
         $wallet = Wallet::find($validated['wallet_id']);
         if (!$wallet) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Wallet not found',
-                'data' => []
-            ], Response::HTTP_NOT_FOUND);
+            return $this->errorResponse('Wallet not found', ResponseAlias::HTTP_NOT_FOUND);
         }
 
         if (!$isIncome) {
             if ($wallet->balance < $validated['amount']) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Insufficient balance in wallet',
-                    'data' => []
-                ], Response::HTTP_BAD_REQUEST);
+                return $this->errorResponse('Insufficient balance in wallet');
             }
             $wallet->balance -= $validated['amount'];
         } else {
@@ -84,36 +68,28 @@ class TransactionController extends BaseControllerApi
         $wallet->save();
         $transaction = Transaction::create($validated);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Transaction created successfully and balance updated',
-            'data' => $transaction
-        ], Response::HTTP_CREATED);
+        return $this->successResponse($transaction->toArray(), 'Successfully', ResponseAlias::HTTP_CREATED);
     }
 
     public function show(Transaction $transaction): JsonResponse
     {
         if ($transaction->user_id !== auth()->id()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Unauthorized: You do not have permission to view this transaction.'
-            ], Response::HTTP_FORBIDDEN);
+            return $this->errorResponse(
+                'Unauthorized: You do not have permission to view this transaction.',
+                ResponseAlias::HTTP_FORBIDDEN
+            );
         }
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Transaction retrieved successfully',
-            'data' => $transaction
-        ], Response::HTTP_OK);
+        return $this->successResponse($transaction->toArray(), 'Transaction retrieved successfully');
     }
 
     public function update(Request $request, Transaction $transaction): JsonResponse
     {
         if ($transaction->user_id !== auth()->id()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Unauthorized: You do not have permission to update this transaction.'
-            ], Response::HTTP_FORBIDDEN);
+            return $this->errorResponse(
+                'Unauthorized: You do not have permission to update this transaction.',
+                ResponseAlias::HTTP_FORBIDDEN
+            );
         }
 
         $validated = $request->validate([
@@ -125,29 +101,21 @@ class TransactionController extends BaseControllerApi
         ]);
 
         if (empty($validated)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'No changes detected.',
-                'data' => []
-            ], Response::HTTP_BAD_REQUEST);
+            return $this->errorResponse('No changes detected.');
         }
 
         $transaction->update($validated);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Transaction updated successfully',
-            'data' => $transaction
-        ], Response::HTTP_OK);
+        return $this->successResponse($transaction->toArray(), 'Transaction updated successfully');
     }
 
     public function destroy(Transaction $transaction): JsonResponse
     {
-        if ($transaction->user_id !== auth()->id()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Unauthorized: You do not have permission to delete this transaction.'
-            ], Response::HTTP_FORBIDDEN);
+        if ($transaction->user_id !== auth()->id() && !auth()->user()->hasRole('admin')) {
+            return $this->errorResponse(
+                'Unauthorized: You do not have permission to delete this transaction.',
+                ResponseAlias::HTTP_FORBIDDEN
+            );
         }
 
         $wallet = Wallet::find($transaction->wallet_id);
@@ -164,10 +132,6 @@ class TransactionController extends BaseControllerApi
 
         $transaction->delete();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Transaction deleted successfully',
-            'data' => null
-        ], Response::HTTP_OK);
+        return $this->successResponse([], 'Transaction deleted successfully');
     }
 }

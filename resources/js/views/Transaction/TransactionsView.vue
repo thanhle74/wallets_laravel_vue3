@@ -30,9 +30,12 @@
                         <td>{{ transaction.category.name }}</td>
                         <td>{{ transaction.wallet.name }}</td>
                         <td>
-                            <span :class="transaction.is_income ? 'status-active' : 'status-disabled'">
-                                {{ Number(transaction.amount || 0).toLocaleString("vi-VN") }} đ
-                            </span>
+                            <StatusBadge
+                                :status="transaction.is_income"
+                                :show-icon="false"
+                                :active-text= "'+ ' + Number(transaction.amount || 0).toLocaleString('vi-VN')"
+                                :disabled-text="'- ' +Number(transaction.amount || 0).toLocaleString('vi-VN')"
+                            />
                         </td>
 
                         <td>{{ new Date(transaction.transaction_date).toLocaleDateString("vi-VN") }}</td>
@@ -67,10 +70,10 @@ import MainLayout from '@/views/layout/MainLayout.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import ConfirmDeleteModal from "@/components/ConfirmDeleteModal.vue";
 import TransactionDetailModal from "@/views/Transaction/components/TransactionDetailModal.vue";
+import StatusBadge from "@/components/StatusBadge.vue";
 import {useTransaction} from "@/composables/useTransaction";
 import TransactionFilter from "@/views/Transaction/components/TransactionFilter.vue";
 import TransactionForm from "@/views/Transaction/components/TransactionForm.vue";
-import {useAccountManagement} from "@/composables/useAccountManagement";
 import Button from "@/components/Button.vue";
 import { ref, onMounted, watch, nextTick } from "vue";
 import $ from 'jquery';
@@ -86,8 +89,6 @@ const {
     deleteTransaction,
     updateTransaction,
 } = useTransaction();
-
-const {showUser} = useAccountManagement();
 
 const isAdmin = ref(false);
 const deleteConfirmId = ref(null);

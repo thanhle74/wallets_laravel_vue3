@@ -5,10 +5,7 @@
             <option :value="1">Active</option>
             <option :value="2">Disabled</option>
         </select>
-        <button class="btn-info" @click="$emit('create')">
-            <i class="ti-plus"></i>
-            Add Category
-        </button>
+        <Button btnClass="btn-info" icon="ti-plus" text="Add Category" @click="$emit('create')" />
     </div>
 
     <div v-if="isEditing" class="form-container">
@@ -17,19 +14,14 @@
             <option :value="1">Active</option>
             <option :value="2">Disabled</option>
         </select>
-        <button class="btn-info" @click="$emit('update')">
-            <i class="ti-save"></i>
-            Save
-        </button>
-        <button class="btn-cancel" @click="$emit('cancel')">
-            <i class="ti-close"></i>
-            Cancel
-        </button>
+        <Button btnClass="btn-info" icon="ti-save" text="Save" @click="$emit('update')" />
+        <Button btnClass="btn-cancel" icon="ti-close" text="Cancel" @click="$emit('cancel')" />
     </div>
 </template>
 
 <script setup>
 import { defineProps, defineEmits } from "vue";
+import Button from "@/components/Button.vue";
 
 defineProps({
     category: Object,

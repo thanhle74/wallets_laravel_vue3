@@ -5,15 +5,12 @@ namespace Modules\Category\Http\Controllers;
 
 use Modules\Support\Http\Controllers\BaseControllerApi;
 use Modules\Category\Models\Category;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
-use Modules\Support\Enums\Status;
 use Modules\Support\Enums\UserRole;
+use Modules\Category\Http\Requests\CategoryStoreRequest;
+use Modules\Category\Http\Requests\CategoryUpdateRequest;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Validator;
-
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class CategoryController extends BaseControllerApi
 {
@@ -22,110 +19,67 @@ class CategoryController extends BaseControllerApi
         $user = Auth::user();
         $role = $user->role->value;
 
-        if ($role === UserRole::ADMIN->value) {
-            $categories = Category::with('user')->get();
-        } else {
-            $categories = Category::with('user')->where('user_id', $user->id)->get();
-        }
+        $categories = $role === UserRole::ADMIN->value
+            ? Category::with('user')->get()
+            : Category::where('user_id', $user->id)->get();
 
-        return response()->json([
-            'success' => true,
-            'message' => $user->role,
-            'data' => $categories
-        ], Response::HTTP_OK);
+        return $this->successResponse($categories->toArray(), 'Successfully', ResponseAlias::HTTP_CREATED);
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(CategoryStoreRequest $request): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            'name' => [
-                'required',
-                'string',
-                Rule::unique('categories', 'name')->where(fn($query) => $query->where('user_id', auth()->id()))
-            ],
-            'status' => 'integer|in:' . Status::ACTIVE->value . ',' . Status::DISABLED->value,
-        ]);
+        try {
+            $validated = $request->validated();
+            $validated['user_id'] = auth()->id();
 
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => $validator->errors(),
-                'data' => []
-            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            $category = Category::create($validated);
+
+            return $this->successResponse($category->toArray(), 'Category created successfully', ResponseAlias::HTTP_CREATED);
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), ResponseAlias::HTTP_INTERNAL_SERVER_ERROR);
         }
-
-        $validated = $validator->validated();
-        $validated['user_id'] = auth()->id();
-        $category = Category::create($validated);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Category created successfully',
-            'data' => $category
-        ], Response::HTTP_CREATED);
     }
 
     public function show(Category $category): JsonResponse
     {
-        return response()->json([
-            'success' => true,
-            'message' => 'Category retrieved successfully',
-            'data' => $category
-        ], Response::HTTP_OK);
+        return $this->successResponse($category->toArray(), 'Category retrieved successfully');
     }
 
-    public function update(Request $request, Category $category): JsonResponse
+    public function update(CategoryUpdateRequest $request, Category $category): JsonResponse
     {
         try {
             if ($category->user_id !== auth()->id()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Unauthorized: You do not have permission to update this category.'
-                ], Response::HTTP_FORBIDDEN);
+                return $this->errorResponse(
+                    'Unauthorized: You do not have permission to update this category.',
+                    ResponseAlias::HTTP_FORBIDDEN
+                );
             }
 
-            $validated = $request->validate([
-                'name' => 'sometimes|string|unique:categories,name,' . $category->id,
-                'status' => 'sometimes|integer|in:' . Status::ACTIVE->value . ',' . Status::DISABLED->value,
-            ]);
+            $validated = $request->validated();
 
             if (empty($validated)) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'No changes detected.',
-                    'data' => []
-                ], Response::HTTP_BAD_REQUEST);
+                return $this->errorResponse('No changes detected.');
             }
 
             $category->update($validated);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Category updated successfully',
-                'data' => $category
-            ], Response::HTTP_OK);
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->errors(),
-                'data' => []
-            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            return $this->successResponse($category->toArray(), 'Category updated successfully');
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-                'data' => []
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->errorResponse($e->getMessage(), ResponseAlias::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
     public function destroy(Category $category): JsonResponse
     {
+        if ($category->user_id !== auth()->id() && !auth()->user()->hasRole('admin')) {
+            return $this->errorResponse(
+                'Unauthorized: You do not have permission to delete this category.',
+                ResponseAlias::HTTP_FORBIDDEN
+            );
+        }
+
         $category->delete();
-        return response()->json([
-            'success' => true,
-            'message' => 'Category deleted successfully',
-            'data' => null
-        ], Response::HTTP_OK);
+
+        return $this->successResponse($category->toArray(), 'Category deleted successfully');
     }
 }

@@ -4,8 +4,8 @@ declare(strict_types=1);
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Enums\Type;
-use App\Enums\Status;
+use Modules\Support\Enums\Type;
+use Modules\Support\Enums\Status;
 
 return new class extends Migration
 {

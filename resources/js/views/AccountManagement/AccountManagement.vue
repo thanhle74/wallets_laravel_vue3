@@ -3,14 +3,13 @@
         <LoadingSpinner v-if="isLoading" message="Loading categories..."/>
 
         <div v-else>
-<!--            <CategoryForm-->
-<!--                :category="newCategory"-->
-<!--                :isEditing="editedCategory"-->
-<!--                @create="handleAddCategory"-->
-<!--                @update="handleUpdateCategory"-->
-<!--                @cancel="handleCancelUpdate"-->
-<!--            />-->
-
+            <ManagementForm
+                :user="newUser"
+                :isEditing="editedUser"
+                @create="handleUser"
+                @update="handleUpdateUser"
+                @cancel="handleCancelUpdate"
+            />
             <div class="table-responsive">
                 <table id="userTable" class="table-striped">
                     <thead>
@@ -29,19 +28,10 @@
                         <td>{{ user.name }}</td>
                         <td>{{ user.email }}</td>
                         <td>{{ user.role }}</td>
-                        <td>
-                            <span :class="getStatusClass(user.status)">
-                                <i :class="getStatusIcon(user.status)"></i>
-                                {{ getStatusText(user.status) }}
-                            </span>
-                        </td>
+                        <td><StatusBadge :status="user.status" /></td>
                         <td class="table-box-action">
-                            <button class="btn-edit" @click="editCategory(user)">
-                                <i class="ti-pencil"></i>
-                            </button>
-                            <button class="btn-cancel" @click="confirmDelete(user.id)">
-                                <i class="ti-trash"></i>
-                            </button>
+                            <Button btnClass="btn-edit" icon="ti-pencil" @click="editUser(user)"/>
+                            <Button btnClass="btn-cancel" icon="ti-trash" @click="confirmDelete(user.id)"/>
                         </td>
                     </tr>
                     </tbody>
@@ -49,12 +39,12 @@
             </div>
         </div>
 
-<!--        <ConfirmDeleteModal-->
-<!--            :show="deleteConfirmId !== null"-->
-<!--            message="Are you sure you want to delete this category?"-->
-<!--            @confirm="handleDeleteCategory"-->
-<!--            @cancel="deleteConfirmId = null"-->
-<!--        />-->
+        <ConfirmDeleteModal
+            :show="deleteConfirmId !== null"
+            message="Are you sure you want to delete this user?"
+            @confirm="handleDeleteUser"
+            @cancel="deleteConfirmId = null"
+        />
     </MainLayout>
 </template>
 
@@ -62,8 +52,10 @@
 import MainLayout from '@/views/layout/MainLayout.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import ConfirmDeleteModal from "@/components/ConfirmDeleteModal.vue";
-import CategoryForm from "@/views/Category/components/CategoryForm.vue";
-import {useAccountManagement} from "@/composables/useAccountManagement";
+import Button from "@/components/Button.vue";
+import StatusBadge from "@/components/StatusBadge.vue";
+import ManagementForm from "@/views/AccountManagement/components/ManagementForm.vue";
+import {useAccountManagement} from "@/composables/Account/useAccountManagement";
 import {isAdminHelper} from "@/composables/helper/isAdminHelper";
 import {ref, onMounted, watch, nextTick} from "vue";
 import $ from 'jquery';
@@ -108,7 +100,7 @@ const confirmDelete = (id) => {
     deleteConfirmId.value = id;
 };
 
-const editCategory = (category) => {
+const editUser = (category) => {
     editedUser.value = {...category};
 };
 

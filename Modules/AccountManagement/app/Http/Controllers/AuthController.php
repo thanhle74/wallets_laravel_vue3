@@ -1,14 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Http\Controllers\Api;
+namespace Modules\AccountManagement\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use Modules\Support\Http\Controllers\BaseControllerApi;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
-class AuthController extends Controller
+class AuthController extends BaseControllerApi
 {
     public function login(Request $request): JsonResponse
     {
@@ -26,14 +27,10 @@ class AuthController extends Controller
                 'success' => true,
                 'message' => 'Login successful.',
                 'token' => $token,
-                'user' => $user,
-            ], 200);
+            ], ResponseAlias::HTTP_OK);
         }
 
-        return response()->json([
-            'success' => false,
-            'message' => 'Invalid email or password.',
-        ], 401);
+        return $this->errorResponse('Invalid email or password.', ResponseAlias::HTTP_UNAUTHORIZED);
     }
 
     public function logout(): JsonResponse
@@ -41,18 +38,11 @@ class AuthController extends Controller
         $user = Auth::user();
 
         if (!$user) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Unauthorized or invalid token.',
-            ], 401);
+            return $this->errorResponse('Unauthorized or invalid token', ResponseAlias::HTTP_UNAUTHORIZED);
         }
 
         $user->tokens()->delete();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'You have successfully logged out.',
-        ], 200);
+        return $this->successResponse([],'You have successfully logged out.');
     }
-
 }

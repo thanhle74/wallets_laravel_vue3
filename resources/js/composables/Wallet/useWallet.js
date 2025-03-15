@@ -1,21 +1,9 @@
 import { ref } from "vue";
 import walletService from "@/services/walletService.js";
+import {messageResponse} from "@/composables/support/messageResponse.js";
 import toastr from "toastr";
 
-const getApiMessage = (response, defaultMessage = "Operation successful!") => {
-    return response?.data?.message || defaultMessage;
-};
-
-const handleApiResponse = (response) => {
-    const message = getApiMessage(response, "Success!");
-    toastr.success(message);
-};
-
-const handleApiError = (error, defaultMessage = "Something went wrong!") => {
-    const message = error.response?.data?.message || defaultMessage;
-    toastr.error(message);
-    console.error("API Error:", message, error);
-};
+const { handleApiResponse, handleApiError } = messageResponse();
 
 export function useWallet() {
     const wallets = ref([]);

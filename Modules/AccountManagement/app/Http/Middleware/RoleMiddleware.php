@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Http\Middleware;
+namespace Modules\AccountManagement\Http\Middleware;
 
-use App\Enums\UserRole;
+use Modules\Support\Enums\UserRole;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

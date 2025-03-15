@@ -25,19 +25,10 @@
                     <tr v-for="(category, index) in categories" :key="index">
                         <td>{{ category.id }}</td>
                         <td>{{ category.name }}</td>
-                        <td>
-                            <span :class="getStatusClass(category.status)">
-                                <i :class="getStatusIcon(category.status)"></i>
-                                {{ getStatusText(category.status) }}
-                            </span>
-                        </td>
+                        <td><StatusBadge :status="category.status" /></td>
                         <td class="table-box-action">
-                            <button class="btn-edit" @click="editCategory(category)">
-                                <i class="ti-pencil"></i>
-                            </button>
-                            <button class="btn-cancel" @click="confirmDelete(category.id)">
-                                <i class="ti-trash"></i>
-                            </button>
+                            <Button btnClass="btn-edit" icon="ti-pencil" @click="editCategory(category)"/>
+                            <Button btnClass="btn-cancel" icon="ti-trash" @click="confirmDelete(category.id)"/>
                         </td>
                     </tr>
                     </tbody>
@@ -59,6 +50,8 @@ import MainLayout from '@/views/layout/MainLayout.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import ConfirmDeleteModal from "@/components/ConfirmDeleteModal.vue";
 import CategoryForm from "@/views/Category/components/CategoryForm.vue";
+import Button from "@/components/Button.vue";
+import StatusBadge from "@/components/StatusBadge.vue";
 import {useCategory} from "@/composables/useCategory";
 import {ref, onMounted, watch, nextTick} from "vue";
 import $ from 'jquery';
@@ -123,16 +116,4 @@ onMounted(async () => {
     await fetchCategories();
     initDataTable();
 });
-
-const getStatusClass = (status) => {
-    return status === 1 ? "status-active" : "status-disabled";
-};
-
-const getStatusIcon = (status) => {
-    return status === 1 ? "ti-check" : "ti-close";
-};
-
-const getStatusText = (status) => {
-    return status === 1 ? "Active" : "Disabled";
-};
 </script>

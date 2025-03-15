@@ -30,12 +30,7 @@
                         <td>{{ wallet.name }}</td>
                         <td>{{ Number(wallet.balance || 0).toLocaleString("vi-VN") }} đ</td>
                         <td>{{ getTypeText(wallet.type)}}</td>
-                        <td>
-                            <span :class="getStatusClass(wallet.status)">
-                              <i :class="getStatusIcon(wallet.status)"></i>
-                              {{ getStatusText(wallet.status) }}
-                            </span>
-                        </td>
+                        <td><StatusBadge :status="wallet.status" /></td>
                         <td v-if="isAdmin">{{ wallet.user.name }}</td>
                         <td class="table-box-action">
                             <Button btnClass="btn-edit" icon="ti-pencil" @click="editWallet(wallet)"/>
@@ -62,6 +57,7 @@ import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import ConfirmDeleteModal from "@/components/ConfirmDeleteModal.vue";
 import WalletForm from "@/views/Wallet/components/WalletForm.vue";
 import Button from "@/components/Button.vue";
+import StatusBadge from "@/components/StatusBadge.vue";
 import { useUserAccount } from "@/composables/Account/useUserAccount";
 import { useWallet } from "@/composables/Wallet/useWallet";
 import { ref, onMounted, watch, nextTick } from "vue";
@@ -120,18 +116,6 @@ onMounted(async () => {
     await fetchWallets();
     initDataTable();
 });
-
-const getStatusClass = (status) => {
-    return status === 1 ? "status-active" : "status-disabled";
-};
-
-const getStatusIcon = (status) => {
-    return status === 1 ? "ti-check" : "ti-close";
-};
-
-const getStatusText = (status) => {
-    return status === 1 ? "Active" : "Disabled";
-};
 
 const getTypeText = (type) => {
     if(type === 1) {

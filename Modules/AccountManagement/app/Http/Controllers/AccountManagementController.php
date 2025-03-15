@@ -16,13 +16,7 @@ class AccountManagementController extends BaseControllerApi
 {
     public function index(): JsonResponse
     {
-        $users = User::all();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Users retrieved successfully',
-            'data' => $users
-        ], ResponseAlias::HTTP_OK);
+        return $this->successResponse(User::all()->toArray(), 'Users retrieved successfully');
     }
 
     public function store(Request $request): JsonResponse
@@ -36,11 +30,7 @@ class AccountManagementController extends BaseControllerApi
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => $validator->errors(),
-                'data' => []
-            ], ResponseAlias::HTTP_UNPROCESSABLE_ENTITY);
+            return $this->errorResponse($validator->errors()->first(), ResponseAlias::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $validated = $validator->validated();
@@ -50,20 +40,12 @@ class AccountManagementController extends BaseControllerApi
 
         $user = User::create($validated);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'User created successfully',
-            'data' => $user
-        ], ResponseAlias::HTTP_CREATED);
+        return $this->successResponse($user->toArray(), 'User created successfully');
     }
 
     public function show(User $user): JsonResponse
     {
-        return response()->json([
-            'success' => true,
-            'message' => 'User retrieved successfully',
-            'data' => $user
-        ], ResponseAlias::HTTP_OK);
+        return $this->successResponse($user->toArray(), 'User retrieved successfully');
     }
 
     public function update(Request $request, User $user): JsonResponse
@@ -78,11 +60,7 @@ class AccountManagementController extends BaseControllerApi
             ]);
 
             if ($validator->fails()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => $validator->errors(),
-                    'data' => []
-                ], ResponseAlias::HTTP_UNPROCESSABLE_ENTITY);
+                return $this->errorResponse($validator->errors()->first(), ResponseAlias::HTTP_UNPROCESSABLE_ENTITY);
             }
 
             $validated = $validator->validated();
@@ -92,37 +70,20 @@ class AccountManagementController extends BaseControllerApi
             }
 
             if (empty($validated)) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'No changes detected.',
-                    'data' => []
-                ], ResponseAlias::HTTP_BAD_REQUEST);
+                return $this->errorResponse('No changes detected.');
             }
 
             $user->update($validated);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'User updated successfully',
-                'data' => $user
-            ], ResponseAlias::HTTP_OK);
+            return $this->successResponse($user->toArray(), 'User updated successfully');
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-                'data' => []
-            ], ResponseAlias::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->errorResponse($e->getMessage(), ResponseAlias::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
     public function destroy(User $user): JsonResponse
     {
         $user->delete();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'User deleted successfully',
-            'data' => null
-        ], ResponseAlias::HTTP_OK);
+        return $this->successResponse([], 'User deleted successfully');
     }
 }

@@ -15,7 +15,8 @@ defineProps({
 });
 </script>
 <style scoped lang="scss">
-@import "@/assets/scss/_variables.scss";
+@use "@/assets/scss/variables" as *;
+
 .btn-edit {
     background-color: $color-primary-dark;
     color: $color-primary;

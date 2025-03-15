@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\AccountManagement\Models\User;
 use Modules\Category\Models\Category;
+use Modules\Wallet\Models\Wallet;
 
 class Transaction extends Model
 {

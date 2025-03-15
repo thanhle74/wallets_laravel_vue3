@@ -5,15 +5,12 @@ namespace Modules\Wallet\Http\Controllers;
 
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Modules\Support\Http\Controllers\BaseControllerApi;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use Modules\Wallet\Models\Wallet;
-use Modules\Support\Enums\Type;
-use Modules\Support\Enums\Status;
 use Modules\Support\Enums\UserRole;
+use Modules\Wallet\Http\Requests\WalletStoreRequest;
+use Modules\Wallet\Http\Requests\WalletUpdateRequest;
 
 class WalletController extends BaseControllerApi
 {
@@ -29,32 +26,25 @@ class WalletController extends BaseControllerApi
         return $this->successResponse($wallets->toArray(),'Wallet retrieved successfully');
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(WalletStoreRequest $request): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            'name' => [
-                'required',
-                'string',
-                Rule::unique('wallets', 'name')->where(fn($query) => $query->where('user_id', auth()->id()))
-            ],
-            'balance' => 'sometimes|nullable|numeric|min:0',
-            'type' => ['required', Rule::in([Type::CASH->value, Type::BANK->value, Type::CRYPTO->value])],
-            'status' => ['integer', Rule::in([Status::ACTIVE->value, Status::DISABLED->value])],
-        ]);
-
-        if ($validator->fails()) {
-            return $this->errorResponse($validator->errors()->first(), ResponseAlias::HTTP_UNPROCESSABLE_ENTITY);
-        }
-
-        $validated = $validator->validated();
+        $validated = $request->validated();
         $validated['user_id'] = auth()->id();
-        $wallet = Wallet::create($validated);
 
-        return $this->successResponse(
-            $wallet->toArray(),
-            'Wallet created successfully',
-            ResponseAlias::HTTP_CREATED
-        );
+        try {
+            $wallet = Wallet::create($validated);
+
+            return $this->successResponse(
+                $wallet->toArray(),
+                'Wallet created successfully',
+                ResponseAlias::HTTP_CREATED
+            );
+        } catch (\Exception $e) {
+            return $this->errorResponse(
+                'Failed to create wallet. ' . $e->getMessage(),
+                ResponseAlias::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
     }
 
     public function show(Wallet $wallet): JsonResponse
@@ -69,38 +59,24 @@ class WalletController extends BaseControllerApi
         return $this->successResponse($wallet->toArray(), 'Wallet retrieved successfully');
     }
 
-    public function update(Request $request, Wallet $wallet): JsonResponse
+    public function update(WalletUpdateRequest $request, Wallet $wallet): JsonResponse
     {
+        if ($wallet->user_id !== auth()->id()) {
+            return $this->errorResponse(
+                'Unauthorized: You do not have permission to update this wallet.',
+                ResponseAlias::HTTP_FORBIDDEN
+            );
+        }
+
+        $validated = $request->validated();
+
+        if (empty($validated)) {
+            return $this->errorResponse('No changes detected.');
+        }
+
         try {
-            if ($wallet->user_id !== auth()->id()) {
-                return $this->errorResponse(
-                    'Unauthorized: You do not have permission to update this wallet.',
-                    ResponseAlias::HTTP_FORBIDDEN
-                );
-            }
-
-            $validated = $request->validate([
-                'name' => [
-                    'sometimes',
-                    'string',
-                    Rule::unique('wallets', 'name')
-                        ->where(fn ($query) => $query->where('user_id', $wallet->user_id))
-                        ->ignore($wallet->id),
-                ],
-                'balance' => 'sometimes|numeric|min:0',
-                'type' => ['sometimes', Rule::in([Type::CASH->value, Type::BANK->value, Type::CRYPTO->value])],
-                'status' => ['sometimes', Rule::in([Status::ACTIVE->value, Status::DISABLED->value])],
-            ]);
-
-            if (empty($validated)) {
-                return $this->errorResponse('No changes detected.');
-            }
-
             $wallet->update($validated);
-
             return $this->successResponse($wallet->toArray(), 'Wallet updated successfully');
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return $this->errorResponse($e->getMessage(), ResponseAlias::HTTP_UNPROCESSABLE_ENTITY);
         } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), ResponseAlias::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -108,9 +84,7 @@ class WalletController extends BaseControllerApi
 
     public function destroy(Wallet $wallet): JsonResponse
     {
-
-        //dd($wallet);
-        if ($wallet->user_id !== auth()->id()) {
+        if ($wallet->user_id !== auth()->id() && !auth()->user()->hasRole('admin')) {
             $this->errorResponse(
                 'Unauthorized: You do not have permission to delete this wallet.',
                 ResponseAlias::HTTP_FORBIDDEN

@@ -3,23 +3,21 @@
         <div class="delete-content">
             <p><i class="ti-alert"></i> {{ message }}</p>
             <div class="modal-bnt">
-                <button class="btn-delete" @click="$emit('confirm')">
-                    <i class="ti-check"></i> Delete
-                </button>
-                <button class="btn-cancel" @click="$emit('cancel')">
-                    <i class="ti-close"></i> Cancel
-                </button>
+                <Button btnClass="btn-delete" icon="ti-check" text="Delete" @click="$emit('confirm')" />
+                <Button btnClass="btn-cancel" icon="ti-close" text="Cancel" @click="$emit('cancel')" />
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
+import Button from "@/components/Button.vue";
+
 defineProps({
     show: Boolean,
     message: {
         type: String,
-        default: "Bạn có chắc chắn muốn xóa?",
+        default: "Are you sure?",
     },
 });
 </script>
