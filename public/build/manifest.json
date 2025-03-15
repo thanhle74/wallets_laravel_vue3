@@ -1,0 +1,44 @@
+{
+  "resources/css/app.css": {
+    "file": "assets/app-l0sNRNKZ.js",
+    "name": "app",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-D0rXMZ-J.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "css": [
+      "assets/app-4DafHAHP.css"
+    ],
+    "assets": [
+      "assets/logo-CxOinUre.jpg",
+      "assets/themify-BifPJsew.eot",
+      "assets/themify-BgsFA67P.woff",
+      "assets/themify-DuU3rJAt.ttf",
+      "assets/themify-DqOiMLGc.svg"
+    ]
+  },
+  "resources/js/assets/fonts/themify.eot": {
+    "file": "assets/themify-BifPJsew.eot",
+    "src": "resources/js/assets/fonts/themify.eot"
+  },
+  "resources/js/assets/fonts/themify.svg": {
+    "file": "assets/themify-DqOiMLGc.svg",
+    "src": "resources/js/assets/fonts/themify.svg"
+  },
+  "resources/js/assets/fonts/themify.ttf": {
+    "file": "assets/themify-DuU3rJAt.ttf",
+    "src": "resources/js/assets/fonts/themify.ttf"
+  },
+  "resources/js/assets/fonts/themify.woff": {
+    "file": "assets/themify-BgsFA67P.woff",
+    "src": "resources/js/assets/fonts/themify.woff"
+  },
+  "resources/js/assets/images/logo.jpg": {
+    "file": "assets/logo-CxOinUre.jpg",
+    "src": "resources/js/assets/images/logo.jpg"
+  }
+}
