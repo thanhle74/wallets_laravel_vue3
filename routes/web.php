@@ -3,10 +3,6 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
+Route::get('/{any}', function () {
     return view('app');
-});
-
-Route::get('/{pathMatch}', function () {
-    return view('app');
-})->where('pathMatch', '.*');
+})->where('any', '^(?!v1)(?!api).*');

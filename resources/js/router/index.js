@@ -4,6 +4,7 @@ import CategoryView from '@/views/Category/CategoryView.vue';
 import WalletView from "@/views/Wallet/WalletView.vue";
 import LoginView from '@/views/LoginView.vue';
 import TransactionsView from "@/views/Transaction/TransactionsView.vue";
+import AccountManagement from "@/views/AccountManagement/AccountManagement.vue";
 import NotFoundView from "@/views/NotFoundView.vue";
 import apiClient from "@/services/apiClient";
 
@@ -15,6 +16,7 @@ const router = createRouter({
         { path: '/transaction', name: 'transaction', component: TransactionsView },
         { path: '/category', name: 'category', component: CategoryView },
         { path: '/wallet', name: 'wallet', component: WalletView },
+        { path: '/users', name: 'Users', component: AccountManagement },
         { path: '/:pathMatch(.*)*', component: NotFoundView }
     ],
 });

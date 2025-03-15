@@ -28,7 +28,7 @@
                     <tr v-for="(wallet, index) in wallets" :key="index">
                         <td>{{ wallet.id }}</td>
                         <td>{{ wallet.name }}</td>
-                        <td>{{ Number(wallet.balance).toLocaleString("vi-VN") }} đ</td>
+                        <td>{{ Number(wallet.balance || 0).toLocaleString("vi-VN") }} đ</td>
                         <td>{{ getTypeText(wallet.type)}}</td>
                         <td>
                             <span :class="getStatusClass(wallet.status)">
@@ -38,12 +38,8 @@
                         </td>
                         <td v-if="isAdmin">{{ wallet.user.name }}</td>
                         <td class="table-box-action">
-                            <button class="btn-edit" @click="editWallet(wallet)">
-                                <i class="ti-pencil"></i>
-                            </button>
-                            <button class="btn-cancel" @click="confirmDelete(wallet.id)">
-                                <i class="ti-trash"></i>
-                            </button>
+                            <Button btnClass="btn-edit" icon="ti-pencil" @click="editWallet(wallet)"/>
+                            <Button btnClass="btn-cancel" icon="ti-trash" @click="confirmDelete(wallet.id)"/>
                         </td>
                     </tr>
                     </tbody>
@@ -65,25 +61,15 @@ import MainLayout from '@/views/layout/MainLayout.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import ConfirmDeleteModal from "@/components/ConfirmDeleteModal.vue";
 import WalletForm from "@/views/Wallet/components/WalletForm.vue";
-import { useWallet } from "@/composables/useWallet";
-import { isAdminHelper } from "@/composables/helper/isAdminHelper";
+import Button from "@/components/Button.vue";
+import { useUserAccount } from "@/composables/Account/useUserAccount";
+import { useWallet } from "@/composables/Wallet/useWallet";
 import { ref, onMounted, watch, nextTick } from "vue";
 import $ from 'jquery';
 import 'datatables.net';
 
-const {
-    wallets,
-    newWallet,
-    editedWallet,
-    isLoading,
-    fetchWallets,
-    addWallet,
-    deleteWallet,
-    updateWallet,
-} = useWallet();
-
-const { fetchIsAdmin } = isAdminHelper();
-
+const { wallets, newWallet, editedWallet, isLoading, fetchWallets, addWallet, deleteWallet, updateWallet,} = useWallet();
+const { fetchIsAdmin } = useUserAccount();
 const isAdmin = ref(false);
 const deleteConfirmId = ref(null);
 
@@ -129,8 +115,9 @@ watch(wallets, (newValue) => {
 });
 
 onMounted(async () => {
+    const result = await fetchIsAdmin();
+    isAdmin.value = result ?? false;
     await fetchWallets();
-    isAdmin.value = await fetchIsAdmin();
     initDataTable();
 });
 

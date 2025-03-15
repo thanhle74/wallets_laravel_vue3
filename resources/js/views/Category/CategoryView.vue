@@ -18,7 +18,6 @@
                         <th>ID</th>
                         <th>Name</th>
                         <th>Status</th>
-                        <th v-if="isAdmin">User</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -32,7 +31,6 @@
                                 {{ getStatusText(category.status) }}
                             </span>
                         </td>
-                        <td v-if="isAdmin">{{ category.user.name }}</td>
                         <td class="table-box-action">
                             <button class="btn-edit" @click="editCategory(category)">
                                 <i class="ti-pencil"></i>
@@ -62,7 +60,6 @@ import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import ConfirmDeleteModal from "@/components/ConfirmDeleteModal.vue";
 import CategoryForm from "@/views/Category/components/CategoryForm.vue";
 import {useCategory} from "@/composables/useCategory";
-import {isAdminHelper} from "@/composables/helper/isAdminHelper";
 import {ref, onMounted, watch, nextTick} from "vue";
 import $ from 'jquery';
 import 'datatables.net';
@@ -77,8 +74,6 @@ const {
     updateCategory,
     deleteCategory
 } = useCategory();
-
-const {fetchIsAdmin} = isAdminHelper();
 
 const isAdmin = ref(false);
 const deleteConfirmId = ref(null);
@@ -126,7 +121,6 @@ watch(categories, (newValue) => {
 
 onMounted(async () => {
     await fetchCategories();
-    isAdmin.value = await fetchIsAdmin();
     initDataTable();
 });
 

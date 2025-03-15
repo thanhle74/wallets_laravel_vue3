@@ -24,7 +24,7 @@ class TransactionApi extends Controller
         if ($role === UserRole::ADMIN->value) {
             $transactions = Transaction::with(['category', 'wallet', 'user'])->get();
         } else {
-            $transactions = Transaction::with(['category', 'wallet', 'user'])->where('user_id', $user->id)->get();
+            $transactions = Transaction::with(['category', 'wallet'])->where('user_id', $user->id)->get();
         }
 
         return response()->json([

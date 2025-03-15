@@ -6,7 +6,7 @@
                     <h3>Transaction Details: {{ transaction.id }}</h3>
                     <p><strong>Description:</strong> {{ transaction.description || 'No description available' }}</p>
                     <div class="box-btn">
-                        <button class="btn-info" @click="$emit('close')">Close</button>
+                        <Button btnClass="btn-close" text="Close" icon="ti-close"  @click="$emit('close')"/>
                     </div>
                 </div>
             </transition>
@@ -15,6 +15,7 @@
 </template>
 
 <script setup>
+import Button from "@/components/Button.vue";
 defineProps({
     transaction: Object
 });

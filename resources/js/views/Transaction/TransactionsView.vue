@@ -12,15 +12,15 @@
             <div class="table-responsive">
                 <table id="tableTransaction" class="table-striped">
                     <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Category</th>
-                        <th>Wallet</th>
-                        <th>Amount</th>
-                        <th>Day</th>
-                        <th v-if="isAdmin">User</th>
-                        <th>Actions</th>
-                    </tr>
+                        <tr>
+                            <th>ID</th>
+                            <th>Category</th>
+                            <th>Wallet</th>
+                            <th>Amount</th>
+                            <th>Day</th>
+                            <th v-if="isAdmin">User</th>
+                            <th>Actions</th>
+                        </tr>
                     </thead>
                     <tbody>
                     <tr v-for="(transaction, index) in transactions" :key="index">
@@ -31,19 +31,15 @@
                         <td>{{ transaction.wallet.name }}</td>
                         <td>
                             <span :class="transaction.is_income ? 'status-active' : 'status-disabled'">
-                                {{ Number(transaction.amount).toLocaleString("vi-VN") }} đ
+                                {{ Number(transaction.amount || 0).toLocaleString("vi-VN") }} đ
                             </span>
                         </td>
 
                         <td>{{ new Date(transaction.transaction_date).toLocaleDateString("vi-VN") }}</td>
                         <td v-if="isAdmin">{{ transaction.user.name }}</td>
                         <td class="table-box-action">
-                            <button class="btn-edit" @click="showTransactionDetail(transaction)">
-                                <i class="ti-eye"></i>
-                            </button>
-                            <button class="btn-cancel" @click="confirmDelete(transaction.id)">
-                                <i class="ti-trash"></i>
-                            </button>
+                            <Button btnClass="btn-edit" icon="ti-eye" @click="showTransactionDetail(transaction)"/>
+                            <Button btnClass="btn-cancel" icon="ti-trash" @click="confirmDelete(transaction.id)"/>
                         </td>
                     </tr>
                     </tbody>
@@ -71,10 +67,11 @@ import MainLayout from '@/views/layout/MainLayout.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import ConfirmDeleteModal from "@/components/ConfirmDeleteModal.vue";
 import TransactionDetailModal from "@/views/Transaction/components/TransactionDetailModal.vue";
-import { useTransaction } from "@/composables/useTransaction";
-import { isAdminHelper } from "@/composables/helper/isAdminHelper";
+import {useTransaction} from "@/composables/useTransaction";
 import TransactionFilter from "@/views/Transaction/components/TransactionFilter.vue";
 import TransactionForm from "@/views/Transaction/components/TransactionForm.vue";
+import {useAccountManagement} from "@/composables/useAccountManagement";
+import Button from "@/components/Button.vue";
 import { ref, onMounted, watch, nextTick } from "vue";
 import $ from 'jquery';
 import 'datatables.net';
@@ -90,7 +87,7 @@ const {
     updateTransaction,
 } = useTransaction();
 
-const { fetchIsAdmin } = isAdminHelper();
+const {showUser} = useAccountManagement();
 
 const isAdmin = ref(false);
 const deleteConfirmId = ref(null);
@@ -143,7 +140,6 @@ watch(transactions, (newValue) => {
 
 onMounted(async () => {
     await fetchTransactions();
-    isAdmin.value = await fetchIsAdmin();
     initDataTable();
 });
 </script>

@@ -1,9 +1,6 @@
 <template>
     <div class="transaction-create">
-        <button class="btn-info" @click="isOpen = true">
-            <i class="ti-plus"></i>
-            Add Transaction
-        </button>
+        <Button btnClass="btn-info" text="Add Transaction" icon="ti-plus" @click="isOpen = true"/>
     </div>
 
     <div v-if="isOpen" class="offcanvas-overlay" @click="closeOffcanvas"></div>
@@ -11,9 +8,7 @@
     <div class="offcanvas-container" :class="{ 'open': isOpen }">
         <div class="offcanvas-header">
             <h3>Add Transaction</h3>
-            <button class="btn-close" @click="closeOffcanvas">
-                <i class="ti-close"></i>
-            </button>
+            <Button btnClass="btn-close" icon="ti-close" @click="closeOffcanvas"/>
         </div>
 
         <div class="offcanvas-body">
@@ -72,10 +67,7 @@
                 <textarea id="description" v-model="transaction.description" placeholder="Enter note" rows="5" />
             </div>
 
-            <button class="btn-info" @click="submitTransaction">
-                <i class="ti-plus"></i>
-                Add Transaction
-            </button>
+            <Button btnClass="btn-info" text="Add Transaction" icon="ti-plus" @click="submitTransaction"/>
         </div>
     </div>
 </template>
@@ -83,8 +75,9 @@
 <script setup>
 import { defineProps, defineEmits, onMounted, ref } from "vue";
 import { useCategory } from "@/composables/useCategory";
-import { useWallet } from "@/composables/useWallet";
+import { useWallet } from "@/composables/Wallet/useWallet";
 import VueDatePicker from "@vuepic/vue-datepicker";
+import Button from "@/components/Button.vue";
 import "@vuepic/vue-datepicker/dist/main.css";
 
 const { categories, fetchCategories } = useCategory();
@@ -164,15 +157,6 @@ h3{
     justify-content: space-between;
     align-items: center;
     padding-bottom: 10px;
-}
-
-.btn-close {
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    background: #50374a;
-    color: #ff4c51;
 }
 
 /* Form Group */

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
@@ -11,7 +12,7 @@ class RoleMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->role === UserRole::ADMIN->value) {
+        if (Auth::check() && Auth::user()->role->value === UserRole::ADMIN->value) {
             return $next($request);
         }
 

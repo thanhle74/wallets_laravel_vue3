@@ -26,7 +26,7 @@ import {endOfMonth, endOfYear, startOfMonth, startOfYear, subMonths} from "date-
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import {useCategory} from "@/composables/useCategory";
-import {useWallet} from "@/composables/useWallet";
+import {useWallet} from "@/composables/Wallet/useWallet";
 
 const dateRange = ref(null);
 const selectedCategory = ref("");

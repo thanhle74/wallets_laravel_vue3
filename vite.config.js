@@ -4,11 +4,7 @@ import vue from '@vitejs/plugin-vue';
 import path from 'path';
 
 export default defineConfig({
-    base: '/build/',
-    build: {
-        outDir: 'public/build',
-        assetsDir: '',
-    },
+    base: '/',
     plugins: [
         laravel({
             input: ['resources/css/app.css', 'resources/js/app.js'],

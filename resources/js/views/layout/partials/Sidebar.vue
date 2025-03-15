@@ -40,6 +40,12 @@
                             Wallet
                         </RouterLink>
                     </li>
+                    <li>
+                        <RouterLink to="/users">
+                            <i class="ti-wallet"></i>
+                            Users
+                        </RouterLink>
+                    </li>
                 </ul>
             </nav>
         </div>
