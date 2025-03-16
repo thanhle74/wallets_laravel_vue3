@@ -16,6 +16,9 @@ const accountManagementService = {
     delete(id) {
         return apiClient.delete(`/users/${id}`);
     },
+    massDelete(ids) {
+        return apiClient.post("/users/mass-delete", { ids });
+    }
 };
 
 export default accountManagementService;

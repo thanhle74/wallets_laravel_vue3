@@ -1,41 +1,11 @@
 <template>
-    <div class="modal-overlay" @click.self="$emit('close')">
+    <div class="modal-overlay">
         <div class="modal-content">
             <slot/>
-            <div class="box-btn">
-                <Button btnClass="btn-cancel" text="Close" icon="ti-close" @click="$emit('close')"/>
-            </div>
         </div>
     </div>
 </template>
-<script setup>
-import Button from "@/components/Button.vue";
-</script>
-<style scoped lang="scss">
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-}
 
-.modal-content {
-    background: #25293c;
-    padding: 20px;
-    border-radius: 8px;
-    width: 400px;
-    max-width: 90%;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    text-align: left;
-}
-.box-btn {
-    text-align: right;
-    margin-top: 2rem;
-}
+<style scoped lang="scss">
+@use "@/assets/scss/components/modal";
 </style>

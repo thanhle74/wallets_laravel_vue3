@@ -14,55 +14,7 @@ defineProps({
     text: String,
 });
 </script>
+
 <style scoped lang="scss">
-@use "@/assets/scss/variables" as *;
-
-.btn-edit {
-    background-color: $color-primary-dark;
-    color: $color-primary;
-
-    &:hover {
-        background: $color-primary-hover;
-        color: $color-primary;
-    }
-}
-
-.btn-cancel {
-    background-color: $color-secondary-dark;
-    color: $color-secondary;
-
-    &:hover {
-        background: $color-secondary-hover;
-        color: $color-secondary-hover-text;
-    }
-}
-
-.btn-info {
-    background-color: $color-info-dark;
-    color: $color-info;
-
-    &:hover {
-        background: $color-info-hover;
-        color: $color-info;
-    }
-}
-
-.btn-delete {
-    background-color: $color-danger;
-    color: $color-white;
-
-    &:hover {
-        background: $color-danger-hover;
-        color: $color-white;
-    }
-}
-
-.btn-close {
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    background: $color-close-bg;
-    color: $color-close-text;
-}
+@use "@/assets/scss/components/button";
 </style>

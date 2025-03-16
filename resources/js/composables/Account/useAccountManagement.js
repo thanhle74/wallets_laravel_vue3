@@ -84,6 +84,16 @@ export function useAccountManagement() {
         }
     };
 
+    const massDeleteUsers = async (selectedUsers) => {
+        try {
+            const response = await accountManagementService.massDelete(selectedUsers);
+            handleApiResponse(response);
+            await fetchUsers();
+        } catch (error) {
+            handleApiError(error);
+        }
+    };
+
     return {
         users,
         newUser,
@@ -93,6 +103,7 @@ export function useAccountManagement() {
         addUser,
         showUser,
         deleteUser,
+        massDeleteUsers,
         updateUser,
     };
 }

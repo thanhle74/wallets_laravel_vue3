@@ -18,6 +18,7 @@ Route::prefix('v1')->group(function () {
 
         Route::middleware(['admin'])->group(function () {
             Route::apiResource('users', AccountManagementController::class);
+            Route::post('/users/mass-delete', [UserAccountController::class, 'massDelete']);
         });
     });
 });

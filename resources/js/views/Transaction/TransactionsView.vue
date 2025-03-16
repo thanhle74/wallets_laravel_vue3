@@ -82,12 +82,10 @@ import 'datatables.net';
 const {
     transactions,
     newTransaction,
-    editedTransaction,
     isLoading,
     fetchTransactions,
     addTransaction,
     deleteTransaction,
-    updateTransaction,
 } = useTransaction();
 
 const isAdmin = ref(false);
@@ -102,10 +100,6 @@ const handleAddTransaction = async () => {
     await addTransaction();
 };
 
-const handleUpdateTransaction = async () => {
-    await updateTransaction();
-};
-
 const handleDeleteTransaction = async () => {
     if (!deleteConfirmId.value) return;
 
@@ -113,16 +107,8 @@ const handleDeleteTransaction = async () => {
     deleteConfirmId.value = null;
 };
 
-const handleCancelUpdate = () => {
-    editedTransaction.value = false;
-};
-
 const confirmDelete = (id) => {
     deleteConfirmId.value = id;
-};
-
-const editTransaction = (transaction) => {
-    editedTransaction.value = { ...transaction };
 };
 
 const initDataTable = () => {

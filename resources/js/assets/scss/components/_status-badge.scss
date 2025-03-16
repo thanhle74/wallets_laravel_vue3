@@ -1,0 +1,17 @@
+@use "@/assets/scss/abstracts/variables" as *;
+
+.status-active {
+    background-color: #2e4b4f;
+    color: #28c76f;
+    padding: 5px 10px;
+    border-radius: 0.25rem;
+    font-size: .8667em;
+}
+
+.status-disabled {
+    background-color: $color-close-bg;
+    color: $color-danger;
+    padding: 5px 10px;
+    border-radius: 0.25rem;
+    font-size: .8667em;
+}
