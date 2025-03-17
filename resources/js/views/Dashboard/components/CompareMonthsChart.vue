@@ -61,27 +61,3 @@ watch(months, fetchData);
         </div>
     </div>
 </template>
-
-<style scoped>
-.chart-container {
-    width: 100%;
-    max-width: 800px;
-    margin: auto;
-}
-
-.controls {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.dropdown {
-    padding: 5px;
-    font-size: 16px;
-}
-
-.chart-wrapper {
-    height: 400px;
-}
-</style>

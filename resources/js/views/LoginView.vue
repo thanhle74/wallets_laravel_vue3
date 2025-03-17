@@ -60,7 +60,3 @@ const handleLogin = async () => {
     }
 };
 </script>
-
-<style scoped lang="scss">
-@use "@/assets/scss/views/login";
-</style>

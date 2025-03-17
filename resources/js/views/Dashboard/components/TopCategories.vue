@@ -35,24 +35,3 @@ const fetchCategories = async () => {
 
 onMounted(fetchCategories);
 </script>
-
-<style scoped>
-.top-categories {
-    margin-top: 20px;
-    width: 40%;
-}
-
-ul {
-    list-style: none;
-    padding: 0;
-}
-
-li {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    background: #f8f9fa;
-    border-radius: 5px;
-    margin-bottom: 8px;
-}
-</style>

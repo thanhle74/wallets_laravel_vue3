@@ -7,6 +7,7 @@ import TransactionsView from "@/views/Transaction/TransactionsView.vue";
 import AccountManagement from "@/views/AccountManagement/AccountManagement.vue";
 import NotFoundView from "@/views/NotFoundView.vue";
 import apiClient from "@/services/apiClient";
+import ModuleMagento from "@/views/ModuleMagento/ModuleMagento.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,6 +18,7 @@ const router = createRouter({
         { path: '/category', name: 'category', component: CategoryView },
         { path: '/wallet', name: 'wallet', component: WalletView },
         { path: '/users', name: 'Users', component: AccountManagement },
+        { path: '/modules', name: 'Users', component: ModuleMagento },
         { path: '/:pathMatch(.*)*', component: NotFoundView }
     ],
 });

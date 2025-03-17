@@ -42,34 +42,3 @@ const fetchTransactions = async () => {
 
 onMounted(fetchTransactions);
 </script>
-
-<style scoped>
-.recent-transactions {
-    margin-top: 20px;
-    width: 60%;
-}
-
-ul {
-    list-style: none;
-    padding: 0;
-}
-
-li {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    background: #f8f9fa;
-    border-radius: 5px;
-    margin-bottom: 8px;
-}
-
-.income {
-    color: #29c770;
-    font-weight: 400;
-}
-
-.expense {
-    color: #ff4b51;
-    font-weight: 400;
-}
-</style>

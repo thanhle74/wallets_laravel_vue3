@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 
 import "toastr/build/toastr.min.css";
-import '@/assets/scss/main.scss'
+import '@/assets/css/_styles.css'
 
 const app = createApp(App)
 app.use(router)

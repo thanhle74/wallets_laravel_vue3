@@ -1,5 +1,5 @@
 <template>
-    <button :class="btnClass">
+    <button :class="btnClass" class="px-3 py-2">
         <i :class="icon"></i>
         {{ text }}
     </button>
@@ -14,7 +14,3 @@ defineProps({
     text: String,
 });
 </script>
-
-<style scoped lang="scss">
-@use "@/assets/scss/components/button";
-</style>

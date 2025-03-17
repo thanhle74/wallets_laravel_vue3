@@ -3,30 +3,23 @@
         <LoadingSpinner v-if="isLoading" message="Loading users..." />
 
         <div v-else>
-            <Button
-                btnClass="btn-info"
-                icon="ti-plus"
-                text="Add User"
-                @click="showForm = true"
-            />
-            <div class="d-flex justify-between items-center mb-3">
-                <select v-model="bulkAction" @change="handleBulkAction" class="form-select w-auto">
-                    <option value="">Bulk Actions</option>
-                    <option value="selectAll">Select All</option>
-                    <option value="unselectAll">Unselect All</option>
-                </select>
+            <div class="flex justify-between items-center mb-8">
+                <div class="flex gap-4">
+                    <select v-model="bulkAction" @change="handleBulkAction" class="form-select w-auto">
+                        <option value="">Bulk Actions</option>
+                        <option value="selectAll">Select All</option>
+                        <option value="unselectAll">Unselect All</option>
+                    </select>
 
-                <Button
-                    btnClass="btn-danger"
-                    icon="ti-trash"
-                    :disabled="!selectedUsers.length"
-                    @click="confirmMassDelete"
-                    label="Delete Selected"
-                />
+                    <Button btnClass="bg-mulberry-purple text-torch-red rounded-md hover:bg-button-red-hover"
+                        icon="ti-trash" :disabled="!selectedUsers.length" @click="confirmMassDelete"
+                        label="Delete Selected" />
+                </div>
+                <Button btnClass="bg-indigo-night text-amethyst-purple rounded-md hover:bg-royal-purple" icon="ti-plus"
+                    text="Add User" @click="showForm = true" />
             </div>
-            <div class="table-responsive">
-                <table id="userTable" class="table-striped">
-                    <thead>
+            <table id="userTable" class="table-striped">
+                <thead>
                     <tr>
                         <th></th>
                         <th>ID</th>
@@ -34,10 +27,10 @@
                         <th>Email</th>
                         <th>Role</th>
                         <th>Status</th>
-                        <th>Actions</th>
+                        <th class="text-center">Actions</th>
                     </tr>
-                    </thead>
-                    <tbody>
+                </thead>
+                <tbody>
                     <tr v-for="(user, index) in users" :key="index">
                         <td>
                             <input type="checkbox" :value="user.id" v-model="selectedUsers" />
@@ -46,36 +39,24 @@
                         <td>{{ user.name }}</td>
                         <td>{{ user.email }}</td>
                         <td>{{ user.role }}</td>
-                        <td><StatusBadge :status="user.status" /></td>
-                        <td class="table-box-action">
-                            <Button btnClass="btn-edit" icon="ti-pencil" @click="editUser(user)" />
-                            <Button btnClass="btn-cancel" icon="ti-trash" @click="confirmDelete(user.id)" />
+                        <td>
+                            <StatusBadge :status="user.status" />
+                        </td>
+                        <td class="text-center">
+                            <Button btnClass="bg-deep-navy text-cerulean-blue mr-1 hover:bg-midnight-blue"
+                                icon="ti-pencil" @click="editUser(user)" />
+                            <!-- <Button btnClass="btn-cancel" icon="ti-trash" @click="confirmDelete(user.id)" /> -->
                         </td>
                     </tr>
-                    </tbody>
-                </table>
-            </div>
+                </tbody>
+            </table>
         </div>
-        <UserAddForm
-            :user="newUser"
-            :show="showForm"
-            :isEditing="editedUser"
-            @create="handleUser"
-            @update="handleUpdateUser"
-            @cancel="handleCancelUpdate"
-        />
-        <ConfirmDeleteModal
-            :show="deleteMassConfirm"
-            message="Are you sure you want to delete selected users?"
-            @confirm="handleMassDelete"
-            @cancel="deleteMassConfirm = false"
-        />
-        <ConfirmDeleteModal
-            :show="deleteConfirmId !== null"
-            message="Are you sure you want to delete this user?"
-            @confirm="handleDeleteUser"
-            @cancel="deleteConfirmId = null"
-        />
+        <UserAddForm :user="newUser" :show="showForm" :isEditing="editedUser" @create="handleUser"
+            @update="handleUpdateUser" @cancel="handleCancelUpdate" />
+        <ConfirmDeleteModal :show="deleteMassConfirm" message="Are you sure you want to delete selected users?"
+            @confirm="handleMassDelete" @cancel="deleteMassConfirm = false" />
+        <ConfirmDeleteModal :show="deleteConfirmId !== null" message="Are you sure you want to delete this user?"
+            @confirm="handleDeleteUser" @cancel="deleteConfirmId = null" />
     </MainLayout>
 </template>
 
@@ -162,7 +143,7 @@ const handleBulkAction = () => {
 const initDataTable = () => {
     nextTick(() => {
         let table = $("#userTable");
-        if ( $.fn.DataTable.isDataTable(table) ) {
+        if ($.fn.DataTable.isDataTable(table)) {
             table.DataTable().destroy();
         }
         table.DataTable();

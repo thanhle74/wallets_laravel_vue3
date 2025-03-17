@@ -19,10 +19,3 @@ import RecentTransactions from "@/views/Dashboard/components/RecentTransactions.
 import CompareMonthsChart from "@/views/Dashboard/components/CompareMonthsChart.vue";
 
 </script>
-<style scoped>
-.dashboard-box {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-}
-</style>

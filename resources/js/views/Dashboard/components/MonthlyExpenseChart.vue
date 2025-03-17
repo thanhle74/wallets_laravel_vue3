@@ -90,12 +90,3 @@ const renderChart = () => {
 onMounted(fetchChartData);
 watch([expensesData, incomeData, daysOfMonth], renderChart);
 </script>
-
-<style scoped>
-.chart-container {
-    width: 50%;
-    height: 400px;
-    position: relative;
-    margin-top: 4rem;
-}
-</style>

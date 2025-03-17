@@ -10,30 +10,35 @@
                 @update="handleUpdateCategory"
                 @cancel="handleCancelUpdate"
             />
-
-            <div class="table-responsive">
-                <table id="myTable" class="table-striped">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
+            <table id="myTable" class="table-striped">
+                <thead>
+                    <tr class="bg-royal-purple text-amethyst-purple">
+                        <th v-if="isAdmin">ID</th>
                         <th>Name</th>
                         <th>Status</th>
-                        <th>Actions</th>
+                        <th class="text-center">Actions</th>
                     </tr>
-                    </thead>
-                    <tbody>
+                </thead>
+                <tbody>
                     <tr v-for="(category, index) in categories" :key="index">
-                        <td>{{ category.id }}</td>
+                        <td v-if="isAdmin">{{ category.id }}</td>
                         <td>{{ category.name }}</td>
                         <td><StatusBadge :status="category.status" /></td>
-                        <td class="table-box-action">
-                            <Button btnClass="btn-edit" icon="ti-pencil" @click="editCategory(category)"/>
-                            <Button btnClass="btn-cancel" icon="ti-trash" @click="confirmDelete(category.id)"/>
+                        <td class="text-center">
+                            <Button 
+                                btnClass="bg-deep-navy text-cerulean-blue mr-1 hover:bg-midnight-blue" 
+                                icon="ti-pencil" 
+                                @click="editCategory(category)"
+                            />
+                            <Button 
+                                btnClass="bg-charcoal-gray text-slate-gray hover:bg-storm-gray hover:text-lavender-gray" 
+                                icon="ti-trash" 
+                                @click="confirmDelete(category.id)"
+                            />
                         </td>
                     </tr>
-                    </tbody>
-                </table>
-            </div>
+                </tbody>
+            </table>
         </div>
 
         <ConfirmDeleteModal
@@ -53,6 +58,7 @@ import CategoryForm from "@/views/Category/components/CategoryForm.vue";
 import Button from "@/components/Button.vue";
 import StatusBadge from "@/components/StatusBadge.vue";
 import {useCategory} from "@/composables/useCategory";
+import {useUserAccount} from "@/composables/Account/useUserAccount";
 import {ref, onMounted, watch, nextTick} from "vue";
 import $ from 'jquery';
 import 'datatables.net';
@@ -68,6 +74,7 @@ const {
     deleteCategory
 } = useCategory();
 
+const {fetchIsAdmin} = useUserAccount();
 const isAdmin = ref(false);
 const deleteConfirmId = ref(null);
 
@@ -113,6 +120,8 @@ watch(categories, (newValue) => {
 });
 
 onMounted(async () => {
+    const result = await fetchIsAdmin();
+    isAdmin.value = result ?? false;
     await fetchCategories();
     initDataTable();
 });

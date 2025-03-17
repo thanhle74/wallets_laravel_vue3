@@ -1,4 +1,3 @@
-<!-- src/components/LoadingSpinner.vue -->
 <template>
     <div class="loading-container">
         <div class="spinner"></div>
@@ -16,7 +15,3 @@ defineProps({
     },
 });
 </script>
-
-<style scoped lang="scss">
-@use "@/assets/scss/components/loading-spinner";
-</style>

@@ -6,5 +6,6 @@
     "Support": true,
     "Dashboard": true,
     "Transaction": true,
-    "Category": true
+    "Category": true,
+    "ModuleMagento": true
 }

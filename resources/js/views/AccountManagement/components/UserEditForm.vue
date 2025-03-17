@@ -45,16 +45,3 @@ defineProps({
 // Emits
 defineEmits(["update", "cancel"]);
 </script>
-
-<style scoped>
-.form-container {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-.button-group {
-    display: flex;
-    gap: 10px;
-    justify-content: flex-end;
-}
-</style>

@@ -1,0 +1,4 @@
+.dp__input {
+    @apply text-sm font-poppins px-4 pl-8 text-color-body bg-background-section border border-border-line rounded-md p-2
+    transition duration-300 ease-in-out focus:outline-none focus:border-amethyst-purple;
+}

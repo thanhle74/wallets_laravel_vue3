@@ -11,7 +11,3 @@ defineProps({
     id: String
 });
 </script>
-
-<style scoped>
-
-</style>

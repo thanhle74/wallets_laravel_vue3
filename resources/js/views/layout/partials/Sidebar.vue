@@ -1,49 +1,21 @@
 <template>
-    <aside>
+    <aside class="w-3xs bg-background-section p-6 min-h-screen">
         <div class="sidebar">
-            <div class="logo">
+            <div class="rounded-(--radius-circle) overflow-hidden w-25 mx-auto">
                 <RouterLink to="/dashboard">
                     <img :src="imageUrl" alt="Sample Image">
                 </RouterLink>
             </div>
-            <div class="sidebar-actions">
-                <button class="btn-setting">
-                    <i class="ti-settings"></i>
-                </button>
-                <button class="btn-logout" @click="handleLogout">
-                    <i class="ti-power-off"></i>
-                </button>
+            <div class="sidebar-actions flex items-center justify-center gap-5 p-5">
+                <Button btnClass="btn-setting text-xs" icon="ti-settings" />
+                <Button btnClass="btn-logout text-xs" icon="ti-power-off" @click="handleLogout" />
             </div>
-            <nav>
+            <nav class="pt-5 border-t border-border-line">
                 <ul>
-                    <li>
-                        <RouterLink to="/dashboard">
-                            <i class="ti-dashboard"></i>
-                            Dashboard
-                        </RouterLink>
-                    </li>
-                    <li>
-                        <RouterLink to="/transaction">
-                            <i class="ti-receipt"></i>
-                            Transaction
-                        </RouterLink>
-                    </li>
-                    <li>
-                        <RouterLink to="/category">
-                            <i class="ti-tag"></i>
-                            Category
-                        </RouterLink>
-                    </li>
-                    <li>
-                        <RouterLink to="/wallet">
-                            <i class="ti-wallet"></i>
-                            Wallet
-                        </RouterLink>
-                    </li>
-                    <li v-if="isAdmin">
-                        <RouterLink to="/users">
-                            <i class="ti-wallet"></i>
-                            Users
+                    <li v-for="(item, index) in filteredMenuItems" :key="index" class="mb-3">
+                        <RouterLink :to="item.to" class="p-2 rounded-md text-sm flex gap-3 items-center transition duration-300 ease-in-out hover:bg-link-bg-hover hover:text-white">
+                            <i :class="item.icon"></i>
+                            {{ item.label }}
                         </RouterLink>
                     </li>
                 </ul>
@@ -58,11 +30,24 @@ import toastr from "toastr";
 import apiClient from "@/services/apiClient";
 import { useUserAccount } from "@/composables/Account/useUserAccount";
 import { useRouter } from "vue-router";
-import {onMounted, ref} from "vue";
+import { onMounted, ref, computed } from "vue";
+import Button from "@/components/Button.vue";
 
 const router = useRouter();
 const { fetchIsAdmin } = useUserAccount();
 const isAdmin = ref(false);
+
+const menuItems = [
+    { label: 'Dashboard', icon: 'ti-dashboard', to: '/dashboard' },
+    { label: 'Transaction', icon: 'ti-receipt', to: '/transaction' },
+    { label: 'Category', icon: 'ti-tag', to: '/category' },
+    { label: 'Wallet', icon: 'ti-wallet', to: '/wallet' },
+    { label: 'Users', icon: 'ti-user', to: '/users', adminOnly: true }
+];
+
+const filteredMenuItems = computed(() => {
+    return menuItems.filter(item => !item.adminOnly || isAdmin.value);
+});
 
 const handleLogout = async () => {
     try {
@@ -76,71 +61,8 @@ const handleLogout = async () => {
     }
 };
 
-
 onMounted(async () => {
     const result = await fetchIsAdmin();
     isAdmin.value = result ?? false;
 });
 </script>
-
-<style scoped>
-.logo {
-    width: 50%;
-    position: relative;
-    border-radius: 50%;
-    overflow: hidden;
-    text-align: center;
-    margin: auto auto 2rem;
-}
-
-nav {
-    border-top: 1px solid #343f5b;
-    padding-top: 2rem;
-}
-.sidebar {
-    padding: 15px;
-    li {
-        margin-bottom: 1rem;
-        a {
-            display: block;
-            padding: 12px 15px;
-            transition: all .3s ease;
-            border-radius: 5px;
-            &:hover {
-                background-color: #e1def514;
-                color: #fff;
-                border-radius: 5px;
-            }
-            &.router-link-active {
-                background-color: #685dd8;
-                color: #fff;
-            }
-        }
-    }
-
-    i {
-        margin-right: 1rem;
-        font-size: 1.4rem;
-    }
-}
-
-.sidebar-actions {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin: 2rem 0;
-}
-
-.btn-setting, .btn-logout {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1.4rem;
-    color: #b2b9bf;
-    transition: color 0.3s;
-}
-
-.btn-setting:hover, .btn-logout:hover {
-    color: #685dd8;
-}
-</style>

@@ -11,35 +11,41 @@
                 @cancel="handleCancelUpdate"
             />
 
-            <div class="table-responsive">
-                <table id="walletTable" class="table-striped">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
+            <table id="walletTable">
+                <thead>
+                    <tr class="bg-royal-purple text-amethyst-purple">
+                        <th v-if="isAdmin">ID</th>
                         <th>Name</th>
                         <th>Balance</th>
                         <th>Type</th>
                         <th>Status</th>
                         <th v-if="isAdmin">User</th>
-                        <th>Actions</th>
+                        <th class="text-center">Actions</th>
                     </tr>
-                    </thead>
-                    <tbody>
+                </thead>
+                <tbody>
                     <tr v-for="(wallet, index) in wallets" :key="index">
-                        <td>{{ wallet.id }}</td>
+                        <td v-if="isAdmin">{{ wallet.id }}</td>
                         <td>{{ wallet.name }}</td>
                         <td>{{ Number(wallet.balance || 0).toLocaleString("vi-VN") }} đ</td>
-                        <td>{{ getTypeText(wallet.type)}}</td>
-                        <td><StatusBadge :status="wallet.status" /></td>
+                        <td>{{ getTypeText(wallet.type) }}</td>
+                        <td><StatusBadge :status="wallet.status"/></td>
                         <td v-if="isAdmin">{{ wallet.user.name }}</td>
-                        <td class="table-box-action">
-                            <Button btnClass="btn-edit" icon="ti-pencil" @click="editWallet(wallet)"/>
-                            <Button btnClass="btn-cancel" icon="ti-trash" @click="confirmDelete(wallet.id)"/>
+                        <td class="text-center">
+                            <Button
+                                btnClass="bg-deep-navy text-cerulean-blue mr-1 hover:bg-midnight-blue"
+                                icon="ti-pencil"
+                                @click="editWallet(wallet)"
+                            />
+                            <Button
+                                btnClass="bg-charcoal-gray text-slate-gray hover:bg-storm-gray hover:text-lavender-gray"
+                                icon="ti-trash"
+                                @click="confirmDelete(wallet.id)"
+                            />
                         </td>
                     </tr>
-                    </tbody>
-                </table>
-            </div>
+                </tbody>
+            </table>
         </div>
 
         <ConfirmDeleteModal
@@ -58,14 +64,14 @@ import ConfirmDeleteModal from "@/components/ConfirmDeleteModal.vue";
 import WalletForm from "@/views/Wallet/components/WalletForm.vue";
 import Button from "@/components/Button.vue";
 import StatusBadge from "@/components/StatusBadge.vue";
-import { useUserAccount } from "@/composables/Account/useUserAccount";
-import { useWallet } from "@/composables/Wallet/useWallet";
-import { ref, onMounted, watch, nextTick } from "vue";
+import {useUserAccount} from "@/composables/Account/useUserAccount";
+import {useWallet} from "@/composables/Wallet/useWallet";
+import {ref, onMounted, watch, nextTick} from "vue";
 import $ from 'jquery';
 import 'datatables.net';
 
-const { wallets, newWallet, editedWallet, isLoading, fetchWallets, addWallet, deleteWallet, updateWallet,} = useWallet();
-const { fetchIsAdmin } = useUserAccount();
+const {wallets, newWallet, editedWallet, isLoading, fetchWallets, addWallet, deleteWallet, updateWallet,} = useWallet();
+const {fetchIsAdmin} = useUserAccount();
 const isAdmin = ref(false);
 const deleteConfirmId = ref(null);
 
@@ -93,7 +99,7 @@ const confirmDelete = (id) => {
 };
 
 const editWallet = (wallet) => {
-    editedWallet.value = { ...wallet };
+    editedWallet.value = {...wallet};
 };
 
 const initDataTable = () => {
@@ -118,13 +124,13 @@ onMounted(async () => {
 });
 
 const getTypeText = (type) => {
-    if(type === 1) {
+    if (type === 1) {
         return "Bank";
     }
-    if(type === 2) {
+    if (type === 2) {
         return "Cash";
     }
-    if(type === 3) {
+    if (type === 3) {
         return "Crypto";
     }
 }

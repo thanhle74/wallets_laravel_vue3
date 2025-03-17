@@ -3,6 +3,7 @@ import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
 import path from 'path';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
+import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
     base: '/',
@@ -12,6 +13,7 @@ export default defineConfig({
             refresh: true,
         }),
         vue(),
+        tailwindcss(),
         viteStaticCopy({
             targets: [
                 {

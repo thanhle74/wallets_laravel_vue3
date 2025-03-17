@@ -1,0 +1,23 @@
+.dt-layout-row:not(.dt-layout-table) {
+    @apply flex justify-between items-center my-4;
+}
+
+.dt-search, .dt-length {
+    @apply flex items-center gap-3;
+}
+
+/* .dt-length select {
+    @apply border border-border-line rounded-md p-1 focus:border-amethyst-purple active:border-amethyst-purple;
+} */
+
+.dt-paging nav {
+    @apply flex items-center gap-2;
+}
+
+.dt-paging nav button {
+    @apply text-slate-gray px-2 py-1 focus:border-amethyst-purple active:border-amethyst-purple bg-navigation rounded-xs
+    hover:bg-royal-purple hover:text-amethyst-purple;
+}
+.dt-paging nav button.current {
+    @apply bg-royal-purple text-amethyst-purple;
+}

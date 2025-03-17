@@ -56,11 +56,3 @@ onMounted(() => {
     fetchWallets();
 });
 </script>
-
-<style scoped>
-.filter-container {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-</style>
