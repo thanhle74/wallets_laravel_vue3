@@ -33,7 +33,7 @@ class UserAccountController extends BaseControllerApi
     {
         $ids = $request->input('ids', []);
         if (empty($ids) || !is_array($ids)) {
-            return $this->errorResponse('No users selected or invalid format', ResponseAlias::HTTP_BAD_REQUEST);
+            return $this->errorResponse('No users selected or invalid format');
         }
 
         $ids = array_map('intval', $ids);

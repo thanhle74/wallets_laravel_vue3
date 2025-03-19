@@ -11,6 +11,7 @@ use Modules\Wallet\Models\Wallet;
 use Modules\Support\Enums\UserRole;
 use Modules\Wallet\Http\Requests\WalletStoreRequest;
 use Modules\Wallet\Http\Requests\WalletUpdateRequest;
+use Illuminate\Http\Request;
 
 class WalletController extends BaseControllerApi
 {
@@ -49,7 +50,7 @@ class WalletController extends BaseControllerApi
 
     public function show(Wallet $wallet): JsonResponse
     {
-        if ($wallet->user_id !== auth()->id()) {
+        if ($wallet->user_id !== auth()->id() && !auth()->user()->hasRole('admin')) {
             return $this->errorResponse(
                 'Unauthorized: You do not have permission to view this wallet.',
                 ResponseAlias::HTTP_FORBIDDEN
@@ -61,7 +62,7 @@ class WalletController extends BaseControllerApi
 
     public function update(WalletUpdateRequest $request, Wallet $wallet): JsonResponse
     {
-        if ($wallet->user_id !== auth()->id()) {
+        if ($wallet->user_id !== auth()->id() && !auth()->user()->hasRole('admin')) {
             return $this->errorResponse(
                 'Unauthorized: You do not have permission to update this wallet.',
                 ResponseAlias::HTTP_FORBIDDEN
@@ -94,5 +95,25 @@ class WalletController extends BaseControllerApi
         $wallet->delete();
 
         return $this->successResponse([], 'Wallet deleted successfully');
+    }
+
+    public function massDelete(Request $request): JsonResponse
+    {
+        $ids = $request->input('ids', []);
+        if (empty($ids) || !is_array($ids)) {
+            return $this->errorResponse('No users selected or invalid format');
+        }
+
+        $ids = array_map('intval', $ids);
+
+        $users = Wallet::whereIn('id', $ids)->get();
+
+        if ($users->isEmpty()) {
+            return $this->errorResponse('No users found to delete', ResponseAlias::HTTP_NOT_FOUND);
+        }
+
+        Wallet::whereIn('id', $ids)->delete();
+
+        return $this->successResponse(['message' => count($users) . ' users deleted successfully'], 'Wallets deleted successfully');
     }
 }

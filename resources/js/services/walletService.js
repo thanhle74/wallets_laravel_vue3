@@ -16,6 +16,9 @@ const walletService = {
     delete(id) {
         return apiClient.delete(`/wallets/${id}`);
     },
+    massDelete(ids) {
+        return apiClient.post("/wallets/mass-delete", { ids });
+    },
 };
 
 export default walletService;

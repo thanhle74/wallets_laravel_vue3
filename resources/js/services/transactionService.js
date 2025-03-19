@@ -16,6 +16,9 @@ const transactionService = {
     delete(id) {
         return apiClient.delete(`/transactions/${id}`);
     },
+    massDelete(ids) {
+        return apiClient.post("/transactions/mass-delete", { ids });
+    },
 };
 
 export default transactionService;

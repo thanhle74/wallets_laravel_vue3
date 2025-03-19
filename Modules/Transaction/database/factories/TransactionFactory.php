@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Database\Factories;
+namespace Modules\Transaction\Database\Factories;
 
-use App\Models\Transaction;
+use Modules\Transaction\Models\Transaction;
 use App\Models\User;
-use App\Models\Category;
-use App\Models\Wallet;
+use Modules\Category\Models\Category;
+use Modules\Wallet\Models\Wallet;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TransactionFactory extends Factory

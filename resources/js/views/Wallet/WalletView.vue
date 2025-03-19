@@ -3,28 +3,38 @@
         <LoadingSpinner v-if="isLoading" message="Loading wallets..."/>
 
         <div v-else>
-            <WalletForm
-                :wallet="newWallet"
-                :isEditing="editedWallet"
-                @create="handleAddWallet"
-                @update="handleUpdateWallet"
-                @cancel="handleCancelUpdate"
-            />
+            <BulkActionsWithForm
+                :bulkAction="bulkAction"
+                @update:bulkAction="bulkAction = $event"
+                :selectedItems="selectedItems"
+                :confirmMassDelete="confirmMassDelete"
+                :handleBulkAction="handleBulkAction"
+            >
+                <template #form>
+                    <WalletForm
+                        :wallet="newItem"
+                        :isEditing="editedItem"
+                        @create="addItem"
+                        @update="updateItem"
+                        @cancel="handleCancelUpdate"
+                    />
+                </template>
+            </BulkActionsWithForm>
 
-            <table id="walletTable">
-                <thead>
-                    <tr class="bg-royal-purple text-amethyst-purple">
-                        <th v-if="isAdmin">ID</th>
-                        <th>Name</th>
-                        <th>Balance</th>
-                        <th>Type</th>
-                        <th>Status</th>
-                        <th v-if="isAdmin">User</th>
-                        <th class="text-center">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(wallet, index) in wallets" :key="index">
+            <DataTable>
+                <template #thead>
+                    <th></th>
+                    <th v-if="isAdmin">ID</th>
+                    <th>Name</th>
+                    <th>Balance</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th v-if="isAdmin">User</th>
+                    <th class="text-center">Actions</th>
+                </template>
+                <template #tbody>
+                    <tr v-for="(wallet, index) in items" :key="index">
+                        <td class="text-center"><input type="checkbox" :value="wallet.id" v-model="selectedItems" /></td>
                         <td v-if="isAdmin">{{ wallet.id }}</td>
                         <td>{{ wallet.name }}</td>
                         <td>{{ Number(wallet.balance || 0).toLocaleString("vi-VN") }} đ</td>
@@ -35,24 +45,19 @@
                             <Button
                                 btnClass="bg-deep-navy text-cerulean-blue mr-1 hover:bg-midnight-blue"
                                 icon="ti-pencil"
-                                @click="editWallet(wallet)"
-                            />
-                            <Button
-                                btnClass="bg-charcoal-gray text-slate-gray hover:bg-storm-gray hover:text-lavender-gray"
-                                icon="ti-trash"
-                                @click="confirmDelete(wallet.id)"
+                                @click="editItem(wallet)"
                             />
                         </td>
                     </tr>
-                </tbody>
-            </table>
+                </template>
+            </DataTable>
         </div>
 
         <ConfirmDeleteModal
-            :show="deleteConfirmId !== null"
-            message="Are you sure you want to delete this wallet?"
-            @confirm="handleDeleteWallet"
-            @cancel="deleteConfirmId = null"
+            :show="deleteMassConfirm"
+            message="Are you sure you want to delete selected wallets?"
+            @confirm="handleMassDelete"
+            @cancel="deleteMassConfirm = false"
         />
     </MainLayout>
 </template>
@@ -64,64 +69,28 @@ import ConfirmDeleteModal from "@/components/ConfirmDeleteModal.vue";
 import WalletForm from "@/views/Wallet/components/WalletForm.vue";
 import Button from "@/components/Button.vue";
 import StatusBadge from "@/components/StatusBadge.vue";
-import {useUserAccount} from "@/composables/Account/useUserAccount";
+import DataTable from "@/components/DataTable.vue";
+import BulkActionsWithForm from "@/components/BulkActionsWithForm.vue";
 import {useWallet} from "@/composables/Wallet/useWallet";
-import {ref, onMounted, watch, nextTick} from "vue";
-import $ from 'jquery';
-import 'datatables.net';
-
-const {wallets, newWallet, editedWallet, isLoading, fetchWallets, addWallet, deleteWallet, updateWallet,} = useWallet();
-const {fetchIsAdmin} = useUserAccount();
-const isAdmin = ref(false);
-const deleteConfirmId = ref(null);
-
-const handleAddWallet = async () => {
-    await addWallet();
-};
-
-const handleUpdateWallet = async () => {
-    await updateWallet();
-};
-
-const handleDeleteWallet = async () => {
-    if (!deleteConfirmId.value) return;
-
-    await deleteWallet(deleteConfirmId.value);
-    deleteConfirmId.value = null;
-};
-
-const handleCancelUpdate = () => {
-    editedWallet.value = false;
-};
-
-const confirmDelete = (id) => {
-    deleteConfirmId.value = id;
-};
-
-const editWallet = (wallet) => {
-    editedWallet.value = {...wallet};
-};
-
-const initDataTable = () => {
-    nextTick(() => {
-        let table = $("#walletTable");
-        table.DataTable().destroy();
-        table.DataTable();
-    });
-};
-
-watch(wallets, (newValue) => {
-    if (newValue.length) {
-        initDataTable();
-    }
-});
-
-onMounted(async () => {
-    const result = await fetchIsAdmin();
-    isAdmin.value = result ?? false;
-    await fetchWallets();
-    initDataTable();
-});
+import { useCrudPage } from "@/composables/useCrudPage.js";
+import CategoryForm from "@/views/Category/components/CategoryForm.vue";
+const {
+    items,
+    newItem,
+    editedItem,
+    isLoading,
+    addItem,
+    isAdmin,
+    updateItem,
+    selectedItems,
+    deleteMassConfirm,
+    bulkAction,
+    confirmMassDelete,
+    handleMassDelete,
+    handleBulkAction,
+    handleCancelUpdate,
+    editItem,
+} = useCrudPage(useWallet);
 
 const getTypeText = (type) => {
     if (type === 1) {

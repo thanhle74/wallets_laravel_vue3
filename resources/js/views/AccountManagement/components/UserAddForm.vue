@@ -57,7 +57,7 @@
                         <select v-model="user.status" required
                             class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
                             <option :value="1">Active</option>
-                            <option :value="0">Disabled</option>
+                            <option :value="2">Disabled</option>
                         </select>
                     </div>
                 </div>
@@ -118,7 +118,7 @@
                         <select v-model="isEditing.status" required
                             class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
                             <option :value="1">Active</option>
-                            <option :value="0">Disabled</option>
+                            <option :value="2">Disabled</option>
                         </select>
                     </div>
                 </div>

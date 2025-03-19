@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Support\Enums\Type;
 use Modules\Support\Enums\Status;
 use Modules\AccountManagement\Models\User;
+use Modules\Wallet\Database\Factories\WalletFactory;
 
 class Wallet extends Model
 {
@@ -31,5 +32,10 @@ class Wallet extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    protected static function newFactory(): WalletFactory
+    {
+        return WalletFactory::new();
     }
 }

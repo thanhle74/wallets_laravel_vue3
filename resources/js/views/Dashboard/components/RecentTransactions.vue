@@ -1,9 +1,9 @@
 <template>
-    <div class="recent-transactions">
-        <h3>Recent Transactions</h3>
+    <div class="col-span-6">
+        <h3 class="text-lg mb-2">Recent Transactions</h3>
         <table>
             <thead>
-            <tr>
+            <tr class="bg-royal-purple text-amethyst-purple">
                 <th>Ví</th>
                 <th>Danh mục</th>
                 <th>Số tiền</th>

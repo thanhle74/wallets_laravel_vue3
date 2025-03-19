@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\AccountManagement\Models\User;
 use Modules\Category\Models\Category;
 use Modules\Wallet\Models\Wallet;
+use Modules\Transaction\Database\Factories\TransactionFactory;
 
 class Transaction extends Model
 {
@@ -37,5 +38,10 @@ class Transaction extends Model
     public function wallet(): BelongsTo
     {
         return $this->belongsTo(Wallet::class);
+    }
+
+    protected static function newFactory(): TransactionFactory
+    {
+        return TransactionFactory::new();
     }
 }

@@ -134,4 +134,24 @@ class TransactionController extends BaseControllerApi
 
         return $this->successResponse([], 'Transaction deleted successfully');
     }
+
+    public function massDelete(Request $request): JsonResponse
+    {
+        $ids = $request->input('ids', []);
+        if (empty($ids) || !is_array($ids)) {
+            return $this->errorResponse('No users selected or invalid format');
+        }
+
+        $ids = array_map('intval', $ids);
+
+        $users = Transaction::whereIn('id', $ids)->get();
+
+        if ($users->isEmpty()) {
+            return $this->errorResponse('No users found to delete', ResponseAlias::HTTP_NOT_FOUND);
+        }
+
+        Transaction::whereIn('id', $ids)->delete();
+
+        return $this->successResponse(['message' => count($users) . ' users deleted successfully'], 'Transactions deleted successfully');
+    }
 }

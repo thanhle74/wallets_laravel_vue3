@@ -5,4 +5,5 @@ use Modules\Wallet\Http\Controllers\WalletController;
 
 Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
     Route::apiResource('wallets', WalletController::class);
+    Route::post('wallets/mass-delete', [WalletController::class, 'massDelete']);
 });

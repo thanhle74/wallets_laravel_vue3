@@ -3,37 +3,35 @@
         <LoadingSpinner v-if="isLoading" message="Loading users..." />
 
         <div v-else>
-            <div class="flex justify-between items-center mb-8">
-                <div class="flex gap-4">
-                    <select v-model="bulkAction" @change="handleBulkAction" class="form-select w-auto">
-                        <option value="">Bulk Actions</option>
-                        <option value="selectAll">Select All</option>
-                        <option value="unselectAll">Unselect All</option>
-                    </select>
-
-                    <Button btnClass="bg-mulberry-purple text-torch-red rounded-md hover:bg-button-red-hover"
-                        icon="ti-trash" :disabled="!selectedUsers.length" @click="confirmMassDelete"
-                        label="Delete Selected" />
-                </div>
-                <Button btnClass="bg-indigo-night text-amethyst-purple rounded-md hover:bg-royal-purple" icon="ti-plus"
-                    text="Add User" @click="showForm = true" />
-            </div>
-            <table id="userTable" class="table-striped">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Status</th>
-                        <th class="text-center">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(user, index) in users" :key="index">
+            <BulkActionsWithForm
+                :bulkAction="bulkAction"
+                @update:bulkAction="bulkAction = $event"
+                :selectedItems="selectedItems"
+                :confirmMassDelete="confirmMassDelete"
+                :handleBulkAction="handleBulkAction"
+            >
+                <template #form>
+                    <Button
+                        btnClass="bg-indigo-night text-amethyst-purple rounded-md hover:bg-royal-purple"
+                        icon="ti-plus"
+                        text="Add User"
+                        @click="showForm = true" />
+                </template>
+            </BulkActionsWithForm>
+            <DataTable>
+                <template #thead>
+                    <th></th>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th class="text-center">Actions</th>
+                </template>
+                <template #tbody>
+                    <tr v-for="(user, index) in items" :key="index">
                         <td>
-                            <input type="checkbox" :value="user.id" v-model="selectedUsers" />
+                            <input type="checkbox" :value="user.id" v-model="selectedItems" />
                         </td>
                         <td>{{ user.id }}</td>
                         <td>{{ user.name }}</td>
@@ -43,120 +41,59 @@
                             <StatusBadge :status="user.status" />
                         </td>
                         <td class="text-center">
-                            <Button btnClass="bg-deep-navy text-cerulean-blue mr-1 hover:bg-midnight-blue"
-                                icon="ti-pencil" @click="editUser(user)" />
-                            <!-- <Button btnClass="btn-cancel" icon="ti-trash" @click="confirmDelete(user.id)" /> -->
+                            <Button
+                                btnClass="bg-deep-navy text-cerulean-blue mr-1 hover:bg-midnight-blue"
+                                icon="ti-pencil"
+                                @click="editItem(user)"
+                            />
                         </td>
                     </tr>
-                </tbody>
-            </table>
+                </template>
+            </DataTable>
         </div>
-        <UserAddForm :user="newUser" :show="showForm" :isEditing="editedUser" @create="handleUser"
-            @update="handleUpdateUser" @cancel="handleCancelUpdate" />
-        <ConfirmDeleteModal :show="deleteMassConfirm" message="Are you sure you want to delete selected users?"
-            @confirm="handleMassDelete" @cancel="deleteMassConfirm = false" />
-        <ConfirmDeleteModal :show="deleteConfirmId !== null" message="Are you sure you want to delete this user?"
-            @confirm="handleDeleteUser" @cancel="deleteConfirmId = null" />
+        <UserAddForm
+            :user="newItem"
+            :show="showForm"
+            :isEditing="editedItem"
+            @create="addItem"
+            @update="updateItem"
+            @cancel="handleCancelUpdate" />
+        <ConfirmDeleteModal
+            :show="deleteMassConfirm"
+            message="Are you sure you want to delete selected users?"
+            @confirm="handleMassDelete" @cancel="deleteMassConfirm = false"
+        />
     </MainLayout>
 </template>
 
 <script setup>
-import { ref, onMounted, watch, nextTick } from "vue";
-import $ from 'jquery';
-import 'datatables.net';
-
 import MainLayout from '@/views/layout/MainLayout.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import ConfirmDeleteModal from "@/components/ConfirmDeleteModal.vue";
 import Button from "@/components/Button.vue";
 import StatusBadge from "@/components/StatusBadge.vue";
 import UserAddForm from "@/views/AccountManagement/components/UserAddForm.vue";
-// import UserEditForm from "@/views/AccountManagement/components/UserEditForm.vue";
+import DataTable from "@/components/DataTable.vue";
+import BulkActionsWithForm from "@/components/BulkActionsWithForm.vue";
 import { useAccountManagement } from "@/composables/Account/useAccountManagement";
-import { isAdminHelper } from "@/composables/helper/isAdminHelper";
+import { useCrudPage } from "@/composables/useCrudPage.js";
 
 const {
-    users,
-    newUser,
-    editedUser,
+    items,
+    newItem,
+    editedItem,
     isLoading,
-    fetchUsers,
-    addUser,
-    deleteUser,
-    updateUser,
-    massDeleteUsers,
-} = useAccountManagement();
-
-const { fetchIsAdmin } = isAdminHelper();
-const isAdmin = ref(false);
-const deleteConfirmId = ref(null);
-const deleteMassConfirm = ref(false);
-const selectedUsers = ref([]);
-const bulkAction = ref("");
-const showForm = ref(false);
-
-const handleUser = async () => {
-    await addUser();
-    handleCancelUpdate();
-};
-const handleUpdateUser = async () => {
-    await updateUser()
-    handleCancelUpdate();
-};
-const handleCancelUpdate = () => {
-    showForm.value = false
-    editedUser.value = false
-};
-const confirmDelete = (id) => (deleteConfirmId.value = id);
-const editUser = (user) => {
-    showForm.value = true
-    editedUser.value = { ...user }
-};
-
-const handleDeleteUser = async () => {
-    if (!deleteConfirmId.value) return;
-    await deleteUser(deleteConfirmId.value);
-    deleteConfirmId.value = null;
-    await fetchUsers();
-};
-
-const confirmMassDelete = () => {
-    if (selectedUsers.value.length) deleteMassConfirm.value = true;
-};
-
-const handleMassDelete = async () => {
-    await massDeleteUsers(selectedUsers.value);
-    deleteMassConfirm.value = false;
-    selectedUsers.value = [];
-    await fetchUsers();
-};
-
-const handleBulkAction = () => {
-    if (bulkAction.value === "selectAll") {
-        selectedUsers.value = users.value.slice(0, 10).map(u => u.id);
-    } else if (bulkAction.value === "unselectAll") {
-        selectedUsers.value = [];
-    }
-    bulkAction.value = "";
-};
-
-const initDataTable = () => {
-    nextTick(() => {
-        let table = $("#userTable");
-        if ($.fn.DataTable.isDataTable(table)) {
-            table.DataTable().destroy();
-        }
-        table.DataTable();
-    });
-};
-
-watch(users, (newValue) => {
-    if (newValue.length) initDataTable();
-});
-
-onMounted(async () => {
-    await fetchUsers();
-    isAdmin.value = await fetchIsAdmin();
-    initDataTable();
-});
+    addItem,
+    isAdmin,
+    updateItem,
+    selectedItems,
+    deleteMassConfirm,
+    bulkAction,
+    showForm,
+    confirmMassDelete,
+    handleMassDelete,
+    handleBulkAction,
+    handleCancelUpdate,
+    editItem,
+} = useCrudPage(useAccountManagement);
 </script>

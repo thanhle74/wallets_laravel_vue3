@@ -12,58 +12,66 @@
             </div>
             <nav class="pt-5 border-t border-border-line">
                 <ul>
-                    <li v-for="(item, index) in filteredMenuItems" :key="index" class="mb-3">
-                        <RouterLink :to="item.to" class="p-2 rounded-md text-sm flex gap-3 items-center transition duration-300 ease-in-out hover:bg-link-bg-hover hover:text-white">
-                            <i :class="item.icon"></i>
-                            {{ item.label }}
-                        </RouterLink>
+                    <SidebarItem url="/dashboard" icon="ti-dashboard" label="Dashboard"/>
+                    <li>
+                        <div
+                            class="p-2 rounded-md mb-2 text-sm flex gap-3 items-center justify-between transition duration-300
+                            ease-in-out cursor-pointer hover:bg-link-bg-hover hover:text-white"
+                            @click="toggleDropdown"
+                        >
+                            <span class="flex gap-3">
+                                <i class="ti-money"></i>
+                                Finance
+                            </span>
+                            <i :class="isDropdownOpen ? 'ti-angle-down rotate-180' : 'ti-angle-down'"></i>
+                        </div>
+                        <ul v-if="isDropdownOpen" class="ml-5 border-l border-border-line pl-4 mt-2">
+                            <SidebarItem url="/transaction" icon="ti-receipt" label="Transactions"/>
+                            <SidebarItem url="/category" icon="ti-tag" label="Categories"/>
+                            <SidebarItem url="/wallet" icon="ti-wallet" label="Wallets"/>
+                        </ul>
                     </li>
+
+                    <SidebarItem url="/users" icon="ti-user" label="Users"/>
+                    <SidebarItem url="/admin-tool" icon="ti-settings" label="Tools"/>
                 </ul>
             </nav>
         </div>
     </aside>
 </template>
-
 <script setup>
 import imageUrl from '@/assets/images/logo.jpg';
-import toastr from "toastr";
-import apiClient from "@/services/apiClient";
 import { useUserAccount } from "@/composables/Account/useUserAccount";
-import { useRouter } from "vue-router";
-import { onMounted, ref, computed } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { onMounted, ref, watch } from "vue";
 import Button from "@/components/Button.vue";
+import SidebarItem from "@/views/layout/partials/components/SidebarItem.vue";
 
-const router = useRouter();
+const route = useRoute();
 const { fetchIsAdmin } = useUserAccount();
 const isAdmin = ref(false);
+const isDropdownOpen = ref(false);
+const router = useRouter();
+const { logout } = useUserAccount(router);
 
-const menuItems = [
-    { label: 'Dashboard', icon: 'ti-dashboard', to: '/dashboard' },
-    { label: 'Transaction', icon: 'ti-receipt', to: '/transaction' },
-    { label: 'Category', icon: 'ti-tag', to: '/category' },
-    { label: 'Wallet', icon: 'ti-wallet', to: '/wallet' },
-    { label: 'Users', icon: 'ti-user', to: '/users', adminOnly: true },
-    { label: 'Tool', icon: 'ti-settings', to: '/admin-tool', adminOnly: true }
-];
+const checkCurrentRoute = () => {
+    const transactionRoutes = ["/transaction", "/category", "/wallet"];
+    isDropdownOpen.value = transactionRoutes.includes(route.path);
+};
 
-const filteredMenuItems = computed(() => {
-    return menuItems.filter(item => !item.adminOnly || isAdmin.value);
-});
+const toggleDropdown = () => {
+    isDropdownOpen.value = !isDropdownOpen.value;
+};
+
+watch(route, checkCurrentRoute, { immediate: true });
 
 const handleLogout = async () => {
-    try {
-        const response = await apiClient.post('/logout');
-        localStorage.removeItem("token");
-        toastr.success(response.data.message);
-        await router.push('/');
-    } catch (error) {
-        toastr.error("Logout failed!");
-        console.error("Logout error:", error);
-    }
+    await logout();
 };
 
 onMounted(async () => {
     const result = await fetchIsAdmin();
     isAdmin.value = result ?? false;
+    checkCurrentRoute();
 });
 </script>

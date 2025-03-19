@@ -1,12 +1,13 @@
 <?php
+declare(strict_types=1);
 
-namespace Database\Factories;
+namespace Modules\Wallet\Database\Factories;
 
 use App\Models\User;
-use App\Models\Wallet;
+use Modules\Wallet\Models\Wallet;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Enums\Type;
-use App\Enums\Status;
+use Modules\Support\Enums\Type;
+use Modules\Support\Enums\Status;
 
 class WalletFactory extends Factory
 {

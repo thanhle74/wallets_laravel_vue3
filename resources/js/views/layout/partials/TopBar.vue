@@ -20,10 +20,9 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted, defineProps } from "vue";
-import { useRouter } from "vue-router";
 import TopBarItem from "@/views/layout/partials/components/TopBarItem.vue";
-import apiClient from "@/services/apiClient";
-import toastr from "toastr";
+import {useUserAccount} from "@/composables/Account/useUserAccount.js";
+import { useRouter } from "vue-router";
 
 defineProps({
     title: {
@@ -32,25 +31,18 @@ defineProps({
     },
 });
 
-const router = useRouter();
 const user = ref({ name: "John Doe" });
 const dropdownOpen = ref(false);
 const menuRef = ref(null);
+const router = useRouter();
+const { logout } = useUserAccount(router);
 
 const toggleDropdown = () => {
     dropdownOpen.value = !dropdownOpen.value;
 };
 
 const handleLogout = async () => {
-    try {
-        const response = await apiClient.post('/logout');
-        localStorage.removeItem("token");
-        toastr.success(response.data.message);
-        await router.push('/');
-    } catch (error) {
-        toastr.error("Logout failed!");
-        console.error("Logout error:", error);
-    }
+    await logout();
 };
 
 const handleClickOutside = (event) => {

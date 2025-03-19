@@ -16,6 +16,9 @@ const categoryService = {
     delete(id) {
         return apiClient.delete(`/categories/${id}`);
     },
+    massDelete(ids) {
+        return apiClient.post("/categories/mass-delete", { ids });
+    },
 };
 
 export default categoryService;

@@ -1,9 +1,9 @@
 <template>
-    <div class="top-categories">
-        <h3>Top Spending Categories</h3>
+    <div class="col-span-6">
+        <h3 class="text-lg mb-2">Top Spending Categories</h3>
         <table>
             <thead>
-            <tr>
+            <tr class="bg-royal-purple text-amethyst-purple">
                 <th>Danh mục</th>
                 <th>Tổng chi tiêu</th>
             </tr>

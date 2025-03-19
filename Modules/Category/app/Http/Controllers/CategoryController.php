@@ -11,6 +11,7 @@ use Modules\Category\Http\Requests\CategoryUpdateRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
+use Illuminate\Http\Request;
 
 class CategoryController extends BaseControllerApi
 {
@@ -48,7 +49,7 @@ class CategoryController extends BaseControllerApi
     public function update(CategoryUpdateRequest $request, Category $category): JsonResponse
     {
         try {
-            if ($category->user_id !== auth()->id()) {
+            if ($category->user_id !== auth()->id() && !auth()->user()->hasRole('admin')) {
                 return $this->errorResponse(
                     'Unauthorized: You do not have permission to update this category.',
                     ResponseAlias::HTTP_FORBIDDEN
@@ -81,5 +82,25 @@ class CategoryController extends BaseControllerApi
         $category->delete();
 
         return $this->successResponse($category->toArray(), 'Category deleted successfully');
+    }
+
+    public function massDelete(Request $request): JsonResponse
+    {
+        $ids = $request->input('ids', []);
+        if (empty($ids) || !is_array($ids)) {
+            return $this->errorResponse('No users selected or invalid format');
+        }
+
+        $ids = array_map('intval', $ids);
+
+        $users = Category::whereIn('id', $ids)->get();
+
+        if ($users->isEmpty()) {
+            return $this->errorResponse('No users found to delete', ResponseAlias::HTTP_NOT_FOUND);
+        }
+
+        Category::whereIn('id', $ids)->delete();
+
+        return $this->successResponse(['message' => count($users) . ' users deleted successfully'], 'Categories deleted successfully');
     }
 }
