@@ -27,5 +27,9 @@
     --color-color-active: #28c76f;
     --color-modal-overlay: #00000080;
     --color-button-red-hover: #61394b;
+    --color-button-warning-text: #ff9f43;
+    --color-button-warning-bg: #504448;
+    --color-button-warning-hover-text: #614d48;
+
     --radius-circle: 50%;
 }

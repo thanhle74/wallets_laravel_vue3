@@ -1,26 +1,42 @@
 <template>
-    <div class="main-wrapper">
-        <div class="login-container">
-            <div class="login-box">
-                <div class="logo">
-                    <img :src="imageUrl" alt="Sample Image">
-                </div>
-                <form class="login-form" @submit.prevent="handleLogin">
-                    <div class="input-group">
-                        <i class="ti-user"></i>
-                        <input type="email" v-model="loginForm.email" autocomplete="username" placeholder="Email" required />
-                    </div>
-
-                    <div class="input-group">
-                        <i class="ti-lock"></i>
-                        <input type="password" v-model="loginForm.password" autocomplete="current-password" placeholder="Password" required />
-                    </div>
-
-                    <button type="submit" class="btn-login">
-                        <i class="ti-unlock"></i> Login
-                    </button>
-                </form>
+    <div class="flex items-center justify-center h-screen">
+        <div class="w-full max-w-md bg-background-section border border-border-line shadow-lg rounded-lg p-6">
+            <div class="w-24 h-24 mx-auto rounded-full overflow-hidden">
+                <img :src="imageUrl" alt="Logo" class="w-full h-full object-cover">
             </div>
+
+            <form class="space-y-4 mt-4" @submit.prevent="handleLogin">
+                <div class="flex items-center bg-background-body rounded-md px-3 py-2">
+                    <i class="ti-user text-gray-500 mr-2"></i>
+                    <input
+                        type="email"
+                        v-model="loginForm.email"
+                        autocomplete="username"
+                        placeholder="Email"
+                        required
+                        class="w-full bg-transparent outline-none"
+                    />
+                </div>
+
+                <div class="flex items-center bg-background-body rounded-md px-3 py-2">
+                    <i class="ti-lock text-gray-500 mr-2"></i>
+                    <input
+                        type="password"
+                        v-model="loginForm.password"
+                        autocomplete="current-password"
+                        placeholder="Password"
+                        required
+                        class="w-full bg-transparent outline-none"
+                    />
+                </div>
+
+                <Button
+                    btnClass="w-full bg-indigo-night text-amethyst-purple rounded-md hover:bg-royal-purplepy-2 transition"
+                    icon="ti-unlock"
+                    text="Login"
+                    type="submit"
+                />
+            </form>
         </div>
     </div>
 </template>
@@ -31,6 +47,7 @@ import { useRouter } from 'vue-router';
 import apiClient from '@/services/apiClient';
 import toastr from 'toastr';
 import imageUrl from '@/assets/images/logo.jpg';
+import Button from "@/components/Button.vue";
 
 const loginForm = ref({
     email: '',

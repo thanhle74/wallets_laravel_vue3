@@ -1,0 +1,25 @@
+{
+    "name": "nwidart/admintool",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\AdminTool\\": "app/",
+            "Modules\\AdminTool\\Database\\Factories\\": "database/factories/",
+            "Modules\\AdminTool\\Database\\Seeders\\": "database/seeders/"
+        }
+    }
+}

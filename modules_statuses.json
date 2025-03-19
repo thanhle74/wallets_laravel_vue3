@@ -7,5 +7,6 @@
     "Dashboard": true,
     "Transaction": true,
     "Category": true,
-    "ModuleMagento": true
+    "ModuleMagento": true,
+    "AdminTool": true
 }

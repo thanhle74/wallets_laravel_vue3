@@ -1,5 +1,5 @@
 <template>
-    <aside class="w-3xs bg-background-section p-6 min-h-screen">
+    <aside class="col-span-3 bg-background-section p-6 min-h-screen shadow">
         <div class="sidebar">
             <div class="rounded-(--radius-circle) overflow-hidden w-25 mx-auto">
                 <RouterLink to="/dashboard">
@@ -42,7 +42,8 @@ const menuItems = [
     { label: 'Transaction', icon: 'ti-receipt', to: '/transaction' },
     { label: 'Category', icon: 'ti-tag', to: '/category' },
     { label: 'Wallet', icon: 'ti-wallet', to: '/wallet' },
-    { label: 'Users', icon: 'ti-user', to: '/users', adminOnly: true }
+    { label: 'Users', icon: 'ti-user', to: '/users', adminOnly: true },
+    { label: 'Tool', icon: 'ti-settings', to: '/admin-tool', adminOnly: true }
 ];
 
 const filteredMenuItems = computed(() => {

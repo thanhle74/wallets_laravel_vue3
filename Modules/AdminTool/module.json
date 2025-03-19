@@ -1,0 +1,11 @@
+{
+    "name": "AdminTool",
+    "alias": "admintool",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\AdminTool\\Providers\\AdminToolServiceProvider"
+    ],
+    "files": []
+}
