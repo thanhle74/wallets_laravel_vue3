@@ -5,8 +5,9 @@ namespace Modules\Support\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
+use App\Http\Controllers\Controller;
 
-abstract class BaseControllerApi
+abstract class BaseControllerApi extends Controller
 {
     protected function successResponse(array $data,string $message = '',int $code = ResponseAlias::HTTP_OK): JsonResponse
     {

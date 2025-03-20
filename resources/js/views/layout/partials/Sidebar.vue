@@ -1,14 +1,16 @@
 <template>
     <aside class="col-span-3 bg-background-section p-6 min-h-screen shadow">
         <div class="sidebar">
-            <div class="rounded-(--radius-circle) overflow-hidden w-25 mx-auto">
+            <div class="rounded-(--radius-circle) overflow-hidden w-25 mx-auto h-25">
                 <RouterLink to="/dashboard">
-                    <img :src="imageUrl" alt="Sample Image">
+                    <img :src="logoUrl" alt="Sample Image">
                 </RouterLink>
             </div>
             <div class="sidebar-actions flex items-center justify-center gap-5 p-5">
-                <Button btnClass="btn-setting text-xs" icon="ti-settings" />
-                <Button btnClass="btn-logout text-xs" icon="ti-power-off" @click="handleLogout" />
+                <RouterLink to="/profile" class="text-xs link-profile">
+                    <i class="ti-user"></i>
+                </RouterLink>
+                <Button btnClass="text-xs" icon="ti-power-off" @click="handleLogout" />
             </div>
             <nav class="pt-5 border-t border-border-line">
                 <ul>
@@ -32,18 +34,20 @@
                         </ul>
                     </li>
 
-                    <SidebarItem url="/users" icon="ti-user" label="Users"/>
-                    <SidebarItem url="/admin-tool" icon="ti-settings" label="Tools"/>
+                    <SidebarItem url="/users" icon="ti-user" label="Users" v-if="isAdmin"/>
+                    <SidebarItem url="/admin-tool" icon="ti-panel" label="Tools" v-if="isAdmin"/>
+                    <SidebarItem url="/settings" icon="ti-settings" label="Settings" v-if="isAdmin"/>
                 </ul>
             </nav>
         </div>
     </aside>
 </template>
 <script setup>
-import imageUrl from '@/assets/images/logo.jpg';
+// import imageUrl from '@/assets/images/logo.jpg';
 import { useUserAccount } from "@/composables/Account/useUserAccount";
 import { useRouter, useRoute } from "vue-router";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch, computed } from "vue";
+import { useSettings } from "@/composables/Setting/useSettings";
 import Button from "@/components/Button.vue";
 import SidebarItem from "@/views/layout/partials/components/SidebarItem.vue";
 
@@ -53,6 +57,12 @@ const isAdmin = ref(false);
 const isDropdownOpen = ref(false);
 const router = useRouter();
 const { logout } = useUserAccount(router);
+const { settings, fetchSettings } = useSettings();
+
+const logoUrl = computed(() => {
+    const logoSetting = settings.value.find(s => s.key === "logo");
+    return logoSetting?.value || '';
+});
 
 const checkCurrentRoute = () => {
     const transactionRoutes = ["/transaction", "/category", "/wallet"];
@@ -73,5 +83,6 @@ onMounted(async () => {
     const result = await fetchIsAdmin();
     isAdmin.value = result ?? false;
     checkCurrentRoute();
+    await fetchSettings();
 });
 </script>

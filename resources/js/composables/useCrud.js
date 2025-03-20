@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import { messageResponse } from "@/composables/support/messageResponse.js";
+import { messageResponse } from "@/utils/messageResponse.js";
 import toastr from "toastr";
 
 const { handleApiResponse, handleApiError } = messageResponse();

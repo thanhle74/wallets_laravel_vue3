@@ -16,6 +16,11 @@ Route::prefix('v1')->group(function () {
             return response()->json(['authenticated' => true]);
         });
 
+
+        Route::post('/user/update-profile', [UserAccountController::class, 'updateProfile']);
+        Route::post('/user/change-password', [UserAccountController::class, 'changePassword']);
+        Route::get('/user', [UserAccountController::class, 'getProfile']);
+
         Route::middleware(['admin'])->group(function () {
             Route::apiResource('users', AccountManagementController::class);
             Route::post('/users/mass-delete', [UserAccountController::class, 'massDelete']);

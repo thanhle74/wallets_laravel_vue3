@@ -14,7 +14,8 @@
             <tr v-for="(transaction, index) in transactions" :key="index">
                 <td>{{ transaction.wallet_name }}</td>
                 <td>{{ transaction.category_name || 'Unknown' }}</td>
-                <td :class="transaction.is_income ? 'income' : 'expense'">
+                <td class="px-2 py-1 text-xs rounded-xs" 
+                    :class="transaction.is_income ? 'bg-badge-active text-color-active' : 'bg-mulberry-purple text-torch-red'">
                     {{ transaction.is_income ? '+' : '-' }}
                     {{ Number(transaction.amount).toLocaleString("vi-VN") }} đ
                 </td>

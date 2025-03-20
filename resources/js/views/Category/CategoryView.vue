@@ -26,6 +26,7 @@
                     <th v-if="isAdmin">ID</th>
                     <th>Name</th>
                     <th>Status</th>
+                    <th v-if="isAdmin">User</th>
                     <th class="text-center">Actions</th>
                 </template>
                 <template #tbody>
@@ -34,6 +35,7 @@
                         <td v-if="isAdmin">{{ category.id }}</td>
                         <td>{{ category.name }}</td>
                         <td><StatusBadge :status="category.status" /></td>
+                        <td v-if="isAdmin">{{ category.user.name }}</td>
                         <td class="text-center">
                             <Button
                                 btnClass="bg-deep-navy text-cerulean-blue mr-1 hover:bg-midnight-blue"

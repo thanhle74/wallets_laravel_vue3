@@ -2,7 +2,7 @@
     <div class="max-w-7xl mx-auto grid grid-cols-12 gap-8 font-light">
         <Sidebar/>
         <main class="col-span-9">
-            <TopBar :title="title" class="bg-background-section shadow"/>
+            <TopBar :title="title" class="bg-background-section shadow min-h-[56px]"/>
             <div class="page-wapper bg-background-section p-6 rounded-lg shadow">
                 <slot></slot>
             </div>

@@ -7,7 +7,7 @@ export function useUserAccount(router) {
             const response = await apiClient.get("/is-admin");
             return response.data.data.is_admin;
         } catch (error) {
-            console.error("Lỗi khi kiểm tra admin:", error);
+            console.error("Error fetching admin status:", error);
         }
     };
 
@@ -23,5 +23,14 @@ export function useUserAccount(router) {
         }
     };
 
-    return { fetchIsAdmin, logout };
+    const checkAuth = async () => {
+        try {
+            const response = await apiClient.get('/auth/check');
+            return response.status === 200;
+        } catch (error) {
+            return false;
+        }
+    }
+
+    return { fetchIsAdmin, logout, checkAuth };
 }

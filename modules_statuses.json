@@ -8,5 +8,6 @@
     "Transaction": true,
     "Category": true,
     "ModuleMagento": false,
-    "AdminTool": true
+    "AdminTool": true,
+    "Setting": true
 }

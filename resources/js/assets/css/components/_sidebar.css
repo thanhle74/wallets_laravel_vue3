@@ -1,3 +1,3 @@
-.router-link-exact-active {
+.router-link-exact-active:not(.link-profile) {
     @apply bg-royal-purple text-amethyst-purple;
 }
