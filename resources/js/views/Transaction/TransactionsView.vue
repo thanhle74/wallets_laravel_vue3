@@ -75,6 +75,9 @@
 </template>
 
 <script setup>
+import {useTransaction} from "@/composables/Transaction/useTransaction.js";
+import {useCrudPage} from "@/composables/useCrudPage.js";
+import {ref} from "vue";
 import MainLayout from '@/views/layout/MainLayout.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import TransactionDetailModal from "@/views/Transaction/components/TransactionDetailModal.vue";
@@ -84,9 +87,6 @@ import Button from "@/components/Button.vue";
 import ConfirmDeleteModal from "@/components/ConfirmDeleteModal.vue";
 import BulkActionsWithForm from "@/components/BulkActionsWithForm.vue";
 import DataTable from "@/components/DataTable.vue";
-import {useTransaction} from "@/composables/Transaction/useTransaction.js";
-import {useCrudPage} from "@/composables/useCrudPage.js";
-import {ref} from "vue";
 
 const {
     items,

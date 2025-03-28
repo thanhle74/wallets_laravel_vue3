@@ -1,7 +1,7 @@
 <template>
     <table id="myTable">
         <thead>
-            <tr class="bg-royal-purple text-amethyst-purple">
+            <tr class="bg-royal-purple text-amethyst-purple cursor-pointer">
                 <slot name="thead"></slot>
             </tr>
         </thead>
