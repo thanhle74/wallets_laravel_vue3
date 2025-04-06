@@ -36,4 +36,15 @@ export default defineConfig({
             '@': path.resolve(__dirname, 'resources/js'),
         },
     },
+    optimizeDeps: {
+        include: [
+            'highlight.js/lib/core',
+            'highlight.js/lib/languages/javascript',
+            'highlight.js/lib/languages/xml',
+            'highlight.js/lib/languages/css',
+            'highlight.js/lib/languages/typescript',
+            // Thêm các ngôn ngữ khác bạn cần
+        ],
+        exclude: ['highlight.js']
+    }
 });

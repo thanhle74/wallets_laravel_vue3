@@ -1,4 +1,11 @@
 {
+  "_adminToolService-CMfBrorn.js": {
+    "file": "assets/adminToolService-CMfBrorn.js",
+    "name": "adminToolService",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
   "resources/css/app.css": {
     "file": "assets/app-l0sNRNKZ.js",
     "name": "app",
@@ -6,12 +13,17 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-Dksq7qAy.js",
+    "file": "assets/app-CbbzzP8w.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
+    "dynamicImports": [
+      "resources/js/views/AdminTool/components/LaravelCommands.vue",
+      "resources/js/views/AdminTool/components/ModuleManager.vue",
+      "resources/js/views/AdminTool/components/ModuleMagento.vue"
+    ],
     "css": [
-      "assets/app-BN4Gs6M7.css"
+      "assets/app-BPNUawHf.css"
     ],
     "assets": [
       "assets/logo-CxOinUre.jpg",
@@ -40,5 +52,34 @@
   "resources/js/assets/images/logo.jpg": {
     "file": "assets/logo-CxOinUre.jpg",
     "src": "resources/js/assets/images/logo.jpg"
+  },
+  "resources/js/views/AdminTool/components/LaravelCommands.vue": {
+    "file": "assets/LaravelCommands-BRn7jxhf.js",
+    "name": "LaravelCommands",
+    "src": "resources/js/views/AdminTool/components/LaravelCommands.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "_adminToolService-CMfBrorn.js"
+    ]
+  },
+  "resources/js/views/AdminTool/components/ModuleMagento.vue": {
+    "file": "assets/ModuleMagento-BzAfbiwP.js",
+    "name": "ModuleMagento",
+    "src": "resources/js/views/AdminTool/components/ModuleMagento.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "resources/js/views/AdminTool/components/ModuleManager.vue": {
+    "file": "assets/ModuleManager-DI441mHJ.js",
+    "name": "ModuleManager",
+    "src": "resources/js/views/AdminTool/components/ModuleManager.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "_adminToolService-CMfBrorn.js"
+    ]
   }
 }
