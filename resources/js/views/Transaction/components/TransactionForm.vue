@@ -23,7 +23,10 @@
     >
         <!-- Header -->
         <div class="flex justify-between items-center p-4 border-b border-border-line">
-            <h3 class="text-lg">Add Transaction</h3>
+            <h3 class="text-lg">
+                <i class="ti-receipt mr-2"></i>
+                Add Transaction
+            </h3>
             <Button
                 btnClass="text-gray-500 hover:text-red-500 transition"
                 icon="ti-close"
@@ -156,4 +159,5 @@ const submitTransaction = () => {
     emit("create");
     closeOffcanvas();
 };
+
 </script>

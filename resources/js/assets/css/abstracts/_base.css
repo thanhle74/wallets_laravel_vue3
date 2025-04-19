@@ -28,4 +28,16 @@
     th, td {
         @apply border border-border-line p-2 font-light text-left;
     }
+
+    input[type="date"] {
+        @apply relative p-2.5 before:block before:content-['\e6b6'] before:w-[15px] before:h-5 before:absolute before:right-2.5;
+    }
+    input[type="date"]::-webkit-calendar-picker-indicator {
+        @apply text-transparent z-[1];
+        background: none;
+    }
+    input[type="date"]:before {
+        background: none;
+        font-family: "themify";
+    }
 }

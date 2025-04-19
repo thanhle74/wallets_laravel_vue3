@@ -3,6 +3,8 @@
         <LoadingSpinner v-if="isLoading" message="Loading wallets..."/>
 
         <div v-else>
+            <WalletSummary :items="items" />
+
             <BulkActionsWithForm
                 :bulkAction="bulkAction"
                 @update:bulkAction="bulkAction = $event"
@@ -73,7 +75,7 @@ import DataTable from "@/components/DataTable.vue";
 import BulkActionsWithForm from "@/components/BulkActionsWithForm.vue";
 import {useWallet} from "@/composables/Wallet/useWallet";
 import { useCrudPage } from "@/composables/useCrudPage.js";
-import CategoryForm from "@/views/Category/components/CategoryForm.vue";
+import WalletSummary from "@/views/Wallet/components/WalletSummary.vue";
 const {
     items,
     newItem,

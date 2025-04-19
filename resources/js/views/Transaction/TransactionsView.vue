@@ -1,6 +1,6 @@
 <template>
-    <MainLayout title="Transaction Management" icon="ti-receipt">
-        <LoadingSpinner v-if="isLoading" message="Loading transactions..."/>
+    <MainLayout title="Quản lý giao dịch" icon="ti-receipt">
+        <LoadingSpinner v-if="isLoading" message="Đang tải giao dịch..."/>
 
         <div v-else>
             <BulkActionsWithForm
@@ -20,27 +20,35 @@
 
             <ExpenseSummary :items="transactionItems" />
 
-            <TransactionFilter :filters="filters" @filter="handleFilter"/>
-
-            <FilteredTransactions
+            <CollapseGroup
+                title="Bộ lọc & Thống kê giao dịch"
                 :filters="filters"
-                :items="items"
-                :selectedCategoryName="selectedCategoryName"
-                :selectedWalletName="selectedWalletName"
-            />
+            >
+                <template #content>
+                    <TransactionFilter :filters="filters" @filter="handleFilter" />
 
-            <TransactionSummary :items="items" />
+                    <FilteredTransactions
+                        :filters="filters"
+                        :items="items"
+                        :selectedCategoryName="selectedCategoryName"
+                        :selectedWalletName="selectedWalletName"
+                    />
+
+                    <TransactionSummary :items="items" />
+                </template>
+            </CollapseGroup>
+
 
             <DataTable>
                 <template #thead>
                     <th></th>
-                    <th v-if="isAdmin">ID</th>
-                    <th>Category</th>
-                    <th>Wallet</th>
-                    <th>Amount</th>
-                    <th>Day</th>
-                    <th v-if="isAdmin">User</th>
-                    <th class="text-center">Actions</th>
+                    <th v-if="isAdmin">Mã giao dịch</th>
+                    <th>Danh mục</th>
+                    <th>Ví</th>
+                    <th>Số tiền</th>
+                    <th>Ngày</th>
+                    <th v-if="isAdmin">Người dùng</th>
+                    <th class="text-center">Hành động</th>
                 </template>
                 <template #tbody>
                     <tr v-for="(transaction, index) in items" :key="index">
@@ -79,7 +87,7 @@
         />
         <ConfirmDeleteModal
             :show="deleteMassConfirm"
-            message="Are you sure you want to delete selected transactions?"
+            message="Bạn có chắc chắn muốn xóa các giao dịch đã chọn không?"
             @confirm="handleMassDelete"
             @cancel="deleteMassConfirm = false"
         />
@@ -105,6 +113,7 @@ import TransactionSummary from "@/views/Transaction/components/TransactionSummar
 import ExpenseSummary from "@/views/Transaction/components/ExpenseSummary.vue";
 import { useCategory } from "@/composables/Category/useCategory.js";
 import { useWallet } from "@/composables/Wallet/useWallet.js";
+import CollapseGroup from '@/components/CollapseGroup.vue';
 
 const {
     items,
