@@ -18,14 +18,16 @@
                 </template>
             </BulkActionsWithForm>
 
+            <ExpenseSummary :items="transactionItems" />
+
+            <TransactionFilter :filters="filters" @filter="handleFilter"/>
+
             <FilteredTransactions
                 :filters="filters"
                 :items="items"
                 :selectedCategoryName="selectedCategoryName"
                 :selectedWalletName="selectedWalletName"
             />
-
-            <TransactionFilter :filters="filters" @filter="handleFilter"/>
 
             <TransactionSummary :items="items" />
 
@@ -100,6 +102,7 @@ import DataTable from "@/components/DataTable.vue";
 import TransactionFilter from "@/views/Transaction/components/TransactionFilter.vue";
 import FilteredTransactions from "@/views/Transaction/components/FilteredTransactions.vue";
 import TransactionSummary from "@/views/Transaction/components/TransactionSummary.vue";
+import ExpenseSummary from "@/views/Transaction/components/ExpenseSummary.vue";
 import { useCategory } from "@/composables/Category/useCategory.js";
 import { useWallet } from "@/composables/Wallet/useWallet.js";
 
@@ -118,6 +121,7 @@ const {
     handleBulkAction
 } = useCrudPage(useTransaction);
 
+const { items: transactionItems } = useCrudPage(useTransaction);
 const selectedTransaction = ref(null);
 const showTransactionDetail = (transaction) => {
     selectedTransaction.value = transaction;
