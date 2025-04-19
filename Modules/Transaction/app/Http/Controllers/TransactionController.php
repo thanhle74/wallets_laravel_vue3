@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Modules\Transaction\Http\Controllers;
 
+use Illuminate\Validation\ValidationException;
 use Modules\Support\Http\Controllers\BaseControllerApi;
 use Modules\Transaction\Models\Transaction;
 use Illuminate\Http\Request;
@@ -16,20 +17,39 @@ use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class TransactionController extends BaseControllerApi
 {
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
         $user = Auth::user();
-        $role = $user->role->value;
+        $isAdmin = $user->role->value === UserRole::ADMIN->value;
 
-        if ($role === UserRole::ADMIN->value) {
-            $transactions = Transaction::with(['category', 'wallet', 'user'])->get();
-        } else {
-            $transactions = Transaction::with(['category', 'wallet'])->where('user_id', $user->id)->get();
-        }
+        $transactions = Transaction::with(['category', 'wallet'])
+            ->when($isAdmin, fn($q) => $q->with('user'))
+            ->when(!$isAdmin, fn($q) => $q->where('user_id', $user->id))
+            ->when($request->filled('from'), fn($q) =>
+            $q->whereDate('transaction_date', '>=', Carbon::parse($request->input('from'))->toDateString())
+            )
+            ->when($request->filled('to'), fn($q) =>
+            $q->whereDate('transaction_date', '<=', Carbon::parse($request->input('to'))->toDateString())
+            )
+            ->when($request->filled('category'), fn($q) =>
+            $q->where('category_id', $request->input('category'))
+            )
+            ->when($request->filled('wallet'), fn($q) =>
+            $q->where('wallet_id', $request->input('wallet'))
+            )
+            ->when($isAdmin && $request->filled('user_id'), fn($q) =>
+            $q->where('user_id', $request->input('user_id'))
+            )
+            ->get();
 
         return $this->successResponse($transactions->toArray(), 'Successfully', ResponseAlias::HTTP_CREATED);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws ValidationException
+     */
     public function store(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [

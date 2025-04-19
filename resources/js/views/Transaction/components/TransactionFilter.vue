@@ -1,58 +1,99 @@
 <template>
-    <div class="filter-container">
-        <VueDatePicker v-model="dateRange" range :preset-dates="presetDates" />
+    <div class="filter-container flex flex-wrap items-end gap-4 mb-6">
+        <!-- From Date -->
+        <div class="flex flex-col">
+            <label for="from" class="text-sm mb-1">Từ ngày</label>
+            <input
+                type="date"
+                id="from"
+                v-model="fromDate"
+            />
+        </div>
 
-        <select v-model="selectedCategory">
-            <option value="">All Categories</option>
-            <option v-for="category in categories" :key="category.id" :value="category.id">
-                {{ category.name }}
-            </option>
-        </select>
+        <!-- To Date -->
+        <div class="flex flex-col">
+            <label for="to" class="text-sm mb-1">Đến ngày</label>
+            <input
+                type="date"
+                id="to"
+                v-model="toDate"
+            />
+        </div>
 
-        <select v-model="selectedWallet">
-            <option value="">All Wallets</option>
-            <option v-for="wallet in wallets" :key="wallet.id" :value="wallet.id">
-                {{ wallet.name }}
-            </option>
-        </select>
+        <!-- Category -->
+        <div class="flex flex-col">
+            <label class="text-sm mb-1">Danh mục</label>
+            <select v-model="selectedCategory">
+                <option value="">Tất cả</option>
+                <option v-for="category in categoryItems" :key="category.id" :value="category.id">
+                    {{ category.name }}
+                </option>
+            </select>
+        </div>
 
-        <button @click="applyFilter">Filter</button>
+        <!-- Wallet -->
+        <div class="flex flex-col">
+            <label class="text-sm mb-1">Ví</label>
+            <select v-model="selectedWallet">
+                <option value="">Tất cả</option>
+                <option v-for="wallet in walletItems" :key="wallet.id" :value="wallet.id">
+                    {{ wallet.name }}
+                </option>
+            </select>
+        </div>
+
+        <!-- Reset Button -->
+        <button
+            v-if="fromDate || toDate || selectedCategory || selectedWallet"
+            @click="resetFilter"
+            class="bg-deep-navy text-cerulean-blue mr-1 hover:bg-midnight-blue px-3 py-2 rounded-md"
+        >
+            <i class="ti-reload"></i>
+            Đặt lại
+        </button>
+
+        <!-- Filter Button -->
+        <Button
+            btnClass="bg-button-warning-bg text-button-warning-text rounded-md transition-all duration-200"
+            icon="ti-filter"
+            label="Lọc"
+            text="Lọc"
+            @click="applyFilter"
+        />
     </div>
 </template>
 
 <script setup>
-import {ref, onMounted} from "vue";
-import {endOfMonth, endOfYear, startOfMonth, startOfYear, subMonths} from "date-fns";
-import VueDatePicker from "@vuepic/vue-datepicker";
-import "@vuepic/vue-datepicker/dist/main.css";
-import {useCategory} from "@/composables/useCategory";
-import {useWallet} from "@/composables/Wallet/useWallet";
+import { ref } from "vue";
+import Button from "@/components/Button.vue";
+import { useCategory } from "@/composables/Category/useCategory.js";
+import { useWallet } from "@/composables/Wallet/useWallet.js";
+import { useCrudPage } from "@/composables/useCrudPage.js";
 
-const dateRange = ref(null);
-const selectedCategory = ref("");
-const selectedWallet = ref("");
-const {categories, fetchCategories} = useCategory();
-const {wallets, fetchWallets} = useWallet();
-
-const presetDates = ref([
-    {label: "Today", value: [new Date(), new Date()]},
-    {label: "This month", value: [startOfMonth(new Date()), endOfMonth(new Date())]},
-    {label: "Last month", value: [startOfMonth(subMonths(new Date(), 1)), endOfMonth(subMonths(new Date(), 1))]},
-    {label: "This year", value: [startOfYear(new Date()), endOfYear(new Date())]},
-]);
+const { items: categoryItems } = useCrudPage(useCategory);
+const { items: walletItems } = useCrudPage(useWallet);
 
 const emit = defineEmits(["filter"]);
 
+const fromDate = ref("");
+const toDate = ref("");
+const selectedCategory = ref("");
+const selectedWallet = ref("");
+
 const applyFilter = () => {
     emit("filter", {
-        dateRange: dateRange.value,
-        categoryId: selectedCategory.value,
-        walletId: selectedWallet.value,
+        from: fromDate.value || null,
+        to: toDate.value || null,
+        category: selectedCategory.value || null,
+        wallet: selectedWallet.value || null,
     });
 };
 
-onMounted(() => {
-    fetchCategories();
-    fetchWallets();
-});
+const resetFilter = () => {
+    fromDate.value = "";
+    toDate.value = "";
+    selectedCategory.value = "";
+    selectedWallet.value = "";
+    applyFilter();
+};
 </script>

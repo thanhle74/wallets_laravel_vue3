@@ -1,8 +1,8 @@
 import apiClient from "./apiClient.js";
 
 const transactionService = {
-    getAll() {
-        return apiClient.get("/transactions");
+    getAll(params = {}) {
+        return apiClient.get("/transactions", { params });
     },
     get(id) {
         return apiClient.get(`/transactions/${id}`);

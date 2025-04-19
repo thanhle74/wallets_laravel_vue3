@@ -38,7 +38,7 @@
                         <td v-if="isAdmin">{{ category.user.name }}</td>
                         <td class="text-center">
                             <Button
-                                btnClass="bg-deep-navy text-cerulean-blue mr-1 hover:bg-midnight-blue"
+                                btnClass="bg-deep-navy text-cerulean-blue mr-1 hover:bg-midnight-blue rounded-md"
                                 icon="ti-pencil"
                                 @click="editItem(category)"
                             />

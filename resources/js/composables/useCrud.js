@@ -10,10 +10,10 @@ export function useCrud(service, defaultItem = {}) {
     const editedItem = ref(null);
     const isLoading = ref(false);
 
-    const fetchItems = async () => {
+    const fetchItems = async (params = {}) => {
         isLoading.value = true;
         try {
-            const response = await service.getAll();
+            const response = await service.getAll(params);
             items.value = response.data.data;
         } catch (error) {
             handleApiError(error, "Error fetching data!");

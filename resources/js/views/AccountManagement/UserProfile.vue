@@ -17,6 +17,14 @@
                 <div>
                     <h2 class="text-xl mb-4">Change Password</h2>
                     <form @submit.prevent="changePassword" class="space-y-3">
+                        <input
+                            type="text"
+                            name="username"
+                            :value="user.email"
+                            autocomplete="username"
+                            class="hidden"
+                        />
+
                         <div class="flex items-center gap-2">
                             <i class="ti-lock"></i>
                             <label class="block text-sm font-medium">Current Password</label>
