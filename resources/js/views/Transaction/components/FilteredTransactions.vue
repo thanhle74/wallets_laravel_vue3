@@ -77,10 +77,20 @@ const yesterdayTotal = computed(() => {
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
     yesterday.setHours(0, 0, 0, 0);
+    const target = yesterday.getTime();
+
     return props.items
-        .filter(item => item.is_income === 0 && new Date(item.transaction_date).setHours(0, 0, 0, 0) === yesterday)
+        .filter(item => {
+            if (item.is_income !== 0) return false;
+
+            const itemDate = new Date(item.transaction_date);
+            itemDate.setHours(0, 0, 0, 0);
+            const itemTime = itemDate.getTime();
+            return itemTime === target;
+        })
         .reduce((sum, item) => sum + parseFloat(item.amount), 0);
 });
+
 
 const weekTotal = computed(() => {
     const startOfWeek = new Date();
