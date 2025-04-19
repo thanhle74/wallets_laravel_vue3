@@ -1,18 +1,18 @@
 <template>
     <MainLayout title="Settings Manager">
         <div class="mb-6 text-right">
-            <Button 
-                btnClass="bg-deep-navy text-cerulean-blue rounded-md hover:bg-midnight-blue" 
-                icon="ti-save" 
-                text="Save" 
-                @click="saveAllSettings" 
+            <Button
+                btnClass="bg-deep-navy text-cerulean-blue rounded-md hover:bg-midnight-blue"
+                icon="ti-save"
+                text="Save"
+                @click="saveAllSettings"
             />
         </div>
-        <div class="max-w-4xl mx-auto flex">
+        <div class="max-w mx-auto flex">
             <div class="w-1/4 border-r border-border-line pr-4">
                 <ul>
-                    <li 
-                        v-for="group in groups" 
+                    <li
+                        v-for="group in groups"
                         :key="group"
                         @click="selectedGroup = group"
                         class="p-2 rounded-md text-sm flex gap-3 items-center transition
@@ -32,22 +32,22 @@
                         <label>{{ setting.label }}</label>
 
                         <!-- Text Input -->
-                        <input 
-                            v-if="setting.type === 'text'" 
-                            v-model="setting.value" 
-                            type="text" 
+                        <input
+                            v-if="setting.type === 'text'"
+                            v-model="setting.value"
+                            type="text"
                             class="border p-2 rounded w-full col-span-2"
                         />
 
                         <!-- Timezone Dropdown -->
-                        <select 
+                        <select
                             v-if="setting.type === 'timezone'"
                             v-model="setting.value"
                             class="border p-2 rounded w-full col-span-2"
                         >
-                            <option 
-                                v-for="tz in timezones" 
-                                :key="tz.value" 
+                            <option
+                                v-for="tz in timezones"
+                                :key="tz.value"
                                 :value="tz.value"
                             >
                                 {{ tz.label }}
@@ -63,6 +63,68 @@
                 </div>
             </div>
         </div>
+        <div class="text-right mb-4">
+            <Button
+                btnClass="bg-blue-600 text-white rounded hover:bg-blue-700"
+                icon="ti-plus"
+                text="Add New Setting"
+                @click="showAddSettingForm = !showAddSettingForm"
+            />
+        </div>
+        <div v-if="showAddSettingForm" class="mb-8 p-4 rounded">
+            <h2 class="text-lg font-semibold mb-4">Add New Setting</h2>
+
+            <!-- Toggle chọn Group hoặc thêm mới -->
+            <div class="flex items-center gap-2 mb-4">
+                <label class="text-sm font-medium">Use new group?</label>
+                <input type="checkbox" v-model="isCustomGroup" class="form-checkbox h-4 w-4 text-blue-600" />
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <!-- Group -->
+                <template v-if="isCustomGroup">
+                    <input
+                        v-model="newSetting.group"
+                        type="text"
+                        placeholder="New Group"
+                        class="border p-2 rounded w-full"
+                    />
+                </template>
+                <template v-else>
+                    <select v-model="newSetting.group" class="border p-2 rounded w-full">
+                        <option disabled value="">-- Select Group --</option>
+                        <option v-for="group in groups" :key="group" :value="group">
+                            {{ capitalizeFirstLetter(group) }}
+                        </option>
+                    </select>
+                </template>
+
+                <!-- Key -->
+                <input v-model="newSetting.key" type="text" placeholder="Key" class="border p-2 rounded w-full" />
+
+                <!-- Label -->
+                <input v-model="newSetting.label" type="text" placeholder="Label" class="border p-2 rounded w-full" />
+
+                <!-- Value -->
+                <input v-model="newSetting.value" type="text" placeholder="Value" class="border p-2 rounded w-full" />
+
+                <!-- Type -->
+                <select v-model="newSetting.type" class="border p-2 rounded w-full col-span-2">
+                    <option value="text">Text</option>
+                    <option value="image">Image</option>
+                    <option value="timezone">Timezone</option>
+                </select>
+            </div>
+
+            <div class="text-right">
+                <Button
+                    btnClass="bg-green-600 text-white rounded hover:bg-green-700"
+                    icon="ti-plus"
+                    text="Add Setting"
+                    @click="createSetting(newSetting)"
+                />
+            </div>
+        </div>
     </MainLayout>
 </template>
 
@@ -72,17 +134,27 @@ import { useSettings } from "@/composables/Setting/useSettings";
 import Button from "@/components/Button.vue";
 import { ref, computed, onMounted } from "vue";
 
-const { settings, saveAllSettings, uploadImage, fetchSettings } = useSettings();
+const showAddSettingForm = ref(false);
+const isCustomGroup = ref(false);
+const { settings, saveAllSettings, uploadImage, fetchSettings, createSetting } = useSettings();
 const selectedGroup = ref("general");
+const newSetting = ref({
+    group: "",
+    key: "",
+    label: "",
+    value: "",
+    type: "text",
+});
+
 const groups = computed(() => {
-    return settings.value.length > 0 
-        ? [...new Set(settings.value.map(setting => setting.group))] 
+    return settings.value.length > 0
+        ? [...new Set(settings.value.map(setting => setting.group))]
         : [];
 });
 
 const filteredSettings = computed(() => {
-    return settings.value.length > 0 
-        ? settings.value.filter(setting => setting.group === selectedGroup.value) 
+    return settings.value.length > 0
+        ? settings.value.filter(setting => setting.group === selectedGroup.value)
         : [];
 });
 const timezones = ref([

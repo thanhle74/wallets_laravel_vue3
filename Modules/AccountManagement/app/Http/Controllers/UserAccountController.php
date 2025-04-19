@@ -10,7 +10,6 @@ use Illuminate\Http\JsonResponse;
 use Modules\Support\Enums\UserRole;
 use Modules\AccountManagement\Models\User;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 
 class UserAccountController extends BaseControllerApi
@@ -84,8 +83,8 @@ class UserAccountController extends BaseControllerApi
             'new_password' => 'required|min:6|confirmed',
         ]);
 
-        if (!\Hash::check($request->current_password, auth()->user()->password)) {
-            return $this->errorResponse('Password is incorrect', ResponseAlias::HTTP_BAD_REQUEST);
+        if (!Hash::check($request->current_password, auth()->user()->password)) {
+            return $this->errorResponse('Password is incorrect');
         }
 
         auth()->user()->update([

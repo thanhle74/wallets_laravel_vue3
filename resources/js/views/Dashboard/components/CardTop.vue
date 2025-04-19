@@ -10,7 +10,7 @@
             </div>
         </div>
         <div class="grid grid-cols-12 gap-2 my-15">
-            <div class="col-span-3 w-full flex items-center">
+            <div class="col-span-3 w-full flex items-center border border-border-line rounded-md p-4">
                 <div class="bg-mulberry-purple text-2xl rounded-(--radius-circle) text-torch-red px-4 py-3">
                     <i class="ti-stats-up"></i>
                 </div>
@@ -20,7 +20,7 @@
                 </div>
             </div>
 
-            <div class="col-span-3 w-full flex items-center">
+            <div class="col-span-3 w-full flex items-center border border-border-line rounded-md p-4">
                 <div class="bg-indigo-night text-amethyst-purple text-2xl rounded-(--radius-circle) px-4 py-3">
                     <i class="ti-calendar"></i>
                 </div>
@@ -29,7 +29,7 @@
                     <span class="text-xs">This Month</span>
                 </div>
             </div>
-            <div class="col-span-3 w-full flex items-center">
+            <div class="col-span-3 w-full flex items-center border border-border-line rounded-md p-4">
                 <div class="bg-deep-navy text-cerulean-blue text-2xl rounded-(--radius-circle) px-4 py-3">
                     <i class="ti-calendar"></i>
                 </div>
@@ -38,7 +38,7 @@
                     <span class="text-xs">This Week</span>
                 </div>
             </div>
-            <div class="col-span-3 w-full flex items-center">
+            <div class="col-span-3 w-full flex items-center border border-border-line rounded-md p-4">
                 <div class="bg-badge-active text-color-active text-2xl rounded-(--radius-circle) px-4 py-3">
                     <i class="ti-timer"></i>
                 </div>

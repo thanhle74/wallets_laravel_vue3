@@ -15,6 +15,9 @@ const settingService = {
             headers: { "Content-Type": "multipart/form-data" },
         });
     },
+    createSetting(setting) {
+        return apiClient.post("/settings", setting);
+    },
 };
 
 export default settingService;

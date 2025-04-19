@@ -1,6 +1,6 @@
 {
-  "_adminToolService-CMfBrorn.js": {
-    "file": "assets/adminToolService-CMfBrorn.js",
+  "_adminToolService-Cduooc0c.js": {
+    "file": "assets/adminToolService-Cduooc0c.js",
     "name": "adminToolService",
     "imports": [
       "resources/js/app.js"
@@ -13,7 +13,7 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-CbbzzP8w.js",
+    "file": "assets/app-BhctBKvf.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -23,7 +23,7 @@
       "resources/js/views/AdminTool/components/ModuleMagento.vue"
     ],
     "css": [
-      "assets/app-BPNUawHf.css"
+      "assets/app-Ds-42kw_.css"
     ],
     "assets": [
       "assets/logo-CxOinUre.jpg",
@@ -54,17 +54,17 @@
     "src": "resources/js/assets/images/logo.jpg"
   },
   "resources/js/views/AdminTool/components/LaravelCommands.vue": {
-    "file": "assets/LaravelCommands-BRn7jxhf.js",
+    "file": "assets/LaravelCommands-D6CVAXgo.js",
     "name": "LaravelCommands",
     "src": "resources/js/views/AdminTool/components/LaravelCommands.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_adminToolService-CMfBrorn.js"
+      "_adminToolService-Cduooc0c.js"
     ]
   },
   "resources/js/views/AdminTool/components/ModuleMagento.vue": {
-    "file": "assets/ModuleMagento-BzAfbiwP.js",
+    "file": "assets/ModuleMagento-DMeHo7j3.js",
     "name": "ModuleMagento",
     "src": "resources/js/views/AdminTool/components/ModuleMagento.vue",
     "isDynamicEntry": true,
@@ -73,13 +73,13 @@
     ]
   },
   "resources/js/views/AdminTool/components/ModuleManager.vue": {
-    "file": "assets/ModuleManager-DI441mHJ.js",
+    "file": "assets/ModuleManager-Dn_ujEwS.js",
     "name": "ModuleManager",
     "src": "resources/js/views/AdminTool/components/ModuleManager.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_adminToolService-CMfBrorn.js"
+      "_adminToolService-Cduooc0c.js"
     ]
   }
 }

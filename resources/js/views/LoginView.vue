@@ -65,6 +65,7 @@ const handleLogin = async () => {
             password: loginForm.value.password,
         });
 
+        console.log("Login response:", response.data);
         localStorage.setItem("token", response.data.token);
         toastr.success("Login successful!");
 

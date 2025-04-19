@@ -16,7 +16,7 @@ export function useUserAccount(router) {
             const response = await apiClient.post('/logout');
             localStorage.removeItem("token");
             toastr.success(response.data.message);
-            await router.push('/');
+            await router.push('/admin_halengocha');
         } catch (error) {
             toastr.error("Logout failed!");
             console.error("Logout error:", error);

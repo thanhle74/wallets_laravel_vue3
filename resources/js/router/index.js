@@ -16,7 +16,7 @@ import UserProfile from "@/views/AccountManagement/UserProfile.vue";
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
-        { path: '/', name: 'login', component: LoginView, meta: { title: 'Login' } },
+        { path: '/admin_halengocha', name: 'login', component: LoginView, meta: { title: 'Login' } },
         { path: '/dashboard', name: 'dashboard', component: DashboardView, meta: { title: 'Dashboard' } },
         { path: '/transaction', name: 'transaction', component: TransactionsView, meta: { title: 'Transactions' } },
         { path: '/category', name: 'category', component: CategoryView, meta: { title: 'Categories' } },

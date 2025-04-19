@@ -37,10 +37,28 @@ export function useSettings() {
         }
     };
 
+    const createSetting = async (setting) => {
+        try {
+            const response = await settingService.createSetting(setting);
+            handleApiResponse(response);
+            Object.assign(setting, {
+                group: '',
+                key: '',
+                label: '',
+                value: '',
+                type: 'text',
+            });
+            await fetchSettings();
+        } catch (error) {
+            handleApiError(error, "Failed to create setting.");
+        }
+    };
+
     return {
         settings,
         fetchSettings,
         saveAllSettings,
+        createSetting,
         uploadImage,
     };
 }

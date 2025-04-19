@@ -1,9 +1,9 @@
 <template>
-    <div class="max-w-7xl mx-auto grid grid-cols-12 gap-8 font-light">
+    <div class="max-w mx-auto grid grid-cols-12 font-light">
         <Sidebar/>
-        <main class="col-span-9">
+        <main class="col-span-10 p-8">
             <TopBar :title="title" class="bg-background-section shadow min-h-[56px]"/>
-            <div class="page-wapper bg-background-section p-6 rounded-lg shadow">
+            <div class="page-wapper bg-background-section p-8 rounded-lg shadow">
                 <slot></slot>
             </div>
              <Footer/>

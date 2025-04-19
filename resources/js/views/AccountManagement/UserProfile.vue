@@ -1,7 +1,7 @@
 <template>
     <MainLayout title="Profile">
-        <div class="max-w-4xl mx-auto flex">
-            <div class="w-1/3 border-r border-border-line pr-6">
+        <div class="max-w mx-auto flex">
+            <div class="w-1/4 border-r border-border-line pr-6">
                 <div class="mb-6">
                     <h2 class="text-xl mb-4">Personal Information</h2>
                     <div class="flex items-center gap-4">

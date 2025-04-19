@@ -18,7 +18,8 @@ class SettingsSeeder extends Seeder
             ['group' => 'theme', 'key' => 'logo', 'label' => 'Logo', 'value' => '', 'type' => 'image'],
             ['group' => 'theme', 'key' => 'favicon', 'label' => 'Favicon', 'value' => '', 'type' => 'image'],
             ['group' => 'theme', 'key' => 'footer_text', 'label' => 'Text Footer', 'value' => 'All rights reserved. Version:', 'type' => 'text'],
-            
+
+            ['group' => 'Security', 'key' => 'time_token', 'label' => 'Time Token', 'value' => '2', 'type' => 'text'],
         ];
 
         foreach ($settings as $setting) {

@@ -1,5 +1,5 @@
 <template>
-    <aside class="col-span-3 bg-background-section p-6 min-h-screen shadow">
+    <aside class="col-span-2 bg-background-section p-6 min-h-screen shadow">
         <div class="sidebar">
             <div class="rounded-(--radius-circle) overflow-hidden w-25 mx-auto h-25">
                 <RouterLink to="/dashboard">

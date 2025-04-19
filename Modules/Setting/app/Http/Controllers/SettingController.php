@@ -10,6 +10,21 @@ use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class SettingController extends BaseControllerApi
 {
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'group' => 'required|string',
+            'key' => 'required|string|unique:settings,key',
+            'label' => 'required|string',
+            'value' => 'nullable|string',
+            'type' => 'required|in:text,image,timezone',
+        ]);
+
+        $setting = Setting::create($data);
+
+        return response()->json($setting, 201);
+    }
+
     public function index()
     {
         return $this->successResponse(Setting::all()->toArray());
