@@ -1,5 +1,5 @@
 <template>
-    <MainLayout title="Transaction Management">
+    <MainLayout title="Transaction Management" icon="ti-receipt">
         <LoadingSpinner v-if="isLoading" message="Loading transactions..."/>
 
         <div v-else>
@@ -18,52 +18,16 @@
                 </template>
             </BulkActionsWithForm>
 
-            <TransactionFilter @filter="handleFilter"/>
+            <FilteredTransactions
+                :filters="filters"
+                :items="items"
+                :selectedCategoryName="selectedCategoryName"
+                :selectedWalletName="selectedWalletName"
+            />
 
-            <div
-                v-if="filters.from || filters.to || filters.category || filters.wallet"
-                class="flex items-center gap-2 p-3 rounded-lg bg-background-body text-amethyst-purple text-sm mb-4"
-            >
-                <i class="ti-filter text-base"></i>
-                <div>
-                    <p class="mb-0">
-                        <span class="font-medium">Đã lọc</span>
-                        <span v-if="filters.from"> từ <strong>{{ new Date(filters.from).toLocaleDateString('vi-VN') }}</strong></span>
-                        <span v-if="filters.to"> đến <strong>{{ new Date(filters.to).toLocaleDateString('vi-VN') }}</strong></span>,
-                        <span v-if="filters.category"> danh mục <strong>{{ selectedCategoryName }}</strong></span>
-                        <span v-if="filters.wallet"> ví <strong>{{ selectedWalletName }}</strong></span>.
-                        tổng cộng <strong>{{ items.length }}</strong> kết quả.
-                    </p>
-                </div>
-            </div>
+            <TransactionFilter :filters="filters" @filter="handleFilter"/>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <!-- Tiền vào -->
-                <div class="rounded bg-badge-active p-4 shadow flex items-center gap-4">
-                    <div class="text-color-active text-3xl">
-                        <i class="ti-arrow-down"></i>
-                    </div>
-                    <div>
-                        <p class="text-sm mb-1">Tổng tiền vào</p>
-                        <p class="text-color-active text-xl font-semibold">
-                            {{ totalIn.toLocaleString('vi-VN') }} ₫
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Tiền ra -->
-                <div class="rounded bg-mulberry-purple p-4 shadow flex items-center gap-4">
-                    <div class="text-torch-red text-3xl">
-                        <i class="ti-arrow-up"></i>
-                    </div>
-                    <div>
-                        <p class="text-sm mb-1">Tổng tiền ra</p>
-                        <p class="text-torch-red text-xl font-semibold">
-                            {{ totalOut.toLocaleString('vi-VN') }} ₫
-                        </p>
-                    </div>
-                </div>
-            </div>
+            <TransactionSummary :items="items" />
 
             <DataTable>
                 <template #thead>
@@ -134,6 +98,8 @@ import ConfirmDeleteModal from "@/components/ConfirmDeleteModal.vue";
 import BulkActionsWithForm from "@/components/BulkActionsWithForm.vue";
 import DataTable from "@/components/DataTable.vue";
 import TransactionFilter from "@/views/Transaction/components/TransactionFilter.vue";
+import FilteredTransactions from "@/views/Transaction/components/FilteredTransactions.vue";
+import TransactionSummary from "@/views/Transaction/components/TransactionSummary.vue";
 import { useCategory } from "@/composables/Category/useCategory.js";
 import { useWallet } from "@/composables/Wallet/useWallet.js";
 
@@ -186,18 +152,6 @@ const fetchFilteredTransactions = async () => {
     await fetchItems(params);
 };
 
-const totalIn = computed(() =>
-    items.value
-        .filter(item => item.is_income === 1)  // Tiền vào
-        .reduce((sum, item) => sum + parseFloat(item.amount), 0)
-);
-
-const totalOut = computed(() =>
-    items.value
-        .filter(item => item.is_income === 0)  // Tiền ra
-        .reduce((sum, item) => sum + parseFloat(item.amount), 0)
-);
-
 const { items: categoryItems } = useCrudPage(useCategory);
 const selectedCategoryName = computed(() => {
     if (!filters.value.category) return null;
@@ -211,5 +165,4 @@ const selectedWalletName = computed(() => {
     const wallet = walletItems.value.find(cat => cat.id === filters.value.wallet);
     return wallet ? wallet.name : filters.value.wallet;
 });
-
 </script>

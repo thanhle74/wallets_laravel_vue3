@@ -1,6 +1,6 @@
 <template>
     <!-- Nút mở form -->
-    <div class="text-right mb-4">
+    <div class="text-right">
         <Button
             btnClass="bg-indigo-night text-amethyst-purple rounded-md hover:bg-royal-purple"
             text="Add Transaction"

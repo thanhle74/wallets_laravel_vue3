@@ -1,6 +1,6 @@
 {
-  "_adminToolService-DQvH-ged.js": {
-    "file": "assets/adminToolService-DQvH-ged.js",
+  "_adminToolService-XqSO0xkO.js": {
+    "file": "assets/adminToolService-XqSO0xkO.js",
     "name": "adminToolService",
     "imports": [
       "resources/js/app.js"
@@ -13,7 +13,7 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-COqh1eqm.js",
+    "file": "assets/app-Df5NZ89X.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -23,7 +23,7 @@
       "resources/js/views/AdminTool/components/ModuleMagento.vue"
     ],
     "css": [
-      "assets/app-Ds-42kw_.css"
+      "assets/app-BFHA6l1H.css"
     ],
     "assets": [
       "assets/logo-CxOinUre.jpg",
@@ -54,17 +54,17 @@
     "src": "resources/js/assets/images/logo.jpg"
   },
   "resources/js/views/AdminTool/components/LaravelCommands.vue": {
-    "file": "assets/LaravelCommands-DpxjkgEF.js",
+    "file": "assets/LaravelCommands-CGBPK9i_.js",
     "name": "LaravelCommands",
     "src": "resources/js/views/AdminTool/components/LaravelCommands.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_adminToolService-DQvH-ged.js"
+      "_adminToolService-XqSO0xkO.js"
     ]
   },
   "resources/js/views/AdminTool/components/ModuleMagento.vue": {
-    "file": "assets/ModuleMagento-C457laAB.js",
+    "file": "assets/ModuleMagento-gf4xcGP1.js",
     "name": "ModuleMagento",
     "src": "resources/js/views/AdminTool/components/ModuleMagento.vue",
     "isDynamicEntry": true,
@@ -73,13 +73,13 @@
     ]
   },
   "resources/js/views/AdminTool/components/ModuleManager.vue": {
-    "file": "assets/ModuleManager-CAmdBqSf.js",
+    "file": "assets/ModuleManager-DRZAJREW.js",
     "name": "ModuleManager",
     "src": "resources/js/views/AdminTool/components/ModuleManager.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_adminToolService-DQvH-ged.js"
+      "_adminToolService-XqSO0xkO.js"
     ]
   }
 }

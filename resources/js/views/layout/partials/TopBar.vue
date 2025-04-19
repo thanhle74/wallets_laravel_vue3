@@ -1,6 +1,9 @@
 <template>
     <nav class="flex items-center justify-between py-2 px-6 mb-8 rounded-lg relative">
-        <h5 class="text-lg">{{ title }}</h5>
+        <h5 class="text-lg flex items-center gap-2">
+            <i v-if="icon" :class="icon"></i>
+            {{ title }}
+        </h5>
 
         <div ref="menuRef" class="flex items-center gap-2 cursor-pointer" @click="toggleDropdown">
             <div class="rounded-(--radius-circle) overflow-hidden mx-auto">
@@ -28,6 +31,10 @@ defineProps({
     title: {
         type: String,
         default: 'Dashboard',
+    },
+    icon: {
+        type: String,
+        default: 'ti-list',
     },
 });
 

@@ -3,21 +3,13 @@
         <!-- From Date -->
         <div class="flex flex-col">
             <label for="from" class="text-sm mb-1">Từ ngày</label>
-            <input
-                type="date"
-                id="from"
-                v-model="fromDate"
-            />
+            <input type="date" id="from" v-model="fromDate" />
         </div>
 
         <!-- To Date -->
         <div class="flex flex-col">
             <label for="to" class="text-sm mb-1">Đến ngày</label>
-            <input
-                type="date"
-                id="to"
-                v-model="toDate"
-            />
+            <input type="date" id="to" v-model="toDate" />
         </div>
 
         <!-- Category -->
@@ -70,15 +62,24 @@ import { useCategory } from "@/composables/Category/useCategory.js";
 import { useWallet } from "@/composables/Wallet/useWallet.js";
 import { useCrudPage } from "@/composables/useCrudPage.js";
 
-const { items: categoryItems } = useCrudPage(useCategory);
-const { items: walletItems } = useCrudPage(useWallet);
+// Props
+const props = defineProps({
+    filters: {
+        type: Object,
+        default: () => ({})
+    }
+});
 
 const emit = defineEmits(["filter"]);
 
-const fromDate = ref("");
-const toDate = ref("");
-const selectedCategory = ref("");
-const selectedWallet = ref("");
+const { items: categoryItems } = useCrudPage(useCategory);
+const { items: walletItems } = useCrudPage(useWallet);
+
+// Filter state
+const fromDate = ref(props.filters.from || "");
+const toDate = ref(props.filters.to || "");
+const selectedCategory = ref(props.filters.category || "");
+const selectedWallet = ref(props.filters.wallet || "");
 
 const applyFilter = () => {
     emit("filter", {

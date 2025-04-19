@@ -1,5 +1,5 @@
 <template>
-    <MainLayout title="Wallet Management">
+    <MainLayout title="Wallet Management" icon="ti-wallet">
         <LoadingSpinner v-if="isLoading" message="Loading wallets..."/>
 
         <div v-else>

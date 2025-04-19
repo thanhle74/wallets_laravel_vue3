@@ -1,5 +1,5 @@
 <template>
-    <MainLayout title="Category Management">
+    <MainLayout title="Category Management" icon="ti-tag">
         <LoadingSpinner v-if="isLoading" message="Loading categories..." />
 
         <div v-else>
