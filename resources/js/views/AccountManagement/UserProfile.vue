@@ -6,7 +6,7 @@
                     <h2 class="text-xl mb-4">Personal Information</h2>
                     <div class="flex items-center gap-4">
                         <img v-if="user.avatar" :src="user.avatar" alt="Avatar"
-                            class="w-24 h-24 rounded-full border border-border-line" />
+                            class="w-24 h-24 rounded-full border border-border-line object-cover" />
                         <div>
                             <p class="text-lg font-semibold">{{ user.name }}</p>
                             <p class="text-gray-600">{{ user.email }}</p>
@@ -21,21 +21,21 @@
                             <i class="ti-lock"></i>
                             <label class="block text-sm font-medium">Current Password</label>
                         </div>
-                        <input v-model="passwords.current_password" type="password" required
+                        <input v-model="passwords.current_password" type="password" required autocomplete="current-password"
                             class="border p-2 rounded w-full" />
 
                         <div class="flex items-center gap-2">
                             <i class="ti-key"></i>
                             <label class="block text-sm font-medium">New Password</label>
                         </div>
-                        <input v-model="passwords.new_password" type="password" required
+                        <input v-model="passwords.new_password" type="password" required autocomplete="new-password"
                             class="border p-2 rounded w-full" />
 
                         <div class="flex items-center gap-2">
                             <i class="ti-check"></i>
                             <label class="block text-sm font-medium">Confirm Password</label>
                         </div>
-                        <input v-model="passwords.new_password_confirmation" type="password" required
+                        <input v-model="passwords.new_password_confirmation" type="password" required autocomplete="new-password"
                             class="border p-2 rounded w-full" />
 
                         <Button
@@ -70,7 +70,7 @@
                         <div class="col-span-2 flex items-center gap-4">
                             <input type="file" @change="handleFileUpload" class="border p-2 rounded w-full" />
                             <img v-if="user.avatar" :src="user.avatar"
-                                class="w-16 h-16 rounded border border-border-line" />
+                                class="w-16 h-16 rounded border border-border-line object-cover" />
                         </div>
                     </div>
                     <Button

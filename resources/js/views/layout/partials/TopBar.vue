@@ -4,7 +4,7 @@
 
         <div ref="menuRef" class="flex items-center gap-2 cursor-pointer" @click="toggleDropdown">
             <div class="rounded-(--radius-circle) overflow-hidden mx-auto">
-                <img class="w-10 h-10" v-if="user.avatar" :src="user.avatar" alt="User Avatar">
+                <img class="w-10 h-10 object-cover" v-if="user.avatar" :src="user.avatar" alt="User Avatar">
             </div>
             <span class="text-sm">{{ user.name }}</span>
             <i :class="dropdownOpen ? 'ti-angle-up' : 'ti-angle-down'"></i>
