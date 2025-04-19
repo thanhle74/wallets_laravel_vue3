@@ -9,5 +9,6 @@
     "Category": true,
     "ModuleMagento": false,
     "AdminTool": true,
-    "Setting": true
+    "Setting": true,
+    "FixedExpense": true
 }

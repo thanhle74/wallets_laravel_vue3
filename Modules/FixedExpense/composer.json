@@ -1,0 +1,25 @@
+{
+    "name": "nwidart/fixedexpense",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\FixedExpense\\": "app/",
+            "Modules\\FixedExpense\\Database\\Factories\\": "database/factories/",
+            "Modules\\FixedExpense\\Database\\Seeders\\": "database/seeders/"
+        }
+    }
+}

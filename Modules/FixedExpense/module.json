@@ -1,0 +1,11 @@
+{
+    "name": "FixedExpense",
+    "alias": "fixedexpense",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\FixedExpense\\Providers\\FixedExpenseServiceProvider"
+    ],
+    "files": []
+}
