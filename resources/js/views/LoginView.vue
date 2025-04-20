@@ -31,7 +31,7 @@
                 </div>
 
                 <Button
-                    btnClass="w-full bg-indigo-night text-amethyst-purple rounded-md hover:bg-royal-purplepy-2 transition"
+                    btnClass="w-full bg-indigo-night text-amethyst-purple rounded-md hover:bg-royal-purple py-2 transition"
                     icon="ti-unlock"
                     text="Login"
                     type="submit"

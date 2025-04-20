@@ -12,7 +12,7 @@
             </select>
 
             <Button
-                btnClass="bg-mulberry-purple text-torch-red rounded-md hover:bg-button-red-hover"
+                type="danger"
                 icon="ti-trash"
                 :disabled="!selectedItems.length"
                 @click="confirmMassDelete"

@@ -15,6 +15,8 @@ class FixedExpense extends Model
     protected $fillable = [
         'user_id',
         'template_id',
+        'name',
+        'amount',
         'month',
         'is_deducted',
     ];

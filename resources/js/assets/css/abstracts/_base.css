@@ -29,15 +29,17 @@
         @apply border border-border-line p-2 font-light text-left;
     }
 
-    input[type="date"] {
+    input[type="date"], input[type="month"] {
         @apply relative p-2.5 before:block before:content-['\e6b6'] before:w-[15px] before:h-5 before:absolute before:right-2.5;
     }
-    input[type="date"]::-webkit-calendar-picker-indicator {
+    input[type="date"]::-webkit-calendar-picker-indicator, input[type="month"]::-webkit-calendar-picker-indicator {
         @apply text-transparent z-[1];
         background: none;
+        cursor: pointer;
     }
-    input[type="date"]:before {
+    input[type="date"]:before, input[type="month"]:before {
         background: none;
         font-family: "themify";
+        cursor: pointer;
     }
 }

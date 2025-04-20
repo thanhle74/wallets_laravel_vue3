@@ -31,6 +31,7 @@
                             <SidebarItem url="/transaction" icon="ti-receipt" label="Transactions"/>
                             <SidebarItem url="/category" icon="ti-tag" label="Categories"/>
                             <SidebarItem url="/wallet" icon="ti-wallet" label="Wallets"/>
+                            <SidebarItem url="/fixed-expense" icon="ti-money" label="Chi phí cố định"/>
                         </ul>
                     </li>
 
@@ -65,7 +66,7 @@ const logoUrl = computed(() => {
 });
 
 const checkCurrentRoute = () => {
-    const transactionRoutes = ["/transaction", "/category", "/wallet"];
+    const transactionRoutes = ["/transaction", "/category", "/wallet", "/fixed-expense", "/fixed-expense-template"];
     isDropdownOpen.value = transactionRoutes.includes(route.path);
 };
 

@@ -12,6 +12,7 @@ import ModuleMagento from "@/views/ModuleMagento/ModuleMagento.vue";
 import AdminTool from "@/views/AdminTool/AdminTool.vue";
 import SettingsManager from "@/views/Setting/SettingsManager.vue";
 import UserProfile from "@/views/AccountManagement/UserProfile.vue";
+import FixedExpense from "@/views/FixedExpense/FixedExpense.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,6 +27,7 @@ const router = createRouter({
         { path: '/admin-tool', name: 'admin-tool', component: AdminTool, meta: { title: 'Admin Tools' } },
         { path: '/settings', name: 'settings', component: SettingsManager, meta: { title: 'Settings' } },
         { path: '/profile', name: 'profile', component: UserProfile, meta: { title: 'Profile' } },
+        { path: '/fixed-expense', name: 'fixed-expense', component: FixedExpense, meta: { title: 'Chi Phí Cố Định' }},
         { path: '/:pathMatch(.*)*', component: NotFoundView, meta: { title: 'Page Not Found' } },
     ],
     scrollBehavior(to, from, savedPosition) {
